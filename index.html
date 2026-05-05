@@ -3,200 +3,197 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DiVISE Music Solutions</title>
+<title>DiVISE OS</title>
 
 <style>
 body {
-    background: black;
-    color: #00ffff;
-    font-family: "Courier New", monospace;
     margin: 0;
-    cursor: crosshair;
+    background: #050508;
+    color: #dcdcff;
+    font-family: "Courier New", monospace;
+    overflow: hidden;
 }
 
-/* CRT flicker */
-body::after {
-    content: "";
+/* Boot screen */
+#boot {
     position: fixed;
-    top:0; left:0;
-    width:100%; height:100%;
-    background: repeating-linear-gradient(
-        to bottom,
-        rgba(255,255,255,0.03),
-        rgba(255,255,255,0.03) 1px,
-        transparent 1px,
-        transparent 2px
-    );
-    pointer-events:none;
+    width: 100%;
+    height: 100%;
+    background: black;
+    color: #00ffcc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 9999;
 }
 
-/* window */
+.progress {
+    width: 300px;
+    height: 10px;
+    border: 1px solid #00ffcc;
+    margin-top: 20px;
+}
+
+.bar {
+    height: 100%;
+    width: 0%;
+    background: #00ffcc;
+}
+
+/* Desktop */
+#desktop {
+    display: none;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle at center, #0b0b18, #000);
+    position: relative;
+}
+
+/* Icons */
+.icon {
+    position: absolute;
+    text-align: center;
+    cursor: pointer;
+}
+
+.icon img {
+    width: 48px;
+}
+
+/* Windows */
 .window {
-    border: 3px solid #00ffff;
-    margin: 20px;
-    background: #000080;
-    box-shadow: 0 0 10px #00ffff;
+    position: absolute;
+    top: 100px;
+    left: 100px;
+    width: 400px;
+    background: #111;
+    border: 2px solid #666;
+    border-radius: 8px;
+    display: none;
 }
 
 .title-bar {
-    background: linear-gradient(to right, #0000aa, #00ffff);
-    padding: 5px 10px;
+    background: linear-gradient(to right, #2a2a40, #5a2eff);
+    padding: 5px;
     color: white;
-    font-weight: bold;
+    cursor: move;
 }
 
 .content {
-    padding: 20px;
-}
-
-.hero {
-    text-align: center;
+    padding: 15px;
 }
 
 .hero img {
-    max-width: 600px;
     width: 100%;
     image-rendering: pixelated;
 }
 
-/* buttons */
-.button {
-    display: inline-block;
-    background: #ff00ff;
-    color: black;
-    padding: 10px 20px;
-    border: 2px solid #00ffff;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.blink {
-    animation: blink 1s infinite;
-}
-
-@keyframes blink {
-    50% { opacity: 0; }
-}
-
-/* marquee */
-marquee {
-    color: yellow;
-    font-weight: bold;
-}
-
-/* email form */
-input, textarea {
+/* Crash screen */
+#crash {
+    display: none;
+    position: fixed;
     width: 100%;
-    margin: 5px 0;
-    padding: 5px;
-    font-family: "Courier New";
-    border: 2px inset #ccc;
+    height: 100%;
+    background: #0000aa;
+    color: white;
+    z-index: 99999;
+    padding: 50px;
 }
 
-/* visitor counter */
-.counter {
+/* Player */
+.player {
     text-align: center;
-    font-size: 20px;
-    color: lime;
-}
-
-/* guestbook */
-.guestbook {
-    max-width: 500px;
-    margin: auto;
 }
 </style>
 </head>
 
-<body onload="playDialup()">
+<body>
 
-<audio id="dialup" src="https://www.soundjay.com/communication/sounds/dial-up-modem-01.mp3"></audio>
+<div id="boot">
+<h1>Booting DiVISE OS...</h1>
+<div class="progress"><div class="bar" id="bar"></div></div>
+</div>
 
-<script>
-function playDialup(){
-    document.getElementById("dialup").play().catch(()=>{});
-}
+<div id="desktop">
 
-// fake visitor counter
-let count = localStorage.getItem("visits") || 0;
-count++;
-localStorage.setItem("visits", count);
-</script>
+<div class="icon" style="top:50px; left:50px;" onclick="openWindow('home')">
+<img src="https://cdn-icons-png.flaticon.com/512/1828/1828919.png">
+<div>DiVISE</div>
+</div>
 
-<marquee>WELCOME TO DiVISE MUSIC SOLUTIONS ★ BEST VIEWED ON INTERNET EXPLORER ★ UNDER CONSTRUCTION ★</marquee>
+<div class="icon" style="top:50px; left:150px;" onclick="openWindow('releases')">
+<img src="https://cdn-icons-png.flaticon.com/512/727/727245.png">
+<div>Releases</div>
+</div>
 
-<div class="window">
-<div class="title-bar">DiVISE.exe</div>
+<div class="icon" style="top:50px; left:250px;" onclick="openWindow('mail')">
+<img src="https://cdn-icons-png.flaticon.com/512/561/561127.png">
+<div>Email</div>
+</div>
+
+</div>
+
+<!-- Windows -->
+<div id="home" class="window">
+<div class="title-bar">DiVISE.app</div>
 <div class="content hero">
 <img src="DMS_Logo_v1.png">
-<p class="blink">YOU'VE GOT MUSIC.</p>
-<a href="#contact" class="button">E-mail Us</a>
+<p>Welcome to DiVISE OS</p>
 </div>
 </div>
 
-<div class="window">
-<div class="title-bar">Services.exe</div>
+<div id="releases" class="window">
+<div class="title-bar">Releases.app</div>
 <div class="content">
-<p>> Music Production</p>
-<p>> Mixing & Mastering</p>
-<p>> Sound Design</p>
+<p>Loading...</p>
 </div>
 </div>
 
-<div class="window">
-<div class="title-bar">Visitor Counter</div>
-<div class="content counter">
-<script>document.write(count);</script> VISITORS
-</div>
-</div>
-
-<div id="contact" class="window">
-<div class="title-bar">AOL Mail - New Message</div>
+<div id="mail" class="window">
+<div class="title-bar">Mail.app</div>
 <div class="content">
-<form action="mailto:info@divisemusicsolutions.com" method="post">
-<label>To:</label>
-<input type="text" value="info@divisemusicsolutions.com" readonly>
-
-<label>From:</label>
-<input type="email" name="email">
-
-<label>Subject:</label>
-<input type="text" name="subject">
-
-<label>Message:</label>
-<textarea name="message"></textarea>
-
-<button class="button">Send</button>
+<form action="mailto:info@divisemusicsolutions.com">
+<input type="text" value="info@divisemusicsolutions.com"><br>
+<input type="text" placeholder="Subject"><br>
+<textarea placeholder="Message"></textarea><br>
+<button>Send</button>
 </form>
 </div>
 </div>
 
-<div class="window guestbook">
-<div class="title-bar">Guestbook</div>
-<div class="content">
-<input id="name" placeholder="Your name">
-<textarea id="msg" placeholder="Leave a message"></textarea>
-<button onclick="addEntry()" class="button">Sign Guestbook</button>
-<div id="entries"></div>
-</div>
+<!-- Crash screen -->
+<div id="crash">
+<h1>System Error</h1>
+<p>Too much groove detected.</p>
+<p>Press refresh to restart DiVISE OS.</p>
 </div>
 
 <script>
-function addEntry(){
-    let name = document.getElementById("name").value;
-    let msg = document.getElementById("msg").value;
-    let entry = "<p><b>"+name+":</b> "+msg+"</p>";
-    document.getElementById("entries").innerHTML += entry;
-}
-</script>
+// boot animation
+let width = 0;
+let interval = setInterval(()=>{
+    width += 5;
+    document.getElementById("bar").style.width = width + "%";
+    if(width >= 100){
+        clearInterval(interval);
+        document.getElementById("boot").style.display = "none";
+        document.getElementById("desktop").style.display = "block";
+    }
+}, 100);
 
-<div class="window">
-<div class="title-bar">Contact Info</div>
-<div class="content">
-<p>Email: info@divisemusicsolutions.com</p>
-<p>Instagram: <a href="https://instagram.com/divisemusicsolutions" target="_blank">@divisemusicsolutions</a></p>
-</div>
-</div>
+// open window
+function openWindow(id){
+    document.getElementById(id).style.display = "block";
+}
+
+// random crash
+setTimeout(()=>{
+    if(Math.random() > 0.7){
+        document.getElementById("crash").style.display = "block";
+    }
+}, 10000);
+</script>
 
 </body>
 </html>
