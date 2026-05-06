@@ -32,7 +32,7 @@
   }
 
   #boot-logo {
-    width: min(220px, 55vw);
+    width: min(120px, 30vw);
     animation: bootSpin 1.2s linear infinite, bootSlide 1.8s ease-in-out infinite alternate;
   }
 
@@ -726,12 +726,8 @@ document.querySelectorAll('.window').forEach(win => {
   makeDraggable(win, win.querySelector('.title-bar'));
 });
 
-// ─── RANDOM CRASH ───
-setTimeout(() => {
-  if (Math.random() > 0.75) {
-    document.getElementById('crash').style.display = 'block';
-  }
-}, 14000);
+
+
 </script>
 </body>
 </html>
