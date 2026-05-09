@@ -310,6 +310,38 @@
   .release-date { margin-top: 8px; text-align: center; font-size: 12px; color: #aaa; letter-spacing: 1px; }
   .coming-soon  { margin-top: 10px; text-align: center; font-size: 13px; color: #888; font-style: italic; }
 
+  /* ─── ARTIST SUB-ICONS ─── */
+  .sub-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    width: 90px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .sub-icon-img {
+    width: 76px;
+    height: 76px;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 2px solid rgba(108,60,255,0.4);
+    box-shadow: 0 2px 12px rgba(108,60,255,0.3);
+    transition: box-shadow 0.2s, transform 0.15s;
+  }
+  .sub-icon:hover .sub-icon-img {
+    box-shadow: 0 0 20px rgba(108,60,255,0.7);
+    transform: scale(1.06);
+  }
+  .sub-icon-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .sub-icon span {
+    font-size: 11px;
+    color: #ccc;
+    text-align: center;
+    text-shadow: 0 1px 4px #000;
+    font-family: 'Courier New', monospace;
+  }
+
   /* ─── POPUP AD ─── */
   #popup-ad {
     position: fixed;
@@ -498,18 +530,64 @@
     <span>Artists.app</span>
     <span class="close-btn" onclick="closeWin('artists')">✖</span>
   </div>
-  <div class="content">
-    <div class="artist-section">
-      <img src="FRNZ_S1_P1_Cover.jpg" alt="FRNZ Season 1 Part 1">
-      <p class="artist-title">FRNZ – Season 1 Part 1 (Remastered)</p>
-      <a class="presave-btn" href="https://distrokid.com/hyperfollow/frnz2/season-1-part-1-remastered" target="_blank">★ PRE-SAVE NOW ★</a>
-      <p class="release-date">Coming 5.22.2026</p>
+  <div class="content" style="display:flex;flex-direction:row;gap:24px;justify-content:center;align-items:flex-start;flex-wrap:wrap;padding:24px 16px;">
+    <!-- FRNZ icon -->
+    <div class="sub-icon" onclick="openWindow('frnz-page')">
+      <div class="sub-icon-img">
+        <img src="FRNZ_S1_P1_Cover.jpg" alt="FRNZ">
+      </div>
+      <span>FRNZ</span>
     </div>
-    <div class="artist-section">
-      <img src="PLodes_Logo_1.jpg" alt="PLODES">
-      <p class="artist-title">PLODES</p>
-      <p class="coming-soon">Coming soon…</p>
+    <!-- PLODES icon -->
+    <div class="sub-icon" onclick="openWindow('plodes-page')">
+      <div class="sub-icon-img">
+        <img src="PLodes_Logo_1.jpg" alt="PLODES">
+      </div>
+      <span>PLODES</span>
     </div>
+  </div>
+</div>
+
+<!-- FRNZ sub-window -->
+<div id="frnz-page" class="window">
+  <div class="window-bg"></div>
+  <div class="title-bar">
+    <span>FRNZ.txt — TextEdit</span>
+    <span class="close-btn" onclick="closeWin('frnz-page')">✖</span>
+  </div>
+  <div class="content" style="background:#fff;color:#111;font-family:'Courier New',monospace;font-size:13px;line-height:1.7;">
+    <img src="FRNZ_S1_P1_Cover.jpg" alt="FRNZ S1P1" style="width:100%;border-radius:4px;display:block;margin-bottom:12px;">
+    <p style="font-weight:bold;">FRNZ – Season 1 Part 1 (Remastered)</p>
+    <br>
+    <a href="https://distrokid.com/hyperfollow/frnz2/season-1-part-1-remastered" target="_blank"
+       style="display:block;background:#6c3cff;color:#fff;text-align:center;padding:10px;border-radius:6px;text-decoration:none;font-size:14px;font-weight:bold;letter-spacing:1px;animation:blink 0.8s step-start infinite;">
+      ★ PRE-SAVE NOW ★
+    </a>
+    <p style="margin-top:8px;text-align:center;font-size:12px;color:#555;letter-spacing:1px;">Coming 5.22.2026</p>
+    <hr style="margin:18px 0;border-color:#ddd;">
+    <img src="FRNZ_S3_Album.jpg" alt="FRNZ Season 3" style="width:100%;border-radius:4px;display:block;margin-bottom:12px;">
+    <a href="https://frnz.bandcamp.com/album/season-3" target="_blank"
+       style="display:block;background:#1da0c3;color:#fff;text-align:center;padding:10px;border-radius:6px;text-decoration:none;font-size:13px;font-weight:bold;letter-spacing:1px;">
+      FRNZ – SEASON 3 AVAILABLE ON BANDCAMP
+    </a>
+  </div>
+</div>
+
+<!-- PLODES sub-window -->
+<div id="plodes-page" class="window">
+  <div class="window-bg"></div>
+  <div class="title-bar">
+    <span>PLODES.txt — TextEdit</span>
+    <span class="close-btn" onclick="closeWin('plodes-page')">✖</span>
+  </div>
+  <div class="content" style="background:#fff;color:#111;font-family:'Courier New',monospace;font-size:13px;line-height:1.7;">
+    <img src="PLodes_Logo_1.jpg" alt="PLODES" style="width:100%;border-radius:4px;display:block;margin-bottom:12px;">
+    <p style="text-align:center;">
+      <a href="https://soundcloud.com/starkitecht" target="_blank"
+         style="color:#888;font-style:italic;text-decoration:none;font-size:14px;">
+        Coming soon…
+      </a>
+    </p>
   </div>
 </div>
 
