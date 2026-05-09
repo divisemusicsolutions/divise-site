@@ -37,8 +37,8 @@
   }
 
   @keyframes bootSpin {
-    from { transform: translateX(0) rotate(0deg); }
-    to   { transform: translateX(0) rotate(360deg); }
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
   }
 
   @keyframes bootSlide {
@@ -98,17 +98,13 @@
     user-select: none;
   }
 
-  #menubar .apple { font-size: 16px; margin-right: 6px; cursor: default; }
-
   .menu-item {
     font-size: 13px;
     color: #ddd;
     cursor: pointer;
     padding: 2px 6px;
     border-radius: 4px;
-    position: relative;
   }
-
   .menu-item:hover { background: #6c3cff; color: #fff; }
 
   .menu-time {
@@ -123,34 +119,25 @@
     width: 100vw;
     height: 100dvh;
     z-index: 1;
-    padding-top: 28px;
-    padding-bottom: 30px;
   }
 
-  /* ─── ICON DOCK (left column, top-to-bottom) ─── */
-  #icon-dock {
-    position: absolute;
-    top: 48px;
-    left: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    z-index: 10;
-  }
-
+  /* ─── ICONS — draggable ─── */
   .icon {
+    position: absolute;
     display: flex;
     flex-direction: column;
     align-items: center;
-    cursor: pointer;
+    cursor: grab;
     color: #ddd;
     gap: 5px;
     width: 72px;
     -webkit-tap-highlight-color: transparent;
-    transition: transform 0.1s;
+    touch-action: none;
+    user-select: none;
+    z-index: 10;
   }
 
-  .icon:active { transform: scale(0.92); }
+  .icon:active { cursor: grabbing; }
 
   .icon .icon-img {
     width: 58px;
@@ -164,6 +151,7 @@
     font-size: 30px;
     transition: background 0.2s, box-shadow 0.2s;
     box-shadow: 0 2px 10px rgba(108,60,255,0.2);
+    pointer-events: none;
   }
 
   .icon:hover .icon-img {
@@ -179,14 +167,7 @@
     line-height: 1.2;
     max-width: 72px;
     word-break: break-word;
-  }
-
-  /* ─── TRASH ICON (bottom right) ─── */
-  #trash-icon {
-    position: fixed;
-    bottom: 40px;
-    right: 12px;
-    z-index: 10;
+    pointer-events: none;
   }
 
   /* ─── WINDOWS ─── */
@@ -196,10 +177,12 @@
     left: 50%;
     transform: translateX(-50%) scale(0.85);
     width: min(420px, 92vw);
+    max-height: 78vh;
     background: #111;
     border: 2px solid #444;
     border-radius: 10px;
     display: none;
+    flex-direction: column;
     z-index: 100;
     opacity: 0;
     transition: opacity 0.22s ease, transform 0.22s cubic-bezier(.34,1.4,.64,1);
@@ -207,20 +190,14 @@
   }
 
   .window.open {
+    display: flex !important;
     opacity: 1;
     transform: translateX(-50%) scale(1);
   }
 
-  /* override transform for dragged windows */
-  .window.dragged {
-    transform: none !important;
-  }
+  .window.dragged { transform: none !important; }
+  .window.dragged.open { opacity: 1; }
 
-  .window.dragged.open {
-    opacity: 1;
-  }
-
-  /* Window background image (darkened) */
   .window-bg {
     position: absolute;
     inset: 0;
@@ -238,43 +215,39 @@
     justify-content: space-between;
     align-items: center;
     font-size: 13px;
+    flex-shrink: 0;
     position: relative;
     z-index: 1;
     user-select: none;
     touch-action: none;
   }
 
-  .title-bar .dots {
-    display: flex;
-    gap: 5px;
-  }
-
-  .dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-  }
-
-  .dot.red   { background: #ff5f57; }
-  .dot.yellow{ background: #febc2e; }
-  .dot.green { background: #28c840; }
-
   .close-btn {
     cursor: pointer;
     color: #ff5f57;
     font-size: 14px;
     font-weight: bold;
-    line-height: 1;
-    padding: 0 2px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255,95,87,0.15);
   }
+  .close-btn:hover { background: rgba(255,95,87,0.4); }
 
+  /* Scrollable content */
   .content {
     padding: 16px;
     position: relative;
     z-index: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    flex: 1;
   }
 
-  /* ─── TEXTEDIT WINDOW ─── */
+  /* ─── TEXTEDIT ─── */
   #readme .content {
     background: #fff;
     color: #111;
@@ -284,20 +257,9 @@
     min-height: 140px;
     border-top: 1px solid #ddd;
   }
+  #readme .content a { color: #0000cc; text-decoration: underline; }
 
-  #readme .content a {
-    color: #0000cc;
-    text-decoration: underline;
-  }
-
-  /* ─── RELEASES WINDOW ─── */
-  #releases .content img {
-    width: 100%;
-    border-radius: 4px;
-    display: block;
-  }
-
-  /* ─── MAIL WINDOW ─── */
+  /* ─── MAIL ─── */
   #mail .content input,
   #mail .content textarea {
     width: 100%;
@@ -311,9 +273,7 @@
     margin-bottom: 8px;
     display: block;
   }
-
   #mail .content textarea { height: 90px; resize: vertical; }
-
   #mail .content button {
     background: #6c3cff;
     color: white;
@@ -325,23 +285,35 @@
     font-size: 12px;
   }
 
-  /* ─── CRASH SCREEN ─── */
-  #crash {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: #0000aa;
-    color: white;
-    z-index: 99999;
-    padding: 40px;
-    font-family: 'Courier New', monospace;
+  /* ─── ARTISTS ─── */
+  .artist-section {
+    margin-bottom: 24px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 20px;
   }
+  .artist-section:last-child { border-bottom: none; margin-bottom: 0; }
+  .artist-section img { width: 100%; border-radius: 6px; display: block; }
+  .artist-title { margin-top: 10px; font-size: 13px; color: #ddd; font-weight: bold; }
+  .presave-btn {
+    display: block;
+    margin-top: 10px;
+    background: #6c3cff;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+  .release-date { margin-top: 8px; text-align: center; font-size: 12px; color: #aaa; letter-spacing: 1px; }
+  .coming-soon  { margin-top: 10px; text-align: center; font-size: 13px; color: #888; font-style: italic; }
 
-  /* ─── POPUP AD WINDOW ─── */
+  /* ─── POPUP AD ─── */
   #popup-ad {
     position: fixed;
-    top: 50%;
-    left: 50%;
+    top: 50%; left: 50%;
     transform: translate(-50%, -50%);
     width: min(340px, 90vw);
     background: #c0c0c0;
@@ -361,7 +333,7 @@
     100%{ transform: translate(-50%,-50%) rotate(0deg) scale(1); }
   }
 
-  #popup-ad .popup-titlebar {
+  .popup-titlebar {
     background: linear-gradient(90deg, #000080, #1084d0);
     color: white;
     padding: 4px 8px;
@@ -374,7 +346,7 @@
     touch-action: none;
   }
 
-  #popup-ad .popup-close {
+  .popup-close {
     background: #c0c0c0;
     border: 2px solid;
     border-color: #fff #808080 #808080 #fff;
@@ -382,29 +354,21 @@
     font-size: 11px;
     font-weight: bold;
     cursor: pointer;
-    width: 18px;
-    height: 18px;
+    width: 18px; height: 18px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Courier New', monospace;
   }
 
-  #popup-ad .popup-body {
+  .popup-body {
     padding: 12px;
     text-align: center;
     background: #c0c0c0;
     color: #000;
   }
+  .popup-body img { width: 100%; border: 2px inset #808080; display: block; margin-bottom: 10px; }
 
-  #popup-ad .popup-body img {
-    width: 100%;
-    border: 2px inset #808080;
-    display: block;
-    margin-bottom: 10px;
-  }
-
-  #popup-ad .popup-link {
+  .popup-link {
     display: block;
     background: #000080;
     color: #ffff00;
@@ -417,20 +381,11 @@
     margin-bottom: 6px;
     animation: blink 0.8s step-start infinite;
   }
+  @keyframes blink { 50% { background: #cc0000; } }
 
-  @keyframes blink {
-    50% { background: #cc0000; }
-  }
+  .popup-date { font-size: 13px; color: #000; font-weight: bold; margin-top: 4px; }
 
-  #popup-ad .popup-date {
-    font-size: 13px;
-    color: #000;
-    font-weight: bold;
-    font-family: 'Courier New', monospace;
-    margin-top: 4px;
-  }
-
-  /* ─── TASKBAR BOTTOM ─── */
+  /* ─── TASKBAR ─── */
   #taskbar {
     position: fixed;
     bottom: 0; left: 0; right: 0;
@@ -445,22 +400,16 @@
     z-index: 500;
   }
 
-  /* ─── MOBILE TWEAKS ─── */
   @media (max-width: 480px) {
-    .window {
-      top: 48px;
-      width: 95vw;
-    }
-    #icon-dock { gap: 14px; left: 8px; top: 44px; }
+    .window { top: 48px; width: 95vw; }
     .icon .icon-img { width: 52px; height: 52px; font-size: 26px; }
     .icon span { font-size: 9px; }
-    #trash-icon { bottom: 36px; right: 8px; }
   }
 </style>
 </head>
 <body>
 
-<!-- ═══════════════ BOOT SCREEN ═══════════════ -->
+<!-- BOOT -->
 <div id="boot">
   <img id="boot-logo" src="Char_DuMaS.jpg" alt="DiVISE">
   <h1>Booting DiVISE OS...</h1>
@@ -468,10 +417,10 @@
   <div id="boot-status">Loading system files...</div>
 </div>
 
-<!-- ═══════════════ WALLPAPER ═══════════════ -->
+<!-- WALLPAPER -->
 <div id="bg"></div>
 
-<!-- ═══════════════ MENU BAR ═══════════════ -->
+<!-- MENU BAR -->
 <div id="menubar">
   <img src="Char_DuMaS.jpg" alt="DiVISE" style="height:22px;width:22px;object-fit:contain;border-radius:4px;margin-right:4px;cursor:default;image-rendering:pixelated;">
   <span class="menu-item">File</span>
@@ -481,70 +430,60 @@
   <span class="menu-time" id="clock"></span>
 </div>
 
-<!-- ═══════════════ DESKTOP ═══════════════ -->
+<!-- DESKTOP ICONS -->
 <div id="desktop">
 
-  <!-- Icon column -->
-  <div id="icon-dock">
-    <div class="icon" onclick="openWindow('readme')">
-      <div class="icon-img">📄</div>
-      <span>README.TXT</span>
-    </div>
-    <div class="icon" onclick="openWindow('releases')">
-      <div class="icon-img">🎵</div>
-      <span>Releases</span>
-    </div>
-    <div class="icon" onclick="openWindow('mail')">
-      <div class="icon-img">📧</div>
-      <span>Email</span>
-    </div>
-    <div class="icon" onclick="window.open('https://www.instagram.com/divisemusicsolutions/','_blank')">
-      <div class="icon-img">📸</div>
-      <span>Instagram</span>
-    </div>
+  <div class="icon" id="icon-readme" style="top:48px;left:12px;">
+    <div class="icon-img">📄</div>
+    <span>README.TXT</span>
+  </div>
+  <div class="icon" id="icon-releases" style="top:140px;left:12px;">
+    <div class="icon-img">🎵</div>
+    <span>Releases</span>
+  </div>
+  <div class="icon" id="icon-artists" style="top:232px;left:12px;">
+    <div class="icon-img">🎤</div>
+    <span>Artists</span>
+  </div>
+  <div class="icon" id="icon-mail" style="top:324px;left:12px;">
+    <div class="icon-img">📧</div>
+    <span>Email</span>
+  </div>
+  <div class="icon" id="icon-ig" style="top:416px;left:12px;">
+    <div class="icon-img">📸</div>
+    <span>Instagram</span>
+  </div>
+  <div class="icon" id="icon-trash" style="bottom:40px;top:auto;right:12px;">
+    <div class="icon-img">🗑️</div>
+    <span>Trash</span>
   </div>
 
-  <!-- Trash icon bottom right -->
-  <div id="trash-icon">
-    <div class="icon" onclick="window.open('https://www.youtube.com/watch?v=iHKAi1_8Pz4','_blank')">
-      <div class="icon-img">🗑️</div>
-      <span>Trash</span>
-    </div>
-  </div>
+</div>
 
-</div><!-- /desktop -->
-
-<!-- ═══════════════ WINDOWS ═══════════════ -->
-
-<!-- README.TXT / TextEdit -->
+<!-- WINDOWS -->
 <div id="readme" class="window">
   <div class="window-bg"></div>
   <div class="title-bar">
-    <div class="dots"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
     <span>README.TXT — TextEdit</span>
     <span class="close-btn" onclick="closeWin('readme')">✖</span>
   </div>
   <div class="content">
-    <p>Welcome to DiVISE Music Solutions!</p>
-    <br>
-    <p>We offer solutions for your music needs.</p>
-    <br>
+    <p>Welcome to DiVISE Music Solutions!</p><br>
+    <p>We offer solutions for your music needs.</p><br>
     <p>Please contact us with any inquiries:<br>
     <a href="mailto:info@divisemusicsolutions.com">info@divisemusicsolutions.com</a></p>
   </div>
 </div>
 
-<!-- Releases -->
 <div id="releases" class="window">
   <div class="window-bg"></div>
   <div class="title-bar">
-    <div class="dots"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
     <span>Releases.app</span>
     <span class="close-btn" onclick="closeWin('releases')">✖</span>
   </div>
   <div class="content">
-    <img src="FRNZ_S1_P1_Cover.jpg" alt="FRNZ Season 1 Part 1">
-    <p style="margin-top:10px; font-size:13px; color:#ddd; font-weight:bold;">FRNZ – Season 1 Part 1 (Remastered)</p>
+    <img src="FRNZ_S1_P1_Cover.jpg" alt="FRNZ" style="width:100%;border-radius:4px;display:block;">
+    <p style="margin-top:10px;font-size:13px;color:#ddd;font-weight:bold;">FRNZ – Season 1 Part 1 (Remastered)</p>
     <a href="https://distrokid.com/hyperfollow/frnz2/season-1-part-1-remastered" target="_blank"
        style="display:block;margin-top:10px;background:#6c3cff;color:#fff;text-align:center;padding:10px;border-radius:6px;text-decoration:none;font-size:14px;font-weight:bold;letter-spacing:1px;">
       ★ PRE-SAVE NOW ★
@@ -553,11 +492,30 @@
   </div>
 </div>
 
-<!-- Mail -->
+<div id="artists" class="window">
+  <div class="window-bg"></div>
+  <div class="title-bar">
+    <span>Artists.app</span>
+    <span class="close-btn" onclick="closeWin('artists')">✖</span>
+  </div>
+  <div class="content">
+    <div class="artist-section">
+      <img src="FRNZ_S1_P1_Cover.jpg" alt="FRNZ Season 1 Part 1">
+      <p class="artist-title">FRNZ – Season 1 Part 1 (Remastered)</p>
+      <a class="presave-btn" href="https://distrokid.com/hyperfollow/frnz2/season-1-part-1-remastered" target="_blank">★ PRE-SAVE NOW ★</a>
+      <p class="release-date">Coming 5.22.2026</p>
+    </div>
+    <div class="artist-section">
+      <img src="PLodes_Logo_1.jpg" alt="PLODES">
+      <p class="artist-title">PLODES</p>
+      <p class="coming-soon">Coming soon…</p>
+    </div>
+  </div>
+</div>
+
 <div id="mail" class="window">
   <div class="window-bg"></div>
   <div class="title-bar">
-    <div class="dots"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div>
     <span>Mail.app</span>
     <span class="close-btn" onclick="closeWin('mail')">✖</span>
   </div>
@@ -569,7 +527,7 @@
   </div>
 </div>
 
-<!-- ═══════════════ POPUP AD ═══════════════ -->
+<!-- POPUP AD -->
 <div id="popup-ad">
   <div class="popup-titlebar" id="popup-titlebar">
     <span>⚠️ New Release Alert!!! ⚠️</span>
@@ -577,28 +535,18 @@
   </div>
   <div class="popup-body">
     <img src="FRNZ_S1_P1_Cover.jpg" alt="FRNZ S1 P1">
-    <a class="popup-link" href="https://distrokid.com/hyperfollow/frnz2/season-1-part-1-remastered" target="_blank">
-      ★ PRE-SAVE NOW ★
-    </a>
+    <a class="popup-link" href="https://distrokid.com/hyperfollow/frnz2/season-1-part-1-remastered" target="_blank">★ PRE-SAVE NOW ★</a>
     <div class="popup-date">Coming 5.22.2026</div>
   </div>
 </div>
 
-<!-- ═══════════════ CRASH ═══════════════ -->
-<div id="crash">
-  <h1>💀 SYSTEM ERROR 💀</h1>
-  <br>
-  <p>Too much groove detected.</p>
-  <p>Refresh to reboot.</p>
-</div>
-
-<!-- ═══════════════ TASKBAR ═══════════════ -->
+<!-- TASKBAR -->
 <div id="taskbar">
   DiVISE OS v1.0 &nbsp;|&nbsp; <span id="taskbar-status">Ready</span>
 </div>
 
 <script>
-// ─── CLOCK ───
+// CLOCK
 function updateClock() {
   const now = new Date();
   document.getElementById('clock').textContent =
@@ -607,20 +555,20 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock();
 
-// ─── BOOT SEQUENCE ───
+// BOOT
 const bootMessages = [
   'Loading system files...','Initializing audio drivers...','Mounting groove module...',
   'Calibrating bass frequencies...','Almost ready...'
 ];
 let bw = 0;
-const bar = document.getElementById('bar');
+const barEl    = document.getElementById('bar');
 const statusEl = document.getElementById('boot-status');
-const bootInterval = setInterval(() => {
+const bootInt  = setInterval(() => {
   bw += 4;
-  bar.style.width = bw + '%';
+  barEl.style.width = bw + '%';
   statusEl.textContent = bootMessages[Math.floor(bw / 22)] || 'Starting DiVISE OS...';
   if (bw >= 100) {
-    clearInterval(bootInterval);
+    clearInterval(bootInt);
     setTimeout(() => {
       document.getElementById('boot').style.display = 'none';
       showPopup();
@@ -628,28 +576,22 @@ const bootInterval = setInterval(() => {
   }
 }, 80);
 
-// ─── POPUP ───
+// POPUP
 function showPopup() {
   document.getElementById('popup-ad').style.display = 'block';
   makeDraggable(document.getElementById('popup-ad'), document.getElementById('popup-titlebar'));
 }
-
 function closePopup() {
   document.getElementById('popup-ad').style.display = 'none';
 }
 
-// ─── WINDOW MANAGEMENT ───
+// WINDOW MANAGEMENT
 let zTop = 200;
 
 function openWindow(id) {
   const win = document.getElementById(id);
-  win.style.display = 'block';
-  // allow display:block to paint before adding class
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      win.classList.add('open');
-    });
-  });
+  win.style.display = 'flex';
+  requestAnimationFrame(() => requestAnimationFrame(() => win.classList.add('open')));
   zTop++;
   win.style.zIndex = zTop;
   document.getElementById('taskbar-status').textContent = id + ' opened';
@@ -658,76 +600,129 @@ function openWindow(id) {
 function closeWin(id) {
   const win = document.getElementById(id);
   win.classList.remove('open');
-  win.classList.remove('dragged');
-  // remove dragged position so it recenters next open
-  win.style.left = '';
-  win.style.top = '';
-  setTimeout(() => { win.style.display = 'none'; }, 230);
+  setTimeout(() => {
+    win.style.display = 'none';
+    win.classList.remove('dragged');
+    win.style.left = '';
+    win.style.top  = '';
+    win.style.transform = '';
+  }, 230);
 }
 
-// ─── MAIL SEND ───
+// MAIL
 function sendMail() {
   const subj = encodeURIComponent(document.getElementById('mail-subject').value || '');
   const body = encodeURIComponent(document.getElementById('mail-body').value || '');
   window.location.href = `mailto:info@divisemusicsolutions.com?subject=${subj}&body=${body}`;
 }
 
-// ─── UNIVERSAL DRAG (mouse + touch) ───
-function makeDraggable(win, handle) {
-  let startX, startY, startL, startT, dragging = false;
+// UNIVERSAL DRAG
+function makeDraggable(el, handle) {
+  let sX, sY, sL, sT, active = false;
 
-  function getPos(e) {
+  function pos(e) {
     return e.touches ? { x: e.touches[0].clientX, y: e.touches[0].clientY }
                      : { x: e.clientX, y: e.clientY };
   }
 
-  function onStart(e) {
-    if (e.target.classList.contains('close-btn') || e.target.classList.contains('popup-close')) return;
-    dragging = true;
-    const pos = getPos(e);
-    startX = pos.x; startY = pos.y;
+  handle.addEventListener('mousedown', start);
+  handle.addEventListener('touchstart', start, { passive: false });
 
-    // compute current left/top regardless of transform
-    const rect = win.getBoundingClientRect();
-    startL = rect.left;
-    startT = rect.top;
-
-    // switch to absolute positioning
-    win.classList.add('dragged');
-    win.style.left = startL + 'px';
-    win.style.top  = startT + 'px';
-    win.style.transform = 'none';
-
-    zTop++;
-    win.style.zIndex = zTop;
+  function start(e) {
+    if (e.target.classList.contains('close-btn') ||
+        e.target.classList.contains('popup-close')) return;
+    active = true;
+    const p = pos(e);
+    sX = p.x; sY = p.y;
+    const r = el.getBoundingClientRect();
+    sL = r.left; sT = r.top;
+    el.style.left = sL + 'px';
+    el.style.top  = sT + 'px';
+    el.style.transform = 'none';
+    if (el.classList.contains('window')) { el.classList.add('dragged'); zTop++; el.style.zIndex = zTop; }
     e.preventDefault();
   }
 
-  function onMove(e) {
-    if (!dragging) return;
-    const pos = getPos(e);
-    win.style.left = (startL + pos.x - startX) + 'px';
-    win.style.top  = (startT + pos.y - startY) + 'px';
+  document.addEventListener('mousemove', move);
+  document.addEventListener('touchmove', move, { passive: false });
+  function move(e) {
+    if (!active) return;
+    const p = pos(e);
+    el.style.left = (sL + p.x - sX) + 'px';
+    el.style.top  = (sT + p.y - sY) + 'px';
     e.preventDefault();
   }
 
-  function onEnd() { dragging = false; }
-
-  handle.addEventListener('mousedown', onStart);
-  handle.addEventListener('touchstart', onStart, { passive: false });
-  document.addEventListener('mousemove', onMove);
-  document.addEventListener('touchmove', onMove, { passive: false });
-  document.addEventListener('mouseup', onEnd);
-  document.addEventListener('touchend', onEnd);
+  document.addEventListener('mouseup',  () => active = false);
+  document.addEventListener('touchend', () => active = false);
 }
 
-// Apply drag to all .window elements
-document.querySelectorAll('.window').forEach(win => {
-  makeDraggable(win, win.querySelector('.title-bar'));
+// Apply drag to all windows
+document.querySelectorAll('.window').forEach(w => makeDraggable(w, w.querySelector('.title-bar')));
+
+// DRAGGABLE + TAPPABLE ICONS
+document.querySelectorAll('.icon').forEach(icon => {
+  let sX, sY, sL, sT, active = false, moved = false;
+
+  // Map icon id -> action
+  const actions = {
+    'icon-readme':   () => openWindow('readme'),
+    'icon-releases': () => openWindow('releases'),
+    'icon-artists':  () => openWindow('artists'),
+    'icon-mail':     () => openWindow('mail'),
+    'icon-ig':       () => window.open('https://www.instagram.com/divisemusicsolutions/','_blank'),
+    'icon-trash':    () => window.open('https://www.youtube.com/watch?v=iHKAi1_8Pz4','_blank'),
+  };
+
+  function pos(e) {
+    return e.touches ? { x: e.touches[0].clientX, y: e.touches[0].clientY }
+                     : { x: e.clientX, y: e.clientY };
+  }
+
+  icon.addEventListener('mousedown', start);
+  icon.addEventListener('touchstart', start, { passive: true });
+
+  function start(e) {
+    moved = false; active = true;
+    const p = pos(e);
+    sX = p.x; sY = p.y;
+    const r = icon.getBoundingClientRect();
+    sL = r.left; sT = r.top;
+    icon.style.position = 'absolute';
+    icon.style.bottom = 'auto';
+    icon.style.right  = 'auto';
+    icon.style.left = sL + 'px';
+    icon.style.top  = sT + 'px';
+    zTop++; icon.style.zIndex = zTop;
+  }
+
+  document.addEventListener('mousemove', drag);
+  document.addEventListener('touchmove', drag, { passive: false });
+
+  function drag(e) {
+    if (!active) return;
+    const p = pos(e);
+    const dx = p.x - sX, dy = p.y - sY;
+    if (Math.abs(dx) > 5 || Math.abs(dy) > 5) moved = true;
+    if (moved) {
+      icon.style.left = (sL + dx) + 'px';
+      icon.style.top  = (sT + dy) + 'px';
+      if (e.cancelable) e.preventDefault();
+    }
+  }
+
+  document.addEventListener('mouseup',  end);
+  document.addEventListener('touchend', end);
+
+  function end() {
+    if (!moved && active) {
+      // tap / click → open
+      const action = actions[icon.id];
+      if (action) action();
+    }
+    active = false;
+  }
 });
-
-
-
 </script>
 </body>
 </html>
