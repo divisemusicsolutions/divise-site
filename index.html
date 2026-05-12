@@ -5,47 +5,33 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>DiVISE OS</title>
 <style>
+@import url("https://assets.mlcdn.com/fonts.css?version=1778566");
 * { box-sizing:border-box; margin:0; padding:0; }
-
-body {
-  font-family:'Courier New',Courier,monospace;
-  background:black; overflow:hidden; color:white;
-  height:100dvh; width:100vw; position:relative;
-  touch-action:manipulation;
-}
+body { font-family:'Courier New',Courier,monospace; background:black; overflow:hidden; color:white; height:100dvh; width:100vw; position:relative; touch-action:manipulation; }
 
 /* ── BOOT ── */
-#boot {
-  position:fixed; inset:0; background:#000;
-  display:flex; flex-direction:column;
-  justify-content:center; align-items:center;
-  z-index:9999; gap:24px;
-}
+#boot { position:fixed; inset:0; background:#000; display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:9999; gap:24px; transition:opacity 0.6s ease; }
+#boot.fade-out { opacity:0; pointer-events:none; }
 #boot-logo { width:min(120px,30vw); animation:bootSpin 1.2s linear infinite, bootSlide 1.8s ease-in-out infinite alternate; }
 @keyframes bootSpin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
 @keyframes bootSlide { from{margin-left:-100px} to{margin-left:100px} }
 #boot-title { font-size:clamp(14px,4vw,22px); color:#6c3cff; letter-spacing:3px; text-transform:uppercase; }
 #boot-title.glitch { color:#ff003c; animation:glitchFlash 0.12s steps(1) forwards; }
-@keyframes glitchFlash {
-  0%  { letter-spacing:8px; opacity:0.7; color:#ff003c; }
-  50% { letter-spacing:1px; opacity:1; color:#fff; }
-  100%{ letter-spacing:3px; opacity:0.9; color:#ff003c; }
-}
+@keyframes glitchFlash { 0%{letter-spacing:8px;opacity:0.7;color:#ff003c} 50%{letter-spacing:1px;opacity:1;color:#fff} 100%{letter-spacing:3px;opacity:0.9;color:#ff003c} }
 .bar-wrap { width:min(300px,70vw); border:1px solid #6c3cff; height:14px; background:#111; }
 #bar { width:0%; height:100%; background:linear-gradient(90deg,#6c3cff,#ff3cf0); transition:width 0.1s linear; }
-#boot-status { font-size:11px; color:#555; letter-spacing:1px; }
+#boot-status { font-size:11px; color:#555; letter-spacing:1px; transition:color 0.3s; }
+#boot-status.success { color:#6c3cff; }
+
+/* Boot success flash */
+#boot-success-flash { position:fixed; inset:0; background:#6c3cff; opacity:0; z-index:9998; pointer-events:none; transition:opacity 0.15s; }
+#boot-success-flash.flash { opacity:0.25; }
 
 /* ── WALLPAPER ── */
 #bg { position:fixed; inset:0; background:url('DMS_Logo_v1.png') center/contain no-repeat; opacity:0.18; z-index:0; }
 
 /* ── MENU BAR ── */
-#menubar {
-  position:fixed; top:0; left:0; right:0; height:28px;
-  background:rgba(20,10,40,0.92); backdrop-filter:blur(8px);
-  border-bottom:1px solid #333;
-  display:flex; align-items:center; padding:0 10px; gap:0;
-  z-index:500; user-select:none;
-}
+#menubar { position:fixed; top:0; left:0; right:0; height:28px; background:rgba(20,10,40,0.92); backdrop-filter:blur(8px); border-bottom:1px solid #333; display:flex; align-items:center; padding:0 10px; gap:0; z-index:500; user-select:none; }
 #menubar .menu-logo { height:22px; width:22px; object-fit:contain; border-radius:4px; margin-right:12px; cursor:default; image-rendering:pixelated; }
 .menu-item { font-size:13px; color:#ddd; cursor:pointer; padding:2px 10px; border-radius:4px; position:relative; }
 .menu-item:hover { background:#6c3cff; color:#fff; }
@@ -60,49 +46,21 @@ body {
 #desktop { position:relative; width:100vw; height:100dvh; z-index:1; }
 
 /* ── ICONS ── */
-.icon {
-  position:absolute; display:flex; flex-direction:column;
-  align-items:center; cursor:grab; color:#ddd; gap:5px; width:72px;
-  -webkit-tap-highlight-color:transparent; touch-action:none;
-  user-select:none; z-index:10; transition:filter 0.3s;
-}
+.icon { position:absolute; display:flex; flex-direction:column; align-items:center; cursor:grab; color:#ddd; gap:5px; width:72px; -webkit-tap-highlight-color:transparent; touch-action:none; user-select:none; z-index:10; transition:filter 0.3s; }
 .icon:active { cursor:grabbing; }
 .icon.in-trash { opacity:0.4; pointer-events:none; }
-
-#icon-trash.has-dumas .icon-img {
-  border-color:rgba(255,0,60,0.7) !important;
-  box-shadow:0 0 18px rgba(255,0,60,0.6) !important;
-  animation:trashPulse 1s ease-in-out infinite alternate;
-}
-@keyframes trashPulse {
-  from { box-shadow:0 0 8px rgba(255,0,60,0.4); }
-  to   { box-shadow:0 0 28px rgba(255,0,60,0.9); }
-}
-.icon .icon-img {
-  width:58px; height:58px; border-radius:12px;
-  background:rgba(108,60,255,0.18); border:1px solid rgba(108,60,255,0.35);
-  display:flex; align-items:center; justify-content:center;
-  font-size:30px; transition:background 0.2s, box-shadow 0.2s;
-  box-shadow:0 2px 10px rgba(108,60,255,0.2); pointer-events:none; overflow:hidden;
-}
+#icon-trash.has-dumas .icon-img { border-color:rgba(255,0,60,0.7) !important; box-shadow:0 0 18px rgba(255,0,60,0.6) !important; animation:trashPulse 1s ease-in-out infinite alternate; }
+@keyframes trashPulse { from{box-shadow:0 0 8px rgba(255,0,60,0.4)} to{box-shadow:0 0 28px rgba(255,0,60,0.9)} }
+.icon .icon-img { width:58px; height:58px; border-radius:12px; background:rgba(108,60,255,0.18); border:1px solid rgba(108,60,255,0.35); display:flex; align-items:center; justify-content:center; font-size:30px; transition:background 0.2s,box-shadow 0.2s; box-shadow:0 2px 10px rgba(108,60,255,0.2); pointer-events:none; overflow:hidden; }
 .icon:hover .icon-img { background:rgba(108,60,255,0.4); box-shadow:0 0 18px rgba(108,60,255,0.6); }
 .icon .icon-img img { width:100%; height:100%; object-fit:cover; pointer-events:none; }
 .icon span { font-size:10px; text-align:center; color:#ccc; text-shadow:0 1px 4px #000; line-height:1.2; max-width:72px; word-break:break-word; pointer-events:none; }
 #icon-dumas .icon-img { background:rgba(40,0,0,0.6); border-color:rgba(180,0,60,0.4); }
 #icon-dumas:hover .icon-img { box-shadow:0 0 20px rgba(200,0,50,0.7); }
-.icon.drag-target-active .icon-img { background:rgba(108,60,255,0.5) !important; box-shadow:0 0 24px rgba(108,60,255,0.9) !important; }
 #icon-trash.drag-over .icon-img { background:rgba(255,0,60,0.35) !important; box-shadow:0 0 28px rgba(255,0,60,1) !important; }
 
 /* ── WINDOWS ── */
-.window {
-  position:absolute; top:80px; left:50%;
-  transform:translateX(-50%) scale(0.85);
-  width:min(420px,92vw); max-height:78vh;
-  background:#111; border:2px solid #444; border-radius:10px;
-  display:none; flex-direction:column; z-index:100;
-  opacity:0; transition:opacity 0.22s ease, transform 0.22s cubic-bezier(.34,1.4,.64,1);
-  overflow:hidden;
-}
+.window { position:absolute; top:80px; left:50%; transform:translateX(-50%) scale(0.85); width:min(420px,92vw); max-height:78vh; background:#111; border:2px solid #444; border-radius:10px; display:none; flex-direction:column; z-index:100; opacity:0; transition:opacity 0.22s ease,transform 0.22s cubic-bezier(.34,1.4,.64,1); overflow:hidden; }
 .window.open { display:flex !important; opacity:1; transform:translateX(-50%) scale(1); }
 .window.dragged { transform:none !important; }
 .window.dragged.open { opacity:1; }
@@ -110,240 +68,199 @@ body {
 #dumas-win { background:#000; border-color:#300; }
 #dumas-win .window-bg { opacity:0; }
 #dumas-win .title-bar { background:linear-gradient(to right,#1a0000,#500020); }
-
-.title-bar {
-  background:linear-gradient(to right,#1a1030,#6c3cff);
-  padding:7px 10px; cursor:move;
-  display:flex; justify-content:space-between; align-items:center;
-  font-size:13px; flex-shrink:0; position:relative; z-index:1;
-  user-select:none; touch-action:none;
-}
-.close-btn {
-  cursor:pointer; color:#ff5f57; font-size:14px; font-weight:bold;
-  width:20px; height:20px; display:flex; align-items:center; justify-content:center;
-  border-radius:50%; background:rgba(255,95,87,0.15);
-}
+.title-bar { background:linear-gradient(to right,#1a1030,#6c3cff); padding:7px 10px; cursor:move; display:flex; justify-content:space-between; align-items:center; font-size:13px; flex-shrink:0; position:relative; z-index:1; user-select:none; touch-action:none; }
+.close-btn { cursor:pointer; color:#ff5f57; font-size:14px; font-weight:bold; width:20px; height:20px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(255,95,87,0.15); }
 .close-btn:hover { background:rgba(255,95,87,0.4); }
 .content { padding:16px; position:relative; z-index:1; overflow-y:auto; -webkit-overflow-scrolling:touch; flex:1; }
 
 /* ── TEXTEDIT ── */
-.textedit-content {
-  background:#fff; color:#111; font-family:'Courier New',Courier,monospace;
-  font-size:13px; line-height:1.7; min-height:140px; padding:16px;
-}
+.textedit-content { background:#fff; color:#111; font-family:'Courier New',Courier,monospace; font-size:13px; line-height:1.7; min-height:140px; padding:16px; }
 .textedit-content a { color:#0000cc; text-decoration:underline; }
 .email-redacted { background:#111; color:#111; border-radius:2px; letter-spacing:1px; user-select:none; }
+
+/* ── EMAIL PIN SCREEN ── */
+#email-pin-screen { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.94); z-index:8100; justify-content:center; align-items:center; }
+#email-pin-screen.active { display:flex; }
+.pin-box { background:#0d0820; border:2px solid #6c3cff; border-radius:14px; padding:36px 32px; width:min(320px,88vw); display:flex; flex-direction:column; align-items:center; gap:18px; box-shadow:0 0 50px rgba(108,60,255,0.35); }
+.pin-box h2 { color:#6c3cff; font-size:13px; letter-spacing:4px; text-transform:uppercase; text-align:center; }
+.pin-display { display:flex; gap:10px; margin:8px 0; }
+.pin-dot { width:16px; height:16px; border-radius:50%; border:2px solid #6c3cff; background:transparent; transition:background 0.15s; }
+.pin-dot.filled { background:#6c3cff; }
+.pin-keypad { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; width:100%; }
+.pin-key { background:#1a1030; border:1px solid #333; border-radius:8px; color:#ddd; font-family:'Courier New',monospace; font-size:18px; padding:14px; cursor:pointer; text-align:center; transition:background 0.15s,border-color 0.15s; user-select:none; }
+.pin-key:hover { background:#2a1050; border-color:#6c3cff; }
+.pin-key:active { background:#6c3cff; color:#fff; }
+.pin-key.wide { grid-column:span 2; }
+#pin-error { color:#ff3c3c; font-size:11px; letter-spacing:1px; display:none; text-align:center; }
+.pin-cancel-btn { background:none; border:none; color:#444; font-family:'Courier New',monospace; font-size:11px; cursor:pointer; letter-spacing:1px; }
+.pin-cancel-btn:hover { color:#666; }
 
 /* ── EMAIL APP ── */
 #mail { width:min(700px,96vw); }
 .email-app { display:flex; height:100%; min-height:340px; position:relative; z-index:1; }
-.email-sidebar {
-  width:200px; flex-shrink:0; background:#1a1a2e; border-right:1px solid #333;
-  overflow-y:auto; padding:8px 0;
-}
+.email-sidebar { width:200px; flex-shrink:0; background:#1a1a2e; border-right:1px solid #333; overflow-y:auto; padding:8px 0; }
 .email-sidebar-title { padding:8px 12px; font-size:11px; color:#666; letter-spacing:2px; text-transform:uppercase; }
-.email-row {
-  padding:10px 12px; cursor:pointer; border-bottom:1px solid #222;
-  font-size:11px; line-height:1.4;
-}
+.email-row { padding:10px 12px; cursor:pointer; border-bottom:1px solid #222; font-size:11px; line-height:1.4; }
 .email-row:hover { background:#2a2a4a; }
 .email-row.active { background:#2a1050; border-left:3px solid #6c3cff; }
 .email-row .er-from { color:#aaa; font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .email-row .er-subj { color:#666; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .email-row.unread .er-from { color:#fff; }
 .email-row.unread .er-subj { color:#aaa; }
-.email-body-pane {
-  flex:1; background:#fff; color:#111;
-  font-family:'Courier New',monospace; font-size:12px; line-height:1.7;
-  padding:16px; overflow-y:auto;
-}
+.email-body-pane { flex:1; background:#fff; color:#111; font-family:'Courier New',monospace; font-size:12px; line-height:1.7; padding:16px; overflow-y:auto; }
 .email-body-pane .eb-header { border-bottom:1px solid #ddd; margin-bottom:12px; padding-bottom:10px; }
 .email-body-pane .eb-header p { margin-bottom:2px; font-size:11px; color:#555; }
-.email-body-pane .eb-header strong { color:#111; }
 .email-body-pane .eb-body { white-space:pre-wrap; }
 .email-corrupted { color:#bbb; font-style:italic; }
-.dark-link {
-  color:#111 !important; text-decoration:none;
-  background:linear-gradient(to bottom, transparent 60%, rgba(108,60,255,0.15) 60%);
-  font-weight:bold; font-size:14px; cursor:pointer;
-  transition:color 0.3s, letter-spacing 0.2s;
-}
+.dark-link { color:#111 !important; text-decoration:none; background:linear-gradient(to bottom,transparent 60%,rgba(108,60,255,0.15) 60%); font-weight:bold; font-size:14px; cursor:pointer; transition:color 0.3s,letter-spacing 0.2s; }
 .dark-link:hover { color:#6c3cff !important; letter-spacing:2px; }
 
 /* ── DOCUMENTS FOLDER ── */
 .folder-grid { display:flex; flex-direction:row; gap:18px; flex-wrap:wrap; align-items:flex-start; padding:20px 16px; }
-.folder-item {
-  display:flex; flex-direction:column; align-items:center; gap:6px;
-  cursor:pointer; width:70px; -webkit-tap-highlight-color:transparent;
-}
-.folder-item .fi-img {
-  width:54px; height:54px; border-radius:10px;
-  background:rgba(108,60,255,0.12); border:1px solid rgba(108,60,255,0.28);
-  display:flex; align-items:center; justify-content:center;
-  font-size:28px; transition:background 0.2s, box-shadow 0.2s;
-}
+.folder-item { display:flex; flex-direction:column; align-items:center; gap:6px; cursor:pointer; width:70px; -webkit-tap-highlight-color:transparent; }
+.folder-item .fi-img { width:54px; height:54px; border-radius:10px; background:rgba(108,60,255,0.12); border:1px solid rgba(108,60,255,0.28); display:flex; align-items:center; justify-content:center; font-size:28px; transition:background 0.2s,box-shadow 0.2s; }
 .folder-item:hover .fi-img { background:rgba(108,60,255,0.35); box-shadow:0 0 14px rgba(108,60,255,0.5); }
 .folder-item span { font-size:10px; color:#ccc; text-align:center; word-break:break-all; line-height:1.2; max-width:70px; }
 .folder-item.notes-file .fi-img { background:rgba(80,200,80,0.12); border-color:rgba(80,200,80,0.3); }
 .folder-item.notes-file:hover .fi-img { box-shadow:0 0 14px rgba(80,200,80,0.5); }
 
-/* ── TRASH FOLDER WINDOW ── */
+/* ── TRASH ── */
 #trash-folder .content { display:flex; flex-direction:row; gap:20px; flex-wrap:wrap; align-items:flex-start; padding:20px 16px; min-height:160px; }
 .trash-drop-zone { min-height:120px; width:100%; display:flex; flex-wrap:wrap; gap:18px; align-items:flex-start; }
 #trash-folder.drop-highlight { box-shadow:0 0 0 3px rgba(108,60,255,0.8) inset; }
 
 /* ── ARTISTS ── */
 .sub-icon { display:flex; flex-direction:column; align-items:center; gap:8px; cursor:pointer; width:90px; -webkit-tap-highlight-color:transparent; }
-.sub-icon-img { width:76px; height:76px; border-radius:14px; overflow:hidden; border:2px solid rgba(108,60,255,0.4); box-shadow:0 2px 12px rgba(108,60,255,0.3); transition:box-shadow 0.2s, transform 0.15s; }
+.sub-icon-img { width:76px; height:76px; border-radius:14px; overflow:hidden; border:2px solid rgba(108,60,255,0.4); box-shadow:0 2px 12px rgba(108,60,255,0.3); transition:box-shadow 0.2s,transform 0.15s; }
 .sub-icon:hover .sub-icon-img { box-shadow:0 0 20px rgba(108,60,255,0.7); transform:scale(1.06); }
 .sub-icon-img img { width:100%; height:100%; object-fit:cover; display:block; }
 .sub-icon span { font-size:11px; color:#ccc; text-align:center; text-shadow:0 1px 4px #000; font-family:'Courier New',monospace; }
 
 /* ── POPUP AD ── */
-#popup-ad {
-  position:fixed; top:50%; left:50%;
-  transform:translate(-50%,-50%);
-  width:min(340px,90vw); background:#c0c0c0;
-  border:3px solid; border-color:#fff #808080 #808080 #fff;
-  box-shadow:4px 4px 0 #000, inset 1px 1px 0 #fff;
-  z-index:8888; display:none;
-  font-family:'Courier New',monospace;
-  animation:popupShake 0.4s ease;
-}
-@keyframes popupShake {
-  0%  { transform:translate(-50%,-50%) rotate(-3deg) scale(0.7); }
-  40% { transform:translate(-50%,-50%) rotate(2deg) scale(1.05); }
-  70% { transform:translate(-50%,-50%) rotate(-1deg) scale(0.98); }
-  100%{ transform:translate(-50%,-50%) rotate(0deg) scale(1); }
-}
+#popup-ad { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); width:min(340px,90vw); background:#c0c0c0; border:3px solid; border-color:#fff #808080 #808080 #fff; box-shadow:4px 4px 0 #000,inset 1px 1px 0 #fff; z-index:8888; display:none; font-family:'Courier New',monospace; animation:popupShake 0.4s ease; }
+@keyframes popupShake { 0%{transform:translate(-50%,-50%) rotate(-3deg) scale(0.7)} 40%{transform:translate(-50%,-50%) rotate(2deg) scale(1.05)} 70%{transform:translate(-50%,-50%) rotate(-1deg) scale(0.98)} 100%{transform:translate(-50%,-50%) rotate(0deg) scale(1)} }
 .popup-titlebar { background:linear-gradient(90deg,#000080,#1084d0); color:white; padding:4px 8px; font-size:12px; display:flex; justify-content:space-between; align-items:center; cursor:move; user-select:none; touch-action:none; }
 .popup-close { background:#c0c0c0; border:2px solid; border-color:#fff #808080 #808080 #fff; color:#000; font-size:11px; font-weight:bold; cursor:pointer; width:18px; height:18px; display:flex; align-items:center; justify-content:center; }
 .popup-body { padding:12px; text-align:center; background:#c0c0c0; color:#000; }
 .popup-body img { width:100%; border:2px inset #808080; display:block; margin-bottom:10px; }
 .popup-link { display:block; background:#000080; color:#ffff00; text-decoration:none; font-size:16px; font-weight:bold; padding:8px; border:2px solid; border-color:#fff #808080 #808080 #fff; margin-bottom:6px; animation:blink 0.8s step-start infinite; }
-@keyframes blink { 50% { background:#cc0000; } }
+@keyframes blink { 50%{background:#cc0000} }
 .popup-date { font-size:13px; color:#000; font-weight:bold; margin-top:4px; }
 
-/* ── LOGIN SCREEN ── */
-#login-screen {
-  display:none; position:fixed; inset:0;
-  background:rgba(0,0,0,0.92); z-index:8000;
-  justify-content:center; align-items:center;
-}
+/* ── CLIPPY / DUMAS ASSISTANT ── */
+#dumas-assistant { position:fixed; bottom:38px; right:10px; z-index:7000; display:none; flex-direction:row; align-items:flex-end; gap:10px; }
+#dumas-assistant.active { display:flex; }
+#dumas-char { width:80px; flex-shrink:0; animation:dumasBounce 2s ease-in-out infinite; cursor:pointer; }
+#dumas-char img { width:100%; image-rendering:pixelated; display:block; }
+@keyframes dumasBounce { 0%,100%{transform:translateY(0)} 30%{transform:translateY(-8px)} 60%{transform:translateY(-3px)} }
+
+/* AIM chat bubble */
+#aim-bubble { background:#c0c0c0; border:2px solid; border-color:#fff #808080 #808080 #fff; box-shadow:3px 3px 0 #000; font-family:'Courier New',monospace; width:min(260px,55vw); margin-bottom:4px; position:relative; }
+.aim-titlebar { background:linear-gradient(90deg,#000080,#1084d0); color:#fff; font-size:11px; font-weight:bold; padding:3px 8px; display:flex; justify-content:space-between; align-items:center; cursor:default; }
+.aim-close { cursor:pointer; font-size:11px; font-weight:bold; background:#c0c0c0; border:1px solid; border-color:#fff #808080 #808080 #fff; width:14px; height:14px; display:flex; align-items:center; justify-content:center; color:#000; }
+.aim-body { padding:10px; font-size:12px; color:#000; background:#fff; min-height:50px; line-height:1.5; }
+#aim-cursor { display:inline-block; width:8px; height:14px; background:#000; animation:aimBlink 0.7s steps(1) infinite; vertical-align:middle; margin-left:1px; }
+@keyframes aimBlink { 50%{opacity:0} }
+.aim-choices { padding:6px 10px 8px; background:#c0c0c0; display:flex; gap:6px; flex-wrap:wrap; }
+.aim-btn { background:#c0c0c0; border:2px solid; border-color:#fff #808080 #808080 #fff; font-family:'Courier New',monospace; font-size:12px; color:#000; cursor:pointer; padding:4px 12px; font-weight:bold; }
+.aim-btn:hover { background:#000080; color:#fff; border-color:#1084d0 #000040 #000040 #1084d0; }
+.aim-btn:active { border-color:#808080 #fff #fff #808080; }
+#aim-bubble .aim-dismiss { padding:4px 10px 6px; background:#c0c0c0; text-align:right; }
+#aim-bubble .aim-dismiss span { font-size:10px; color:#666; cursor:pointer; }
+#aim-bubble .aim-dismiss span:hover { color:#000; text-decoration:underline; }
+
+/* Mailing list window */
+#mailing-win { position:fixed; bottom:38px; right:100px; z-index:7001; display:none; width:min(360px,88vw); font-family:'Courier New',monospace; }
+#mailing-win.active { display:block; }
+.mailing-titlebar { background:linear-gradient(90deg,#000080,#1084d0); color:#fff; font-size:12px; font-weight:bold; padding:4px 8px; display:flex; justify-content:space-between; align-items:center; }
+.mailing-close { cursor:pointer; font-size:11px; background:#c0c0c0; border:2px solid; border-color:#fff #808080 #808080 #fff; color:#000; width:16px; height:16px; display:flex; align-items:center; justify-content:center; }
+.mailing-body { background:#c0c0c0; border:2px solid; border-color:#fff #808080 #808080 #fff; box-shadow:3px 3px 0 #000; }
+
+/* ── LOGIN SCREEN (DuMaS drag auth) ── */
+#login-screen { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:8000; justify-content:center; align-items:center; }
 #login-screen.active { display:flex; }
-.login-box {
-  background:#1a1030; border:2px solid #6c3cff; border-radius:12px;
-  padding:32px 28px; width:min(340px,90vw);
-  box-shadow:0 0 40px rgba(108,60,255,0.4);
-  display:flex; flex-direction:column; gap:16px;
-}
+.login-box { background:#1a1030; border:2px solid #6c3cff; border-radius:12px; padding:32px 28px; width:min(340px,90vw); box-shadow:0 0 40px rgba(108,60,255,0.4); display:flex; flex-direction:column; gap:16px; }
 .login-box h2 { color:#6c3cff; font-size:16px; letter-spacing:3px; text-align:center; text-transform:uppercase; }
 .login-box label { font-size:11px; color:#888; letter-spacing:1px; display:block; margin-bottom:4px; }
-.login-box input {
-  width:100%; background:#0d0820; border:1px solid #333; color:#fff;
-  font-family:'Courier New',monospace; padding:8px 10px; font-size:13px;
-  border-radius:6px; outline:none; transition:border-color 0.2s;
-}
+.login-box input { width:100%; background:#0d0820; border:1px solid #333; color:#fff; font-family:'Courier New',monospace; padding:8px 10px; font-size:13px; border-radius:6px; outline:none; transition:border-color 0.2s; }
 .login-box input:focus { border-color:#6c3cff; }
-.login-box button {
-  background:#6c3cff; color:#fff; border:none; padding:10px;
-  border-radius:6px; cursor:pointer; font-family:'Courier New',monospace;
-  font-size:13px; letter-spacing:2px; transition:background 0.2s;
-}
+.login-box button { background:#6c3cff; color:#fff; border:none; padding:10px; border-radius:6px; cursor:pointer; font-family:'Courier New',monospace; font-size:13px; letter-spacing:2px; transition:background 0.2s; }
 .login-box button:hover { background:#8a5cff; }
 .login-cancel { background:none !important; color:#555 !important; font-size:11px !important; padding:4px !important; cursor:pointer; text-align:center; }
 #login-error { color:#ff3c3c; font-size:12px; text-align:center; display:none; }
 
-/* ── ATTEMPT FAILED POPUP ── */
-#attempt-failed {
-  display:none; position:fixed; inset:0;
-  background:rgba(0,0,0,0.85); z-index:9000;
-  justify-content:center; align-items:center;
-}
+/* ── ATTEMPT FAILED ── */
+#attempt-failed { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:9000; justify-content:center; align-items:center; }
 #attempt-failed.active { display:flex; }
-.af-box {
-  background:#c0c0c0; border:3px solid; border-color:#fff #808080 #808080 #fff;
-  box-shadow:4px 4px 0 #000; font-family:'Courier New',monospace;
-  min-width:260px;
-}
+.af-box { background:#c0c0c0; border:3px solid; border-color:#fff #808080 #808080 #fff; box-shadow:4px 4px 0 #000; font-family:'Courier New',monospace; min-width:260px; }
 .af-bar { background:linear-gradient(90deg,#8b0000,#cc0000); color:#fff; padding:5px 10px; font-size:13px; font-weight:bold; display:flex; justify-content:space-between; }
 .af-body { padding:20px; text-align:center; }
 .af-btn { background:#8b0000; color:#fff; border:2px solid; border-color:#fff #600 #600 #fff; padding:8px 28px; font-family:'Courier New',monospace; font-size:13px; font-weight:bold; cursor:pointer; letter-spacing:2px; margin-top:8px; }
 
-/* ── FRANTIC DUMAS POPUPS (after correct login) ── */
-#frantic-layer {
-  display:none; position:fixed; inset:0; z-index:8500; pointer-events:none;
-}
+/* ── FRANTIC LAYER ── */
+#frantic-layer { display:none; position:fixed; inset:0; z-index:8500; pointer-events:none; }
 #frantic-layer.active { display:block; }
 
 /* ── TASKBAR ── */
 #taskbar { position:fixed; bottom:0; left:0; right:0; height:28px; background:rgba(15,8,35,0.92); border-top:1px solid #333; display:flex; align-items:center; padding:0 10px; font-size:11px; color:#777; z-index:500; }
 
 /* ── JUMPSCARE ── */
-#jumpscare {
-  display:none; position:fixed; inset:0; background:#000;
-  z-index:99999; overflow:hidden;
-  flex-direction:column; align-items:center; justify-content:center;
-}
+#jumpscare { display:none; position:fixed; inset:0; background:#000; z-index:99999; overflow:hidden; flex-direction:column; align-items:center; justify-content:center; }
 #jumpscare.active { display:flex; }
 #js-bg { position:absolute; inset:0; background:#000; animation:jsBgFlash 0.15s steps(1) infinite; }
-@keyframes jsBgFlash { 0%{background:#000} 15%{background:#1a0000} 30%{background:#000} 50%{background:#300000} 65%{background:#000} 80%{background:#200010} 100%{background:#000} }
-#js-img {
-  position:absolute; inset:0;
-  background:url('Char_DuMaS_2.jpg') center/cover no-repeat;
-  animation:jsZoom 3s ease-in forwards, jsShake 0.07s linear infinite, jsTear 0.18s steps(1) infinite;
-  filter:saturate(2) contrast(1.4) brightness(0.85); opacity:0.92;
-}
-@keyframes jsZoom { from{transform:scale(1)} to{transform:scale(2.6)} }
-@keyframes jsShake { 0%{margin-left:0;margin-top:0} 15%{margin-left:-8px;margin-top:4px} 30%{margin-left:7px;margin-top:-5px} 45%{margin-left:-5px;margin-top:7px} 60%{margin-left:6px;margin-top:-3px} 75%{margin-left:-9px;margin-top:2px} 90%{margin-left:4px;margin-top:-6px} 100%{margin-left:0;margin-top:0} }
-@keyframes jsTear { 0%{clip-path:none} 20%{clip-path:inset(0 0 0 0)} 22%{clip-path:inset(30% 0 40% 0)} 24%{clip-path:none} 55%{clip-path:none} 57%{clip-path:inset(60% 0 10% 0);transform:translateX(-4px)} 59%{clip-path:none} 100%{clip-path:none} }
+@keyframes jsBgFlash { 0%{background:#000}15%{background:#1a0000}30%{background:#000}50%{background:#300000}65%{background:#000}80%{background:#200010}100%{background:#000} }
+#js-img { position:absolute; inset:0; background:url('Char_DuMaS_2.jpg') center/cover no-repeat; animation:jsZoom 3s ease-in forwards,jsShake 0.07s linear infinite,jsTear 0.18s steps(1) infinite; filter:saturate(2) contrast(1.4) brightness(0.85); opacity:0.92; }
+@keyframes jsZoom { from{transform:scale(1)}to{transform:scale(2.6)} }
+@keyframes jsShake { 0%{margin-left:0;margin-top:0}15%{margin-left:-8px;margin-top:4px}30%{margin-left:7px;margin-top:-5px}45%{margin-left:-5px;margin-top:7px}60%{margin-left:6px;margin-top:-3px}75%{margin-left:-9px;margin-top:2px}90%{margin-left:4px;margin-top:-6px}100%{margin-left:0;margin-top:0} }
+@keyframes jsTear { 0%{clip-path:none}20%{clip-path:inset(0 0 0 0)}22%{clip-path:inset(30% 0 40% 0)}24%{clip-path:none}55%{clip-path:none}57%{clip-path:inset(60% 0 10% 0);transform:translateX(-4px)}59%{clip-path:none}100%{clip-path:none} }
 #js-img2 { position:absolute; inset:0; background:url('Char_DuMaS_1.jpg') center/cover no-repeat; opacity:0; animation:jsImg2Flash 0.6s steps(1) infinite; filter:saturate(5) contrast(3) hue-rotate(120deg); mix-blend-mode:screen; }
-@keyframes jsImg2Flash { 0%{opacity:0;clip-path:inset(0 0 95% 0)} 8%{opacity:0.5;clip-path:inset(20% 0 60% 0);transform:skewX(4deg) translateX(-12px)} 16%{opacity:0} 30%{opacity:0.7;clip-path:inset(70% 0 5% 0);transform:skewX(-3deg) translateX(8px)} 38%{opacity:0} 52%{opacity:0.4;clip-path:inset(40% 0 40% 0);transform:scaleX(1.08) translateX(-6px)} 60%{opacity:0} 75%{opacity:0.6;clip-path:inset(5% 0 80% 0);transform:skewX(6deg)} 85%{opacity:0} 94%{opacity:0.8;clip-path:inset(55% 0 15% 0);transform:skewX(-5deg) translateX(14px)} 100%{opacity:0} }
+@keyframes jsImg2Flash { 0%{opacity:0;clip-path:inset(0 0 95% 0)}8%{opacity:0.5;clip-path:inset(20% 0 60% 0);transform:skewX(4deg) translateX(-12px)}16%{opacity:0}30%{opacity:0.7;clip-path:inset(70% 0 5% 0);transform:skewX(-3deg) translateX(8px)}38%{opacity:0}52%{opacity:0.4;clip-path:inset(40% 0 40% 0);transform:scaleX(1.08) translateX(-6px)}60%{opacity:0}75%{opacity:0.6;clip-path:inset(5% 0 80% 0);transform:skewX(6deg)}85%{opacity:0}94%{opacity:0.8;clip-path:inset(55% 0 15% 0);transform:skewX(-5deg) translateX(14px)}100%{opacity:0} }
 #js-glitch { position:absolute; inset:0; pointer-events:none; background:url('Char_DuMaS_1.jpg') center/cover no-repeat; opacity:0; animation:jsGlitchFlicker 0.22s steps(1) infinite; filter:hue-rotate(200deg) contrast(4) saturate(5); mix-blend-mode:screen; }
-@keyframes jsGlitchFlicker { 0%{opacity:0;clip-path:inset(0 0 88% 0)} 12%{opacity:0.65;clip-path:inset(25% 0 45% 0);transform:translateX(-10px)} 24%{opacity:0} 40%{opacity:0.5;clip-path:inset(65% 0 8% 0);transform:translateX(12px)} 55%{opacity:0} 68%{opacity:0.75;clip-path:inset(12% 0 68% 0);transform:translateX(-7px) scaleX(1.06)} 80%{opacity:0} 92%{opacity:0.45;clip-path:inset(48% 0 22% 0);transform:translateX(8px)} 100%{opacity:0} }
+@keyframes jsGlitchFlicker { 0%{opacity:0;clip-path:inset(0 0 88% 0)}12%{opacity:0.65;clip-path:inset(25% 0 45% 0);transform:translateX(-10px)}24%{opacity:0}40%{opacity:0.5;clip-path:inset(65% 0 8% 0);transform:translateX(12px)}55%{opacity:0}68%{opacity:0.75;clip-path:inset(12% 0 68% 0);transform:translateX(-7px) scaleX(1.06)}80%{opacity:0}92%{opacity:0.45;clip-path:inset(48% 0 22% 0);transform:translateX(8px)}100%{opacity:0} }
 #js-glitch2 { position:absolute; inset:0; pointer-events:none; background:url('Char_DuMaS_2.jpg') center/cover no-repeat; opacity:0; animation:jsGlitch2 0.31s steps(1) infinite; filter:contrast(3) saturate(6) invert(1); mix-blend-mode:screen; }
-@keyframes jsGlitch2 { 0%{opacity:0} 7%{opacity:0.4;clip-path:inset(80% 0 0 0);transform:scaleX(1.1) translateX(6px)} 14%{opacity:0} 45%{opacity:0.3;clip-path:inset(0 0 80% 0);transform:translateX(-15px)} 52%{opacity:0} 78%{opacity:0.5;clip-path:inset(35% 0 35% 0);transform:skewY(2deg)} 85%{opacity:0} 100%{opacity:0} }
+@keyframes jsGlitch2 { 0%{opacity:0}7%{opacity:0.4;clip-path:inset(80% 0 0 0);transform:scaleX(1.1) translateX(6px)}14%{opacity:0}45%{opacity:0.3;clip-path:inset(0 0 80% 0);transform:translateX(-15px)}52%{opacity:0}78%{opacity:0.5;clip-path:inset(35% 0 35% 0);transform:skewY(2deg)}85%{opacity:0}100%{opacity:0} }
 #js-scanlines { position:absolute; inset:0; pointer-events:none; background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,0,0,0.07) 2px,rgba(255,0,0,0.07) 4px); animation:jsScanMove 0.4s linear infinite; }
-@keyframes jsScanMove { from{background-position:0 0} to{background-position:0 40px} }
+@keyframes jsScanMove { from{background-position:0 0}to{background-position:0 40px} }
 #js-noise { position:absolute; inset:0; pointer-events:none; opacity:0.08; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); animation:noiseAnim 0.05s steps(1) infinite; }
-@keyframes noiseAnim { 0%{background-position:0 0} 25%{background-position:-50px 30px} 50%{background-position:20px -40px} 75%{background-position:-30px -20px} 100%{background-position:40px 10px} }
-#js-center-text { position:absolute; z-index:100002; color:#ff0000; font-size:clamp(20px,6vw,48px); font-weight:bold; text-align:center; text-shadow:0 0 30px #ff0000, 0 0 60px #ff0000; letter-spacing:4px; top:12%; animation:jsCenterPulse 0.5s ease-in-out infinite alternate; pointer-events:none; }
-@keyframes jsCenterPulse { from{opacity:0.7;transform:scale(0.97)} to{opacity:1;transform:scale(1.03)} }
+@keyframes noiseAnim { 0%{background-position:0 0}25%{background-position:-50px 30px}50%{background-position:20px -40px}75%{background-position:-30px -20px}100%{background-position:40px 10px} }
+#js-center-text { position:absolute; z-index:100002; color:#ff0000; font-size:clamp(20px,6vw,48px); font-weight:bold; text-align:center; text-shadow:0 0 30px #ff0000,0 0 60px #ff0000; letter-spacing:4px; top:12%; animation:jsCenterPulse 0.5s ease-in-out infinite alternate; pointer-events:none; }
+@keyframes jsCenterPulse { from{opacity:0.7;transform:scale(0.97)}to{opacity:1;transform:scale(1.03)} }
 #js-popup-container { position:absolute; inset:0; overflow:hidden; }
 .js-popup { position:absolute; background:#c0c0c0; border:3px solid; border-color:#fff #808080 #808080 #fff; font-family:'Courier New',monospace; z-index:100001; min-width:220px; animation:jsPopIn 0.2s cubic-bezier(.34,1.4,.64,1) forwards; box-shadow:4px 4px 0 #000; }
-@keyframes jsPopIn { from{transform:scale(0.4) rotate(-5deg);opacity:0} to{transform:scale(1) rotate(0deg);opacity:1} }
+@keyframes jsPopIn { from{transform:scale(0.4) rotate(-5deg);opacity:0}to{transform:scale(1) rotate(0deg);opacity:1} }
 .js-popup-bar { background:linear-gradient(90deg,#8b0000,#cc0000); color:#fff; padding:3px 8px; font-size:12px; font-weight:bold; display:flex; justify-content:space-between; align-items:center; }
 .js-popup-body { padding:10px 14px; color:#000; font-size:13px; font-weight:bold; text-align:center; line-height:1.4; }
 .js-delete-btn { display:block; width:100%; margin-top:8px; background:#8b0000; color:#fff; border:2px solid; border-color:#fff #600 #600 #fff; padding:6px; font-family:'Courier New',monospace; font-size:13px; font-weight:bold; cursor:pointer; letter-spacing:1px; }
 .js-delete-btn:hover { background:#cc0000; }
 #js-close-btn { position:absolute; bottom:30px; z-index:100003; background:#8b0000; color:#fff; border:3px solid #fff; padding:12px 40px; font-family:'Courier New',monospace; font-size:16px; font-weight:bold; cursor:pointer; letter-spacing:2px; box-shadow:0 0 30px rgba(255,0,0,0.8); animation:jsBtnPulse 0.6s ease-in-out infinite alternate; }
-@keyframes jsBtnPulse { from{box-shadow:0 0 15px rgba(255,0,0,0.5)} to{box-shadow:0 0 50px rgba(255,0,0,1)} }
-#js-close-btn:hover { background:#cc0000; }
+@keyframes jsBtnPulse { from{box-shadow:0 0 15px rgba(255,0,0,0.5)}to{box-shadow:0 0 50px rgba(255,0,0,1)} }
 #jsp-main { top:50%;left:50%;transform:translate(-50%,-50%);min-width:260px;z-index:100010; }
 
 /* ── DARK PAGE ── */
-#dark-page {
-  display:none; position:fixed; inset:0; background:#000;
-  z-index:88888; flex-direction:column; align-items:center; justify-content:center;
-  cursor:default;
-}
+#dark-page { display:none; position:fixed; inset:0; background:#000; z-index:88888; flex-direction:column; align-items:center; justify-content:center; cursor:default; }
 #dark-page.active { display:flex; }
 #dark-page-back { position:absolute; top:14px; left:14px; font-size:11px; color:#1a1a1a; cursor:pointer; letter-spacing:2px; }
 #dark-page-back:hover { color:#333; }
-.dark-word {
-  font-size:clamp(28px,8vw,64px); font-weight:bold;
-  color:#000; letter-spacing:8px; text-transform:lowercase;
-  cursor:pointer; user-select:none; transition:color 0.5s, text-shadow 0.5s;
-  font-family:'Courier New',monospace;
-}
-.dark-word.revealed { color:#6c3cff; text-shadow:0 0 30px rgba(108,60,255,0.8), 0 0 60px rgba(108,60,255,0.4); }
+.dark-word { font-size:clamp(28px,8vw,64px); font-weight:bold; color:#000; letter-spacing:8px; text-transform:lowercase; cursor:pointer; user-select:none; transition:color 0.5s,text-shadow 0.5s; font-family:'Courier New',monospace; }
+.dark-word.revealed { color:#6c3cff; text-shadow:0 0 30px rgba(108,60,255,0.8),0 0 60px rgba(108,60,255,0.4); }
+
+/* ── MAILERLITE FORM OVERRIDES (fit inside window) ── */
+.ml-form-embedWrapper { background:#c0c0c0 !important; border-radius:0 !important; }
+.ml-form-embedBody { padding:12px !important; }
+.ml-form-embedContent h4 { font-size:14px !important; color:#000 !important; font-family:'Courier New',monospace !important; margin-bottom:4px !important; }
+.ml-form-embedContent p { font-size:11px !important; color:#444 !important; font-family:'Courier New',monospace !important; }
+.ml-form-embedSubmit { margin:0 0 10px 0 !important; }
+.ml-form-embedSubmit button { border-radius:4px !important; font-size:12px !important; padding:8px !important; }
+.ml-form-embedWrapper .ml-form-fieldRow input { font-size:12px !important; padding:8px !important; border-radius:4px !important; }
 
 @media (max-width:480px) {
   .window { top:48px; width:95vw; }
   .icon .icon-img { width:52px; height:52px; font-size:26px; }
   .icon span { font-size:9px; }
-  .email-sidebar { width:140px; }
+  .email-sidebar { width:130px; }
   #mail { width:95vw; }
+  #dumas-char { width:60px; }
+  #aim-bubble { width:min(220px,48vw); }
 }
 </style>
 </head>
@@ -356,6 +273,7 @@ body {
   <div class="bar-wrap"><div id="bar"></div></div>
   <div id="boot-status">Initializing...</div>
 </div>
+<div id="boot-success-flash"></div>
 
 <div id="bg"></div>
 
@@ -379,53 +297,28 @@ body {
 
 <!-- ══ DESKTOP ══ -->
 <div id="desktop">
-
-  <!-- Column 1 -->
-  <div class="icon" id="icon-readme" style="top:48px;left:12px;">
-    <div class="icon-img">📄</div><span>README.TXT</span>
-  </div>
-  <div class="icon" id="icon-releases" style="top:140px;left:12px;">
-    <div class="icon-img">🎵</div><span>Releases</span>
-  </div>
-  <div class="icon" id="icon-artists" style="top:232px;left:12px;">
-    <div class="icon-img">🎤</div><span>Artists</span>
-  </div>
-  <div class="icon" id="icon-mail" style="top:324px;left:12px;">
-    <div class="icon-img">📧</div><span>Email</span>
-  </div>
-  <div class="icon" id="icon-ig" style="top:416px;left:12px;">
-    <div class="icon-img">📸</div><span>Instagram</span>
-  </div>
-
-  <!-- Column 2 -->
-  <div class="icon" id="icon-cats" style="top:48px;left:100px;">
-    <div class="icon-img">🐱</div><span>Cat Pictures</span>
-  </div>
-  <div class="icon" id="icon-dumas" style="top:140px;left:100px;">
-    <div class="icon-img"><img src="Char_DuMaS_Transparent.jpg" alt="DuMaS"></div>
-    <span>DuMaS</span>
-  </div>
-  <div class="icon" id="icon-documents" style="top:232px;left:100px;">
-    <div class="icon-img">📁</div><span>Documents</span>
-  </div>
-
-  <!-- Trash bottom right -->
-  <div class="icon" id="icon-trash" style="bottom:40px;top:auto;right:12px;">
-    <div class="icon-img">🗑️</div><span>Trash</span>
-  </div>
-
+  <!-- Col 1 -->
+  <div class="icon" id="icon-readme" style="top:48px;left:12px;"><div class="icon-img">📄</div><span>README.TXT</span></div>
+  <div class="icon" id="icon-releases" style="top:140px;left:12px;"><div class="icon-img">🎵</div><span>Releases</span></div>
+  <div class="icon" id="icon-artists" style="top:232px;left:12px;"><div class="icon-img">🎤</div><span>Artists</span></div>
+  <div class="icon" id="icon-mail" style="top:324px;left:12px;"><div class="icon-img">📧</div><span>Email</span></div>
+  <div class="icon" id="icon-ig" style="top:416px;left:12px;"><div class="icon-img">📸</div><span>Instagram</span></div>
+  <!-- Col 2 -->
+  <div class="icon" id="icon-cats" style="top:48px;left:100px;"><div class="icon-img">🐱</div><span>Cat Pictures</span></div>
+  <div class="icon" id="icon-dumas" style="top:140px;left:100px;"><div class="icon-img"><img src="Char_DuMaS_Transparent.jpg" alt="DuMaS"></div><span>DuMaS</span></div>
+  <div class="icon" id="icon-documents" style="top:232px;left:100px;"><div class="icon-img">📁</div><span>Documents</span></div>
+  <!-- Trash -->
+  <div class="icon" id="icon-trash" style="bottom:40px;top:auto;right:12px;"><div class="icon-img">🗑️</div><span>Trash</span></div>
 </div>
 
 <!-- ══ WINDOWS ══ -->
-
 <div id="readme" class="window">
   <div class="window-bg"></div>
   <div class="title-bar"><span>README.TXT</span><span class="close-btn" onclick="closeWin('readme')">✖</span></div>
   <div class="content textedit-content">
     <p>Welcome to DiVISE Music Solutions!</p><br>
     <p>We offer solutions for your music needs.</p><br>
-    <p>Please contact us with any inquiries:<br>
-    <a href="mailto:info@divisemusicsolutions.com">info@divisemusicsolutions.com</a></p>
+    <p>Please contact us with any inquiries:<br><a href="mailto:info@divisemusicsolutions.com">info@divisemusicsolutions.com</a></p>
   </div>
 </div>
 
@@ -444,12 +337,8 @@ body {
   <div class="window-bg"></div>
   <div class="title-bar"><span>Artists</span><span class="close-btn" onclick="closeWin('artists')">✖</span></div>
   <div class="content" style="display:flex;flex-direction:row;gap:24px;justify-content:center;align-items:flex-start;flex-wrap:wrap;padding:24px 16px;">
-    <div class="sub-icon" onclick="openWindow('frnz-page')">
-      <div class="sub-icon-img"><img src="FRNZ_S1_P1_Cover.jpg" alt="FRNZ"></div><span>FRNZ</span>
-    </div>
-    <div class="sub-icon" onclick="openWindow('plodes-page')">
-      <div class="sub-icon-img"><img src="PLodes_Logo_1.jpg" alt="PLODES"></div><span>PLODES</span>
-    </div>
+    <div class="sub-icon" onclick="openWindow('frnz-page')"><div class="sub-icon-img"><img src="FRNZ_S1_P1_Cover.jpg" alt="FRNZ"></div><span>FRNZ</span></div>
+    <div class="sub-icon" onclick="openWindow('plodes-page')"><div class="sub-icon-img"><img src="PLodes_Logo_1.jpg" alt="PLODES"></div><span>PLODES</span></div>
   </div>
 </div>
 
@@ -483,6 +372,37 @@ body {
   </div>
 </div>
 
+<!-- ══ EMAIL PIN SCREEN ══ -->
+<div id="email-pin-screen">
+  <div class="pin-box">
+    <h2>📧 Mail — Input PIN</h2>
+    <div class="pin-display">
+      <div class="pin-dot" id="pd0"></div>
+      <div class="pin-dot" id="pd1"></div>
+      <div class="pin-dot" id="pd2"></div>
+      <div class="pin-dot" id="pd3"></div>
+      <div class="pin-dot" id="pd4"></div>
+      <div class="pin-dot" id="pd5"></div>
+    </div>
+    <div id="pin-error">Incorrect PIN.</div>
+    <div class="pin-keypad">
+      <div class="pin-key" onclick="pinPress('1')">1</div>
+      <div class="pin-key" onclick="pinPress('2')">2</div>
+      <div class="pin-key" onclick="pinPress('3')">3</div>
+      <div class="pin-key" onclick="pinPress('4')">4</div>
+      <div class="pin-key" onclick="pinPress('5')">5</div>
+      <div class="pin-key" onclick="pinPress('6')">6</div>
+      <div class="pin-key" onclick="pinPress('7')">7</div>
+      <div class="pin-key" onclick="pinPress('8')">8</div>
+      <div class="pin-key" onclick="pinPress('9')">9</div>
+      <div class="pin-key" onclick="pinBackspace()">⌫</div>
+      <div class="pin-key" onclick="pinPress('0')">0</div>
+      <div class="pin-key" onclick="pinSubmit()">↵</div>
+    </div>
+    <button class="pin-cancel-btn" onclick="closePinScreen()">Cancel</button>
+  </div>
+</div>
+
 <!-- ══ EMAIL APP ══ -->
 <div id="mail" class="window">
   <div class="window-bg"></div>
@@ -490,122 +410,67 @@ body {
   <div class="email-app">
     <div class="email-sidebar">
       <div class="email-sidebar-title">Inbox</div>
-      <div class="email-row unread" onclick="showEmail('mochi-goodluck')">
-        <div class="er-from">M. Ochi</div>
-        <div class="er-subj">Good Luck</div>
-      </div>
-      <div class="email-row" onclick="showEmail('corrupted')">
-        <div class="er-from">System</div>
-        <div class="er-subj">Q3 Budget Review</div>
-      </div>
-      <div class="email-row" onclick="showEmail('corrupted')">
-        <div class="er-from">HR Dept</div>
-        <div class="er-subj">Policy Update</div>
-      </div>
-      <div class="email-row unread" onclick="showEmail('mochi-checkin')">
-        <div class="er-from">M. Ochi</div>
-        <div class="er-subj">checking in</div>
-      </div>
-      <div class="email-row" onclick="showEmail('corrupted')">
-        <div class="er-from">IT Support</div>
-        <div class="er-subj">Re: Ticket #4471</div>
-      </div>
-      <div class="email-row" onclick="showEmail('corrupted')">
-        <div class="er-from">Finance</div>
-        <div class="er-subj">Invoice #2291</div>
-      </div>
-      <div class="email-row" onclick="showEmail('corrupted')">
-        <div class="er-from">Admin</div>
-        <div class="er-subj">Meeting Notes 4/18</div>
-      </div>
-      <div class="email-row unread" onclick="showEmail('mochi-worry')">
-        <div class="er-from">M. Ochi</div>
-        <div class="er-subj">worried</div>
-      </div>
-      <div class="email-row" onclick="showEmail('corrupted')">
-        <div class="er-from">Payroll</div>
-        <div class="er-subj">Direct Deposit Conf.</div>
-      </div>
-      <div class="email-row" onclick="showEmail('corrupted')">
-        <div class="er-from">Server</div>
-        <div class="er-subj">Backup Log</div>
-      </div>
+      <div class="email-row unread" onclick="showEmail(this,'mochi-goodluck')"><div class="er-from">M. Ochi</div><div class="er-subj">Good Luck</div></div>
+      <div class="email-row" onclick="showEmail(this,'corrupted')"><div class="er-from">System</div><div class="er-subj">Q3 Budget Review</div></div>
+      <div class="email-row" onclick="showEmail(this,'corrupted')"><div class="er-from">HR Dept</div><div class="er-subj">Policy Update</div></div>
+      <div class="email-row unread" onclick="showEmail(this,'mochi-checkin')"><div class="er-from">M. Ochi</div><div class="er-subj">checking in</div></div>
+      <div class="email-row" onclick="showEmail(this,'corrupted')"><div class="er-from">IT Support</div><div class="er-subj">Re: Ticket #4471</div></div>
+      <div class="email-row" onclick="showEmail(this,'corrupted')"><div class="er-from">Finance</div><div class="er-subj">Invoice #2291</div></div>
+      <div class="email-row" onclick="showEmail(this,'corrupted')"><div class="er-from">Admin</div><div class="er-subj">Meeting Notes 4/18</div></div>
+      <div class="email-row unread" onclick="showEmail(this,'mochi-worry')"><div class="er-from">M. Ochi</div><div class="er-subj">worried</div></div>
+      <div class="email-row" onclick="showEmail(this,'corrupted')"><div class="er-from">Payroll</div><div class="er-subj">Direct Deposit Conf.</div></div>
+      <div class="email-row" onclick="showEmail(this,'corrupted')"><div class="er-from">Server</div><div class="er-subj">Backup Log</div></div>
     </div>
-    <div class="email-body-pane" id="email-body">
-      <p style="color:#aaa;font-style:italic;padding-top:60px;text-align:center;">Select a message.</p>
-    </div>
+    <div class="email-body-pane" id="email-body"><p style="color:#aaa;font-style:italic;padding-top:60px;text-align:center;">Select a message.</p></div>
   </div>
 </div>
 
-<!-- ══ DOCUMENTS FOLDER ══ -->
+<!-- ══ DOCUMENTS ══ -->
 <div id="documents" class="window">
   <div class="window-bg"></div>
   <div class="title-bar"><span>📁 Documents</span><span class="close-btn" onclick="closeWin('documents')">✖</span></div>
   <div class="content">
     <div class="folder-grid">
-      <div class="folder-item" onclick="openCorruptedDoc('Budget.xls')">
-        <div class="fi-img">📊</div><span>Budget.xls</span>
-      </div>
-      <div class="folder-item" onclick="openCorruptedDoc('Invoices.xls')">
-        <div class="fi-img">🧾</div><span>Invoices.xls</span>
-      </div>
-      <div class="folder-item" onclick="openCorruptedDoc('Contracts.doc')">
-        <div class="fi-img">📝</div><span>Contracts.doc</span>
-      </div>
-      <div class="folder-item" onclick="openCorruptedDoc('Q2_Report.doc')">
-        <div class="fi-img">📋</div><span>Q2_Report.doc</span>
-      </div>
-      <div class="folder-item" onclick="openCorruptedDoc('Personnel.doc')">
-        <div class="fi-img">👤</div><span>Personnel.doc</span>
-      </div>
-      <div class="folder-item notes-file" onclick="openWindow('notes-doc')">
-        <div class="fi-img">🗒️</div><span>Notes.txt</span>
-      </div>
+      <div class="folder-item" onclick="openCorruptedDoc('Budget.xls')"><div class="fi-img">📊</div><span>Budget.xls</span></div>
+      <div class="folder-item" onclick="openCorruptedDoc('Invoices.xls')"><div class="fi-img">🧾</div><span>Invoices.xls</span></div>
+      <div class="folder-item" onclick="openCorruptedDoc('Contracts.doc')"><div class="fi-img">📝</div><span>Contracts.doc</span></div>
+      <div class="folder-item" onclick="openCorruptedDoc('Q2_Report.doc')"><div class="fi-img">📋</div><span>Q2_Report.doc</span></div>
+      <div class="folder-item" onclick="openCorruptedDoc('Personnel.doc')"><div class="fi-img">👤</div><span>Personnel.doc</span></div>
+      <div class="folder-item notes-file" onclick="openWindow('notes-doc')"><div class="fi-img">🗒️</div><span>Notes.txt</span></div>
     </div>
   </div>
 </div>
 
-<!-- Corrupted doc window (reused) -->
 <div id="corrupted-doc" class="window">
   <div class="window-bg"></div>
   <div class="title-bar"><span id="corrupted-doc-title">Document</span><span class="close-btn" onclick="closeWin('corrupted-doc')">✖</span></div>
-  <div class="content textedit-content" style="color:#bbb;font-style:italic;text-align:center;padding-top:40px;">
-    <p>File Corrupted</p>
-  </div>
+  <div class="content textedit-content" style="color:#bbb;font-style:italic;text-align:center;padding-top:40px;"><p>File Corrupted</p></div>
 </div>
 
-<!-- Notes.txt -->
 <div id="notes-doc" class="window">
   <div class="window-bg"></div>
   <div class="title-bar"><span>Notes.txt</span><span class="close-btn" onclick="closeWin('notes-doc')">✖</span></div>
   <div class="content textedit-content">
     <p><strong>4/19</strong></p>
-    <p>Last night I ran the module and didn't like what I saw. Random data everywhere and it seemed to be upset.</p>
-    <br>
+    <p>Last night I ran the module and didn't like what I saw. Random data everywhere and it seemed to be upset.</p><br>
     <p><strong>4/23</strong></p>
-    <p>More problems, less answers as to why. Data going missing or just all around corrupted.</p>
-    <br>
+    <p>More problems, less answers as to why. Data going missing or just all around corrupted.</p><br>
     <p><strong>5/1</strong></p>
     <p>Need to change my passwords as I don't think my data is secure anymore. Changed my email pin to the date FRNZ Season 1 remastered drops.</p>
   </div>
 </div>
 
-<!-- ══ TRASH FOLDER WINDOW ══ -->
+<!-- ══ TRASH FOLDER ══ -->
 <div id="trash-folder" class="window">
   <div class="window-bg"></div>
   <div class="title-bar"><span>🗑️ Trash</span><span class="close-btn" onclick="closeWin('trash-folder')">✖</span></div>
   <div class="content" id="trash-folder-content">
     <div class="trash-drop-zone" id="trash-drop-zone">
-      <!-- Email icon always here -->
-      <div class="folder-item" onclick="openWindow('trash-email')">
-        <div class="fi-img">📨</div><span>ATTN DR THUMPER.eml</span>
-      </div>
-      <!-- DuMaS appears here after drop -->
+      <div class="folder-item" onclick="openWindow('trash-email')"><div class="fi-img">📨</div><span>ATTN DR THUMPER.eml</span></div>
     </div>
   </div>
 </div>
 
-<!-- Trash email -->
 <div id="trash-email" class="window">
   <div class="window-bg"></div>
   <div class="title-bar"><span>ATTN DR THUMPER.eml</span><span class="close-btn" onclick="closeWin('trash-email')">✖</span></div>
@@ -614,45 +479,33 @@ body {
     <p>From: &nbsp;<span class="email-redacted">©˙∆∆©˙˚∆˙∫∫˜</span> &lt;<span class="email-redacted">•••••••••••••••••</span>&gt;</p>
     <p>Date: &nbsp;&nbsp;<span class="email-redacted">••••••••••••••••••••</span></p>
     <br>
-    <p>The only thing left to do is delete it.</p>
-    <br>
+    <p>The only thing left to do is delete it.</p><br>
     <p>Do it before it's too late.</p>
   </div>
 </div>
 
-<!-- ══ LOGIN SCREEN ══ -->
+<!-- ══ DUMAS AUTH LOGIN ══ -->
 <div id="login-screen">
   <div class="login-box">
     <h2>⚠ Authorization Required</h2>
-    <div>
-      <label>Name</label>
-      <input type="text" id="login-name" placeholder="Full name" autocomplete="off">
-    </div>
-    <div>
-      <label>Password</label>
-      <input type="password" id="login-pass" placeholder="••••••••" autocomplete="off">
-    </div>
+    <div><label>Name</label><input type="text" id="login-name" placeholder="Full name" autocomplete="off"></div>
+    <div><label>Password</label><input type="password" id="login-pass" placeholder="••••••••" autocomplete="off"></div>
     <div id="login-error">Incorrect credentials.</div>
     <button onclick="submitLogin()">Submit</button>
     <button class="login-cancel" onclick="cancelLogin()">Cancel</button>
   </div>
 </div>
 
-<!-- ══ ATTEMPT FAILED POPUP ══ -->
+<!-- ══ ATTEMPT FAILED ══ -->
 <div id="attempt-failed">
   <div class="af-box">
     <div class="af-bar"><span>⛔ Authorization Failed</span></div>
-    <div class="af-body">
-      <p style="font-size:14px;font-weight:bold;margin-bottom:12px;color:#000;">Access Denied.</p>
-      <button class="af-btn" onclick="closeAttemptFailed()">ATTEMPT FAILED</button>
-    </div>
+    <div class="af-body"><p style="font-size:14px;font-weight:bold;margin-bottom:12px;color:#000;">Access Denied.</p><button class="af-btn" onclick="closeAttemptFailed()">ATTEMPT FAILED</button></div>
   </div>
 </div>
 
-<!-- ══ FRANTIC LAYER (after correct login, before jumpscare) ══ -->
-<div id="frantic-layer">
-  <div id="frantic-container"></div>
-</div>
+<!-- ══ FRANTIC LAYER ══ -->
+<div id="frantic-layer"><div id="frantic-container"></div></div>
 
 <!-- ══ POPUP AD ══ -->
 <div id="popup-ad">
@@ -667,23 +520,73 @@ body {
   </div>
 </div>
 
+<!-- ══ DUMAS ASSISTANT (Clippy) ══ -->
+<div id="dumas-assistant">
+  <div id="aim-bubble">
+    <div class="aim-titlebar">
+      <span>DMS Assistant</span>
+      <div class="aim-close" onclick="dismissAssistant()">✖</div>
+    </div>
+    <div class="aim-body" id="aim-text"><span id="aim-cursor"></span></div>
+    <div class="aim-choices" id="aim-choices" style="display:none;"></div>
+    <div class="aim-dismiss"><span onclick="dismissAssistant()">Not now</span></div>
+  </div>
+  <div id="dumas-char" onclick="toggleAssistantBubble()">
+    <img src="Char_DuMaS_Transparent.jpg" alt="DuMaS">
+  </div>
+</div>
+
+<!-- ══ MAILING LIST WINDOW ══ -->
+<div id="mailing-win">
+  <div class="mailing-titlebar">
+    <span>📬 Join the Mailing List</span>
+    <div class="mailing-close" onclick="closeMailingWin()">✖</div>
+  </div>
+  <div class="mailing-body">
+    <!-- MailerLite form -->
+    <div id="mlb2-41171377" class="ml-form-embedContainer ml-subscribe-form ml-subscribe-form-41171377">
+      <div class="ml-form-align-left">
+        <div class="ml-form-embedWrapper embedForm">
+          <div class="ml-form-embedBody ml-form-embedBodyDefault row-form">
+            <div class="ml-form-embedContent">
+              <h4>Join the DiVISE Music Solutions Email List!</h4>
+              <p>it's free!</p>
+            </div>
+            <form class="ml-block-form" action="https://assets.mailerlite.com/jsonp/2340114/forms/187229924585637047/subscribe" data-code="" method="post" target="_blank">
+              <div class="ml-form-formContent">
+                <div class="ml-form-fieldRow ml-last-item">
+                  <div class="ml-field-group ml-field-email ml-validate-email ml-validate-required">
+                    <input aria-label="email" aria-required="true" type="email" class="form-control" name="fields[email]" placeholder="Email" autocomplete="email">
+                  </div>
+                </div>
+              </div>
+              <input type="hidden" name="ml-submit" value="1">
+              <div class="ml-form-embedSubmit">
+                <button type="submit" class="primary">J O I N !</button>
+                <button disabled style="display:none;" type="button" class="loading"><div class="ml-form-embedSubmitLoad"></div><span class="sr-only">Loading...</span></button>
+              </div>
+              <input type="hidden" name="anticsrf" value="true">
+            </form>
+          </div>
+          <div class="ml-form-successBody row-success" style="display:none;">
+            <div class="ml-form-successContent"><h4>Thank you!</h4><p>You have successfully joined our subscriber list.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ══ JUMPSCARE ══ -->
 <div id="jumpscare">
-  <div id="js-bg"></div>
-  <div id="js-img"></div>
-  <div id="js-img2"></div>
-  <div id="js-glitch"></div>
-  <div id="js-glitch2"></div>
-  <div id="js-scanlines"></div>
-  <div id="js-noise"></div>
+  <div id="js-bg"></div><div id="js-img"></div><div id="js-img2"></div>
+  <div id="js-glitch"></div><div id="js-glitch2"></div>
+  <div id="js-scanlines"></div><div id="js-noise"></div>
   <div id="js-center-text">WHAT DO YOU THINK YOU'RE DOING?</div>
   <div id="js-popup-container"></div>
   <div class="js-popup" id="jsp-main" style="top:50%;left:50%;transform:translate(-50%,-50%);min-width:260px;z-index:100010;">
     <div class="js-popup-bar"><span>⛔ CRITICAL ERROR</span></div>
-    <div class="js-popup-body">
-      wHaT dO yOu ThInK<br>yOu'Re DoInG?<br><br>
-      <button class="js-delete-btn" onclick="deleteAndClose()">Delete</button>
-    </div>
+    <div class="js-popup-body">wHaT dO yOu ThInK<br>yOu'Re DoInG?<br><br><button class="js-delete-btn" onclick="deleteAndClose()">Delete</button></div>
   </div>
   <button id="js-close-btn" onclick="deleteAndClose()">[ DELETE ]</button>
 </div>
@@ -694,44 +597,73 @@ body {
   <div class="dark-word" id="dark-word" onclick="revealWord()" ondblclick="revealWord()">butterfly</div>
 </div>
 
-<!-- ══ TASKBAR ══ -->
 <div id="taskbar">DiVISE OS v1.0 &nbsp;|&nbsp; <span id="taskbar-status">Ready</span></div>
 
 <script>
 // ── CLOCK ──
-function updateClock() {
-  document.getElementById('clock').textContent = new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-}
-setInterval(updateClock,1000); updateClock();
+function updateClock(){document.getElementById('clock').textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});}
+setInterval(updateClock,1000);updateClock();
 
-// ── BOOT ──
-const bootMessages = ['Initializing...','Reading documents folder…','Scanning user files…','Accessing private data…','Monitoring activity…','Loading DiVISE OS…'];
-let bw=0, gf1=false, gf2=false;
-const barEl=document.getElementById('bar'), statusEl=document.getElementById('boot-status'), titleEl=document.getElementById('boot-title');
+// ── BOOT with success animation ──
+const bootMessages=['Initializing...','Reading documents folder…','Scanning user files…','Accessing private data…','Monitoring activity…','Loading DiVISE OS…'];
+let bw=0,gf1=false,gf2=false;
+const barEl=document.getElementById('bar'),statusEl=document.getElementById('boot-status'),titleEl=document.getElementById('boot-title');
+const bootEl=document.getElementById('boot'),flashEl=document.getElementById('boot-success-flash');
+
 const bootInt=setInterval(()=>{
-  bw+=3; barEl.style.width=bw+'%';
+  bw+=3;barEl.style.width=bw+'%';
   statusEl.textContent=bootMessages[Math.floor(bw/18)]||'Loading DiVISE OS…';
   if(bw>=22&&!gf1){gf1=true;titleEl.textContent='Installing DiVISE OS...';titleEl.classList.add('glitch');setTimeout(()=>{titleEl.textContent='Booting DiVISE OS...';titleEl.classList.remove('glitch');},160);}
   if(bw>=68&&!gf2){gf2=true;titleEl.textContent='Installing DiVISE OS...';titleEl.classList.add('glitch');setTimeout(()=>{titleEl.textContent='Booting DiVISE OS...';titleEl.classList.remove('glitch');},180);}
-  if(bw>=100){clearInterval(bootInt);setTimeout(()=>{document.getElementById('boot').style.display='none';showPopup();},400);}
+  if(bw>=100){
+    clearInterval(bootInt);
+    // Success sequence
+    statusEl.textContent='Welcome, B. Thumper.';
+    statusEl.classList.add('success');
+    titleEl.textContent='DiVISE OS Ready';
+    titleEl.style.color='#6c3cff';
+    setTimeout(()=>{
+      // Purple flash
+      flashEl.classList.add('flash');
+      setTimeout(()=>{
+        flashEl.classList.remove('flash');
+        setTimeout(()=>{
+          flashEl.classList.add('flash');
+          setTimeout(()=>{
+            flashEl.classList.remove('flash');
+            // Fade out boot screen
+            bootEl.classList.add('fade-out');
+            setTimeout(()=>{bootEl.style.display='none';showPopup();},650);
+          },100);
+        },120);
+      },150);
+    },600);
+  }
 },80);
 
 // ── POPUP AD ──
-function showPopup(){document.getElementById('popup-ad').style.display='block';makeDraggable(document.getElementById('popup-ad'),document.getElementById('popup-titlebar'));}
-function closePopup(){document.getElementById('popup-ad').style.display='none';}
+function showPopup(){
+  document.getElementById('popup-ad').style.display='block';
+  makeDraggable(document.getElementById('popup-ad'),document.getElementById('popup-titlebar'));
+}
+function closePopup(){
+  document.getElementById('popup-ad').style.display='none';
+  // Trigger Clippy assistant after a short delay
+  setTimeout(startAssistant,800);
+}
 
 // ── FILE MENU ──
 function toggleFileMenu(){document.getElementById('file-dropdown').classList.toggle('open');}
 function closeFileMenu(){document.getElementById('file-dropdown').classList.remove('open');}
 document.addEventListener('click',e=>{if(!document.getElementById('menu-file').contains(e.target))closeFileMenu();});
 
-// ── WINDOW MANAGEMENT ──
+// ── WINDOWS ──
 let zTop=200;
 function openWindow(id){
   const win=document.getElementById(id);
   win.style.display='flex';
   requestAnimationFrame(()=>requestAnimationFrame(()=>win.classList.add('open')));
-  zTop++; win.style.zIndex=zTop;
+  zTop++;win.style.zIndex=zTop;
   document.getElementById('taskbar-status').textContent=id+' opened';
   closeFileMenu();
 }
@@ -741,97 +673,89 @@ function closeWin(id){
   setTimeout(()=>{win.style.display='none';win.classList.remove('dragged');win.style.left='';win.style.top='';win.style.transform='';},230);
 }
 
-// ── MAIL ──
-const emailContent = {
-  'mochi-goodluck': `<div class="eb-header">
+// ── EMAIL PIN ──
+let pinValue='';
+const validPINs=['052226','52226'];
+
+function showEmailPin(){
+  pinValue='';updatePinDots();
+  document.getElementById('pin-error').style.display='none';
+  document.getElementById('email-pin-screen').classList.add('active');
+}
+function closePinScreen(){document.getElementById('email-pin-screen').classList.remove('active');}
+function pinPress(d){
+  if(pinValue.length>=6)return;
+  pinValue+=d;updatePinDots();
+  if(pinValue.length===6)setTimeout(pinSubmit,200);
+}
+function pinBackspace(){pinValue=pinValue.slice(0,-1);updatePinDots();}
+function updatePinDots(){
+  for(let i=0;i<6;i++){
+    const dot=document.getElementById('pd'+i);
+    if(dot)dot.classList.toggle('filled',i<pinValue.length);
+  }
+}
+function pinSubmit(){
+  if(validPINs.includes(pinValue)){
+    closePinScreen();
+    setTimeout(()=>openWindow('mail'),150);
+  } else {
+    document.getElementById('pin-error').style.display='block';
+    pinValue='';updatePinDots();
+    setTimeout(()=>document.getElementById('pin-error').style.display='none',2000);
+  }
+}
+
+// ── EMAIL CONTENT ──
+const emailContent={
+  'mochi-goodluck':`<div class="eb-header">
     <p><strong>From:</strong> M. Ochi &lt;mochi@divisemusicsolutions.com&gt;</p>
     <p><strong>To:</strong> B. Thumper &lt;bthumper@divisemusicsolutions.com&gt;</p>
     <p><strong>Subject:</strong> Good Luck</p>
-  </div>
-  <div class="eb-body">Buddy,
+  </div><div class="eb-body">Buddy,
 
 Sometimes it is best to cut your losses and move on. I've found that there is always hope in the <span class="dark-link" onclick="openDarkPage()">dark</span>.
 
 Your friend,
 M</div>`,
-  'mochi-checkin': `<div class="eb-header">
+  'mochi-checkin':`<div class="eb-header">
     <p><strong>From:</strong> M. Ochi &lt;mochi@divisemusicsolutions.com&gt;</p>
     <p><strong>To:</strong> B. Thumper &lt;bthumper@divisemusicsolutions.com&gt;</p>
     <p><strong>Subject:</strong> checking in</p>
-  </div>
-  <div class="eb-body">Hey B —
+  </div><div class="eb-body">Hey B —
 
 Haven't heard from you. Hope things are okay over there. Let me know if you need anything.
 
 — M</div>`,
-  'mochi-worry': `<div class="eb-header">
+  'mochi-worry':`<div class="eb-header">
     <p><strong>From:</strong> M. Ochi &lt;mochi@divisemusicsolutions.com&gt;</p>
     <p><strong>To:</strong> B. Thumper &lt;bthumper@divisemusicsolutions.com&gt;</p>
     <p><strong>Subject:</strong> worried</p>
-  </div>
-  <div class="eb-body">Buddy,
+  </div><div class="eb-body">Buddy,
 
 I'm getting worried. The system reports are not looking good and I think you know why.
 
 You know what you have to do.
 
 M</div>`,
-  'corrupted': `<div class="eb-body email-corrupted" style="padding-top:60px;text-align:center;">[ File Corrupted ]</div>`
+  'corrupted':`<div class="eb-body email-corrupted" style="padding-top:60px;text-align:center;">[ File Corrupted ]</div>`
 };
-function showEmail(id){
+function showEmail(row,id){
   document.querySelectorAll('.email-row').forEach(r=>r.classList.remove('active'));
-  event.currentTarget.classList.add('active');
-  event.currentTarget.classList.remove('unread');
+  row.classList.add('active');row.classList.remove('unread');
   document.getElementById('email-body').innerHTML=emailContent[id]||emailContent['corrupted'];
 }
 
 // ── DOCUMENTS ──
-function openCorruptedDoc(name){
-  document.getElementById('corrupted-doc-title').textContent=name;
-  openWindow('corrupted-doc');
-}
+function openCorruptedDoc(name){document.getElementById('corrupted-doc-title').textContent=name;openWindow('corrupted-doc');}
 
 // ── DARK PAGE ──
-function openDarkPage(){
-  document.getElementById('dark-page').classList.add('active');
-  document.getElementById('dark-word').classList.remove('revealed');
-}
+function openDarkPage(){document.getElementById('dark-page').classList.add('active');document.getElementById('dark-word').classList.remove('revealed');}
 function closeDarkPage(){document.getElementById('dark-page').classList.remove('active');}
-function revealWord(){
-  const w=document.getElementById('dark-word');
-  w.classList.add('revealed');
-  setTimeout(()=>w.classList.remove('revealed'),3000);
-}
+function revealWord(){const w=document.getElementById('dark-word');w.classList.add('revealed');setTimeout(()=>w.classList.remove('revealed'),3000);}
 
-// ── TRASH / DUMAS LOGIC ──
+// ── DUMAS AUTH LOGIN ──
 let dumasInTrash=false;
-
-function emptyTrash(){
-  closeFileMenu();
-  if(dumasInTrash){triggerJumpscare();}
-  else{document.getElementById('taskbar-status').textContent='Trash is already empty.';}
-}
-
-function dropDumasInTrash(){
-  if(dumasInTrash)return;
-  dumasInTrash=true;
-  const icon=document.getElementById('icon-dumas');
-  icon.classList.add('in-trash');
-  const trashIcon=document.getElementById('icon-trash');
-  trashIcon.classList.add('has-dumas');
-  trashIcon.querySelector('.icon-img').textContent='🗑';
-  document.getElementById('taskbar-status').textContent='1 item in Trash.';
-  // Add DuMaS icon inside trash folder window
-  const zone=document.getElementById('trash-drop-zone');
-  const df=document.createElement('div');
-  df.className='folder-item';
-  df.innerHTML=`<div class="fi-img" style="background:rgba(40,0,0,0.8);border-color:rgba(200,0,60,0.5);"><img src="Char_DuMaS_Transparent.jpg" alt="DuMaS" style="width:100%;height:100%;object-fit:cover;"></div><span style="color:#a00;">DuMaS</span>`;
-  zone.appendChild(df);
-  // Show frantic popups then trigger jumpscare
-  showFranticThenJumpscare();
-}
-
-// ── LOGIN SCREEN ──
 function showLogin(){
   document.getElementById('login-name').value='';
   document.getElementById('login-pass').value='';
@@ -858,34 +782,57 @@ function closeAttemptFailed(){document.getElementById('attempt-failed').classLis
 document.getElementById('login-pass').addEventListener('keydown',e=>{if(e.key==='Enter')submitLogin();});
 document.getElementById('login-name').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('login-pass').focus();});
 
-// ── FRANTIC POPUPS (brief, before jumpscare) ──
-const franticMsgs=[
-  'You don\'t know what you are doing',
-  'you don\'t KNOW what you are doing',
-  'YOU DON\'T KNOW WHAT YOU ARE DOING',
-  'yOu DoN\'t KnOw WhAt YoU aRe DoInG',
-  'you don\'t know. you don\'t know.',
-  'STOP. please.',
-  'what have you done',
-  'YOU DON\'T KNOW',
-];
-function showFranticThenJumpscare(){
+function dropDumasInTrash(){
+  if(dumasInTrash)return;
+  dumasInTrash=true;
+  const icon=document.getElementById('icon-dumas');
+  icon.classList.add('in-trash');
+  const trashIcon=document.getElementById('icon-trash');
+  trashIcon.classList.add('has-dumas');
+  trashIcon.querySelector('.icon-img').textContent='🗑';
+  document.getElementById('taskbar-status').textContent='1 item in Trash. Use File → Empty Trash.';
+  // Add DuMaS into trash window
+  const zone=document.getElementById('trash-drop-zone');
+  const df=document.createElement('div');
+  df.className='folder-item';
+  df.innerHTML=`<div class="fi-img" style="background:rgba(40,0,0,0.8);border-color:rgba(200,0,60,0.5);"><img src="Char_DuMaS_Transparent.jpg" alt="DuMaS" style="width:100%;height:100%;object-fit:cover;border-radius:10px;"></div><span style="color:#a00;">DuMaS</span>`;
+  zone.appendChild(df);
+  // Frantic popups — then WAIT for Empty Trash
+  showFranticPopups();
+}
+
+// ── EMPTY TRASH ──
+function emptyTrash(){
+  closeFileMenu();
+  if(dumasInTrash){triggerJumpscare();}
+  else{document.getElementById('taskbar-status').textContent='Trash is already empty.';}
+}
+
+// ── FRANTIC POPUPS (after login, before jumpscare) ──
+const franticMsgs=['You don\'t know what you are doing','you don\'t KNOW what you are doing','YOU DON\'T KNOW WHAT YOU ARE DOING','yOu DoN\'t KnOw WhAt YoU aRe DoInG','you don\'t know. you don\'t know.','STOP. please.','what have you done','YOU DON\'T KNOW'];
+function showFranticPopups(){
   const layer=document.getElementById('frantic-layer');
   const container=document.getElementById('frantic-container');
-  layer.classList.add('active');
-  layer.style.pointerEvents='all';
+  layer.classList.add('active');layer.style.pointerEvents='all';
   let count=0;
   const iv=setInterval(()=>{
     const p=document.createElement('div');
-    const maxX=Math.max(10,window.innerWidth-260);
-    const maxY=Math.max(10,window.innerHeight-110);
+    const maxX=Math.max(10,window.innerWidth-260),maxY=Math.max(10,window.innerHeight-110);
     p.style.cssText=`position:absolute;left:${Math.random()*maxX}px;top:${Math.random()*maxY}px;background:#c0c0c0;border:3px solid;border-color:#fff #808080 #808080 #fff;box-shadow:4px 4px 0 #000;font-family:'Courier New',monospace;min-width:200px;z-index:${8600+count};animation:jsPopIn 0.15s cubic-bezier(.34,1.4,.64,1) forwards;`;
     const msg=franticMsgs[Math.floor(Math.random()*franticMsgs.length)];
     const barColors=['linear-gradient(90deg,#8b0000,#cc0000)','linear-gradient(90deg,#000080,#1084d0)'];
     p.innerHTML=`<div style="background:${barColors[count%2]};color:#fff;padding:4px 8px;font-size:11px;font-weight:bold;display:flex;justify-content:space-between;"><span>⚠ Warning</span></div><div style="padding:10px 14px;color:#000;font-size:12px;font-weight:bold;text-align:center;">${msg}</div>`;
     container.appendChild(p);
     count++;
-    if(count>=10){clearInterval(iv);setTimeout(()=>{layer.classList.remove('active');layer.style.pointerEvents='none';container.innerHTML='';triggerJumpscare();},800);}
+    if(count>=10){
+      clearInterval(iv);
+      setTimeout(()=>{
+        layer.classList.remove('active');
+        layer.style.pointerEvents='none';
+        container.innerHTML='';
+        // Don't trigger jumpscare here — wait for Empty Trash
+      },1200);
+    }
   },180);
 }
 
@@ -930,12 +877,7 @@ function spawnFranticPopups(){
   let delay=600;
   function scheduleNext(){
     if(popupCount>40)return;
-    spawnInterval=setTimeout(()=>{
-      spawnOnePopup(container);
-      popupCount++;
-      delay=Math.max(80,delay-30);
-      scheduleNext();
-    },delay+Math.random()*200);
+    spawnInterval=setTimeout(()=>{spawnOnePopup(container);popupCount++;delay=Math.max(80,delay-30);scheduleNext();},delay+Math.random()*200);
   }
   scheduleNext();
   setTimeout(startChaosMode,2000);
@@ -944,8 +886,7 @@ function spawnOnePopup(container){
   const msgData=jsMessages[Math.floor(Math.random()*jsMessages.length)];
   const popup=document.createElement('div');
   popup.className='js-popup';
-  const maxX=Math.max(10,window.innerWidth-260);
-  const maxY=Math.max(10,window.innerHeight-130);
+  const maxX=Math.max(10,window.innerWidth-260),maxY=Math.max(10,window.innerHeight-130);
   popup.style.cssText=`left:${Math.random()*maxX}px;top:${Math.random()*maxY}px;position:absolute;animation-delay:0s;z-index:${100000+popupCount};`;
   const barColors=['linear-gradient(90deg,#8b0000,#cc0000)','linear-gradient(90deg,#000080,#1084d0)','linear-gradient(90deg,#500,#900)','linear-gradient(90deg,#300060,#8b0000)'];
   popup.innerHTML=`<div class="js-popup-bar" style="background:${barColors[Math.floor(Math.random()*barColors.length)]}"><span>${msgData[1]}</span><span style="cursor:pointer;font-weight:bold;" onclick="this.closest('.js-popup').remove()">✖</span></div><div class="js-popup-body">${msgData[0].replace(/\n/g,'<br>')}</div>`;
@@ -967,136 +908,176 @@ function startChaosMode(){
   },350);
 }
 function deleteAndClose(){
-  clearTimeout(spawnInterval); clearInterval(centerMoveInterval);
+  clearTimeout(spawnInterval);clearInterval(centerMoveInterval);
   window.close();
   document.getElementById('jumpscare').innerHTML='<div style="position:absolute;inset:0;background:#000;display:flex;align-items:center;justify-content:center;font-family:Courier New,monospace;color:#333;font-size:14px;letter-spacing:2px;">deleted.</div>';
 }
 
-// ── UNIVERSAL WINDOW DRAG ──
+// ── DUMAS ASSISTANT (Clippy) ──
+let assistantShown=false,assistantDismissed=false,assistantTypingDone=false;
+let assistantRepeatTimer=null;
+
+const aimFullText="Hi there! Welcome to the new DMS website! My name is <NO NAME FOUND> and I am here to assist you.\n\nWould you like to join our mailing list?";
+
+function startAssistant(){
+  if(assistantDismissed)return;
+  assistantShown=true;
+  document.getElementById('dumas-assistant').classList.add('active');
+  document.getElementById('aim-choices').style.display='none';
+  document.getElementById('aim-choices').innerHTML='';
+  assistantTypingDone=false;
+  typeAimText(aimFullText,0,()=>{
+    assistantTypingDone=true;
+    // Show YES buttons one after another
+    setTimeout(()=>addAimChoice('YES!',()=>showMailingList()),600);
+    setTimeout(()=>addAimChoice('YES!',()=>showMailingList()),1400);
+  });
+  // Auto-close if not interacted with in 30 seconds
+  clearTimeout(assistantRepeatTimer);
+  assistantRepeatTimer=setTimeout(()=>{
+    if(!assistantDismissed){
+      document.getElementById('dumas-assistant').classList.remove('active');
+      // Re-appear after 45 seconds
+      assistantRepeatTimer=setTimeout(()=>startAssistant(),45000);
+    }
+  },30000);
+}
+
+function typeAimText(text,idx,cb){
+  const el=document.getElementById('aim-text');
+  const cursor=document.getElementById('aim-cursor');
+  if(idx===0){el.innerHTML='';el.appendChild(cursor);}
+  if(idx>=text.length){if(cb)cb();return;}
+  const char=text[idx];
+  const node=document.createTextNode(char==='\n'?'\n':char);
+  // Insert before cursor
+  if(char==='\n'){
+    el.insertBefore(document.createElement('br'),cursor);
+  } else {
+    el.insertBefore(node,cursor);
+  }
+  const delay=char==='<'||char==='>'?30:char===' '?40:Math.random()*35+20;
+  setTimeout(()=>typeAimText(text,idx+1,cb),delay);
+}
+
+function addAimChoice(label,cb){
+  const choices=document.getElementById('aim-choices');
+  choices.style.display='flex';
+  const btn=document.createElement('button');
+  btn.className='aim-btn';
+  btn.textContent=label;
+  btn.onclick=()=>{clearTimeout(assistantRepeatTimer);cb();};
+  choices.appendChild(btn);
+}
+
+function showMailingList(){
+  document.getElementById('mailing-win').classList.add('active');
+  clearTimeout(assistantRepeatTimer);
+  // Keep assistant visible but hide choices
+  document.getElementById('aim-choices').style.display='none';
+  // Auto-close mailing win if not used in 60s
+  setTimeout(()=>{
+    if(document.getElementById('mailing-win').classList.contains('active')){
+      closeMailingWin();
+    }
+  },60000);
+}
+
+function closeMailingWin(){
+  document.getElementById('mailing-win').classList.remove('active');
+  // Re-show assistant periodically
+  if(!assistantDismissed){
+    assistantRepeatTimer=setTimeout(()=>startAssistant(),60000);
+  }
+}
+
+function dismissAssistant(){
+  document.getElementById('dumas-assistant').classList.remove('active');
+  document.getElementById('mailing-win').classList.remove('active');
+  clearTimeout(assistantRepeatTimer);
+  // Come back after a while
+  assistantRepeatTimer=setTimeout(()=>startAssistant(),90000);
+}
+
+function toggleAssistantBubble(){
+  const bubble=document.getElementById('aim-bubble');
+  bubble.style.display=bubble.style.display==='none'?'block':'block';
+}
+
+// ── WINDOW DRAG ──
 function makeDraggable(el,handle){
   let sX,sY,sL,sT,active=false;
   const pos=e=>e.touches?{x:e.touches[0].clientX,y:e.touches[0].clientY}:{x:e.clientX,y:e.clientY};
-  handle.addEventListener('mousedown',start);
-  handle.addEventListener('touchstart',start,{passive:false});
-  function start(e){
-    if(e.target.classList.contains('close-btn')||e.target.classList.contains('popup-close'))return;
-    active=true;const p=pos(e);sX=p.x;sY=p.y;
-    const r=el.getBoundingClientRect();sL=r.left;sT=r.top;
-    el.style.left=sL+'px';el.style.top=sT+'px';el.style.transform='none';
-    if(el.classList.contains('window')){el.classList.add('dragged');zTop++;el.style.zIndex=zTop;}
-    e.preventDefault();
-  }
-  document.addEventListener('mousemove',move);
-  document.addEventListener('touchmove',move,{passive:false});
+  handle.addEventListener('mousedown',start);handle.addEventListener('touchstart',start,{passive:false});
+  function start(e){if(e.target.classList.contains('close-btn')||e.target.classList.contains('popup-close'))return;active=true;const p=pos(e);sX=p.x;sY=p.y;const r=el.getBoundingClientRect();sL=r.left;sT=r.top;el.style.left=sL+'px';el.style.top=sT+'px';el.style.transform='none';if(el.classList.contains('window')){el.classList.add('dragged');zTop++;el.style.zIndex=zTop;}e.preventDefault();}
+  document.addEventListener('mousemove',move);document.addEventListener('touchmove',move,{passive:false});
   function move(e){if(!active)return;const p=pos(e);el.style.left=(sL+p.x-sX)+'px';el.style.top=(sT+p.y-sY)+'px';e.preventDefault();}
-  document.addEventListener('mouseup',()=>active=false);
-  document.addEventListener('touchend',()=>active=false);
+  document.addEventListener('mouseup',()=>active=false);document.addEventListener('touchend',()=>active=false);
 }
 document.querySelectorAll('.window').forEach(w=>makeDraggable(w,w.querySelector('.title-bar')));
 
-// ── ICON DRAG + TAP + TRASH DROP ──
+// ── ICON DRAG + TAP ──
 const iconActions={
   'icon-readme':   ()=>openWindow('readme'),
   'icon-releases': ()=>openWindow('releases'),
   'icon-artists':  ()=>openWindow('artists'),
-  'icon-mail':     ()=>openWindow('mail'),
+  'icon-mail':     ()=>showEmailPin(),
   'icon-ig':       ()=>window.open('https://www.instagram.com/divisemusicsolutions/','_blank'),
   'icon-cats':     ()=>window.open('https://www.youtube.com/watch?v=iHKAi1_8Pz4','_blank'),
   'icon-dumas':    ()=>openWindow('dumas-win'),
   'icon-trash':    ()=>openWindow('trash-folder'),
   'icon-documents':()=>openWindow('documents'),
 };
-
 const trashIcon=document.getElementById('icon-trash');
 const trashFolderWin=document.getElementById('trash-folder');
-
-// Icons that can be dragged into trash (excluding dumas which has special logic)
 const trashableIcons=new Set(['icon-readme','icon-releases','icon-artists','icon-mail','icon-ig','icon-cats','icon-documents']);
 
 document.querySelectorAll('#desktop .icon').forEach(icon=>{
   let sX,sY,sL,sT,active=false,moved=false;
   const pos=e=>e.touches?{x:e.touches[0].clientX,y:e.touches[0].clientY}:{x:e.clientX,y:e.clientY};
-
-  icon.addEventListener('mousedown',start);
-  icon.addEventListener('touchstart',start,{passive:true});
-
-  function start(e){
-    if(icon.classList.contains('in-trash'))return;
-    moved=false;active=true;
-    const p=pos(e);sX=p.x;sY=p.y;
-    const r=icon.getBoundingClientRect();sL=r.left;sT=r.top;
-    icon.style.position='absolute';icon.style.bottom='auto';icon.style.right='auto';
-    icon.style.left=sL+'px';icon.style.top=sT+'px';
-    zTop++;icon.style.zIndex=zTop;
-  }
-
-  document.addEventListener('mousemove',drag);
-  document.addEventListener('touchmove',drag,{passive:false});
-
-  function drag(e){
-    if(!active)return;
-    const p=pos(e);const dx=p.x-sX,dy=p.y-sY;
-    if(Math.abs(dx)>5||Math.abs(dy)>5)moved=true;
-    if(moved){
-      icon.style.left=(sL+dx)+'px';icon.style.top=(sT+dy)+'px';
-      if(e.cancelable)e.preventDefault();
-      // Highlight trash icon
-      const tr=trashIcon.getBoundingClientRect();
-      const ix=sL+dx+36,iy=sT+dy+36;
-      const overTrash=ix>tr.left&&ix<tr.right&&iy>tr.top&&iy<tr.bottom;
-      if(overTrash){trashIcon.classList.add('drag-over');}else{trashIcon.classList.remove('drag-over');}
-      // Highlight trash folder window if open
-      if(trashFolderWin.classList.contains('open')){
-        const tw=trashFolderWin.getBoundingClientRect();
-        if(ix>tw.left&&ix<tw.right&&iy>tw.top&&iy<tw.bottom){trashFolderWin.classList.add('drop-highlight');}else{trashFolderWin.classList.remove('drop-highlight');}
-      }
-    }
-  }
-
-  document.addEventListener('mouseup',end);
-  document.addEventListener('touchend',end);
-
+  icon.addEventListener('mousedown',start);icon.addEventListener('touchstart',start,{passive:true});
+  function start(e){if(icon.classList.contains('in-trash'))return;moved=false;active=true;const p=pos(e);sX=p.x;sY=p.y;const r=icon.getBoundingClientRect();sL=r.left;sT=r.top;icon.style.position='absolute';icon.style.bottom='auto';icon.style.right='auto';icon.style.left=sL+'px';icon.style.top=sT+'px';zTop++;icon.style.zIndex=zTop;}
+  document.addEventListener('mousemove',drag);document.addEventListener('touchmove',drag,{passive:false});
+  function drag(e){if(!active)return;const p=pos(e);const dx=p.x-sX,dy=p.y-sY;if(Math.abs(dx)>5||Math.abs(dy)>5)moved=true;if(moved){icon.style.left=(sL+dx)+'px';icon.style.top=(sT+dy)+'px';if(e.cancelable)e.preventDefault();const tr=trashIcon.getBoundingClientRect();const ix=sL+dx+36,iy=sT+dy+36;const overTrash=ix>tr.left&&ix<tr.right&&iy>tr.top&&iy<tr.bottom;if(overTrash){trashIcon.classList.add('drag-over');}else{trashIcon.classList.remove('drag-over');}if(trashFolderWin.classList.contains('open')){const tw=trashFolderWin.getBoundingClientRect();if(ix>tw.left&&ix<tw.right&&iy>tw.top&&iy<tw.bottom){trashFolderWin.classList.add('drop-highlight');}else{trashFolderWin.classList.remove('drop-highlight');}}}}
+  document.addEventListener('mouseup',end);document.addEventListener('touchend',end);
   function end(){
-    trashIcon.classList.remove('drag-over');
-    trashFolderWin.classList.remove('drop-highlight');
-
+    trashIcon.classList.remove('drag-over');trashFolderWin.classList.remove('drop-highlight');
     if(moved&&!icon.classList.contains('in-trash')){
-      const iRect=icon.getBoundingClientRect();
-      const cx=iRect.left+iRect.width/2,cy=iRect.top+iRect.height/2;
-      const tr=trashIcon.getBoundingClientRect();
-      const tw=trashFolderWin.getBoundingClientRect();
+      const iRect=icon.getBoundingClientRect();const cx=iRect.left+iRect.width/2,cy=iRect.top+iRect.height/2;
+      const tr=trashIcon.getBoundingClientRect();const tw=trashFolderWin.getBoundingClientRect();
       const overTrashIcon=cx>tr.left&&cx<tr.right&&cy>tr.top&&cy<tr.bottom;
       const overTrashWin=trashFolderWin.classList.contains('open')&&cx>tw.left&&cx<tw.right&&cy>tw.top&&cy<tw.bottom;
-
       if(overTrashIcon||overTrashWin){
-        if(icon.id==='icon-dumas'){
-          // DuMaS needs login
-          active=false;
-          // snap it back
-          icon.style.left=sL+'px';icon.style.top=sT+'px';
-          showLogin();
-          return;
-        } else if(trashableIcons.has(icon.id)){
-          // Move icon into trash folder window
+        if(icon.id==='icon-dumas'){active=false;icon.style.left=sL+'px';icon.style.top=sT+'px';showLogin();return;}
+        else if(trashableIcons.has(icon.id)){
           icon.classList.add('in-trash');
           const zone=document.getElementById('trash-drop-zone');
-          const emoji=icon.querySelector('.icon-img').textContent||'📄';
+          const rawImg=icon.querySelector('.icon-img img');
+          let inner='';
+          if(rawImg){inner=`<img src="${rawImg.src}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:10px;">`;}
+          else{inner=icon.querySelector('.icon-img').textContent||'📄';}
           const label=icon.querySelector('span').textContent;
-          const df=document.createElement('div');
-          df.className='folder-item';
-          df.innerHTML=`<div class="fi-img">${emoji}</div><span>${label}</span>`;
+          const df=document.createElement('div');df.className='folder-item';
+          df.innerHTML=`<div class="fi-img">${inner}</div><span>${label}</span>`;
           zone.appendChild(df);
         }
       }
     }
-
-    if(!moved&&active){
-      const action=iconActions[icon.id];
-      if(action)action();
-    }
+    if(!moved&&active){const action=iconActions[icon.id];if(action)action();}
     active=false;
   }
 });
+
+// Load MailerLite scripts
+function loadMailerLite(){
+  if(document.getElementById('ml-script'))return;
+  const s=document.createElement('script');s.id='ml-script';
+  s.src='https://groot.mailerlite.com/js/w/webforms.min.js?vb397d78ebaa8a0f631d35384c46d781b';
+  s.type='text/javascript';document.head.appendChild(s);
+  fetch('https://assets.mailerlite.com/jsonp/2340114/forms/187229924585637047/takel').catch(()=>{});
+}
+loadMailerLite();
+function ml_webform_success_41171377(){var $=ml_jQuery||jQuery;$('.ml-subscribe-form-41171377 .row-success').show();$('.ml-subscribe-form-41171377 .row-form').hide();}
 </script>
 </body>
 </html>
