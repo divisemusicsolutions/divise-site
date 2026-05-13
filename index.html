@@ -22,8 +22,6 @@ body { font-family:'Courier New',Courier,monospace; background:black; overflow:h
 #bar { width:0%; height:100%; background:linear-gradient(90deg,#6c3cff,#ff3cf0); transition:width 0.1s linear; }
 #boot-status { font-size:11px; color:#555; letter-spacing:1px; transition:color 0.3s; }
 #boot-status.success { color:#6c3cff; }
-
-/* Boot success flash */
 #boot-success-flash { position:fixed; inset:0; background:#6c3cff; opacity:0; z-index:9998; pointer-events:none; transition:opacity 0.15s; }
 #boot-success-flash.flash { opacity:0.25; }
 
@@ -48,7 +46,7 @@ body { font-family:'Courier New',Courier,monospace; background:black; overflow:h
 /* ── ICONS ── */
 .icon { position:absolute; display:flex; flex-direction:column; align-items:center; cursor:grab; color:#ddd; gap:5px; width:72px; -webkit-tap-highlight-color:transparent; touch-action:none; user-select:none; z-index:10; transition:filter 0.3s; }
 .icon:active { cursor:grabbing; }
-.icon.in-trash { opacity:0.4; pointer-events:none; }
+.icon.in-trash { display:none; }
 #icon-trash.has-dumas .icon-img { border-color:rgba(255,0,60,0.7) !important; box-shadow:0 0 18px rgba(255,0,60,0.6) !important; animation:trashPulse 1s ease-in-out infinite alternate; }
 @keyframes trashPulse { from{box-shadow:0 0 8px rgba(255,0,60,0.4)} to{box-shadow:0 0 28px rgba(255,0,60,0.9)} }
 .icon .icon-img { width:58px; height:58px; border-radius:12px; background:rgba(108,60,255,0.18); border:1px solid rgba(108,60,255,0.35); display:flex; align-items:center; justify-content:center; font-size:30px; transition:background 0.2s,box-shadow 0.2s; box-shadow:0 2px 10px rgba(108,60,255,0.2); pointer-events:none; overflow:hidden; }
@@ -78,7 +76,7 @@ body { font-family:'Courier New',Courier,monospace; background:black; overflow:h
 .textedit-content a { color:#0000cc; text-decoration:underline; }
 .email-redacted { background:#111; color:#111; border-radius:2px; letter-spacing:1px; user-select:none; }
 
-/* ── EMAIL PIN SCREEN ── */
+/* ── EMAIL PIN ── */
 #email-pin-screen { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.94); z-index:8100; justify-content:center; align-items:center; }
 #email-pin-screen.active { display:flex; }
 .pin-box { background:#0d0820; border:2px solid #6c3cff; border-radius:14px; padding:36px 32px; width:min(320px,88vw); display:flex; flex-direction:column; align-items:center; gap:18px; box-shadow:0 0 50px rgba(108,60,255,0.35); }
@@ -90,10 +88,8 @@ body { font-family:'Courier New',Courier,monospace; background:black; overflow:h
 .pin-key { background:#1a1030; border:1px solid #333; border-radius:8px; color:#ddd; font-family:'Courier New',monospace; font-size:18px; padding:14px; cursor:pointer; text-align:center; transition:background 0.15s,border-color 0.15s; user-select:none; }
 .pin-key:hover { background:#2a1050; border-color:#6c3cff; }
 .pin-key:active { background:#6c3cff; color:#fff; }
-.pin-key.wide { grid-column:span 2; }
 #pin-error { color:#ff3c3c; font-size:11px; letter-spacing:1px; display:none; text-align:center; }
 .pin-cancel-btn { background:none; border:none; color:#444; font-family:'Courier New',monospace; font-size:11px; cursor:pointer; letter-spacing:1px; }
-.pin-cancel-btn:hover { color:#666; }
 
 /* ── EMAIL APP ── */
 #mail { width:min(700px,96vw); }
@@ -115,7 +111,7 @@ body { font-family:'Courier New',Courier,monospace; background:black; overflow:h
 .dark-link { color:#111 !important; text-decoration:none; background:linear-gradient(to bottom,transparent 60%,rgba(108,60,255,0.15) 60%); font-weight:bold; font-size:14px; cursor:pointer; transition:color 0.3s,letter-spacing 0.2s; }
 .dark-link:hover { color:#6c3cff !important; letter-spacing:2px; }
 
-/* ── DOCUMENTS FOLDER ── */
+/* ── DOCUMENTS ── */
 .folder-grid { display:flex; flex-direction:row; gap:18px; flex-wrap:wrap; align-items:flex-start; padding:20px 16px; }
 .folder-item { display:flex; flex-direction:column; align-items:center; gap:6px; cursor:pointer; width:70px; -webkit-tap-highlight-color:transparent; }
 .folder-item .fi-img { width:54px; height:54px; border-radius:10px; background:rgba(108,60,255,0.12); border:1px solid rgba(108,60,255,0.28); display:flex; align-items:center; justify-content:center; font-size:28px; transition:background 0.2s,box-shadow 0.2s; }
@@ -129,54 +125,72 @@ body { font-family:'Courier New',Courier,monospace; background:black; overflow:h
 .trash-drop-zone { min-height:120px; width:100%; display:flex; flex-wrap:wrap; gap:18px; align-items:flex-start; }
 #trash-folder.drop-highlight { box-shadow:0 0 0 3px rgba(108,60,255,0.8) inset; }
 
-/* ── ARTISTS ── */
-.sub-icon { display:flex; flex-direction:column; align-items:center; gap:8px; cursor:pointer; width:90px; -webkit-tap-highlight-color:transparent; }
-.sub-icon-img { width:76px; height:76px; border-radius:14px; overflow:hidden; border:2px solid rgba(108,60,255,0.4); box-shadow:0 2px 12px rgba(108,60,255,0.3); transition:box-shadow 0.2s,transform 0.15s; }
-.sub-icon:hover .sub-icon-img { box-shadow:0 0 20px rgba(108,60,255,0.7); transform:scale(1.06); }
-.sub-icon-img img { width:100%; height:100%; object-fit:cover; display:block; }
-.sub-icon span { font-size:11px; color:#ccc; text-align:center; text-shadow:0 1px 4px #000; font-family:'Courier New',monospace; }
+/* ── DATABASE ── */
+#database-win { width:min(500px,94vw); }
+.db-inner { background:#0a0a1a; padding:20px; display:flex; flex-direction:column; align-items:center; gap:14px; }
+.db-logo { width:min(260px,80%); display:block; }
+.db-search-row { display:flex; gap:8px; width:100%; }
+.db-input { flex:1; background:#111; border:1px solid #6c3cff; color:#0f0; font-family:'Courier New',monospace; font-size:13px; padding:8px 10px; outline:none; border-radius:4px; }
+.db-input:focus { border-color:#a060ff; }
+.db-search-btn { background:#6c3cff; color:#fff; border:none; padding:8px 14px; font-family:'Courier New',monospace; font-size:12px; cursor:pointer; border-radius:4px; }
+.db-search-btn:hover { background:#8a5cff; }
+.db-results { width:100%; min-height:60px; background:#000; border:1px solid #333; padding:12px; font-size:12px; color:#0f0; font-family:'Courier New',monospace; line-height:1.7; border-radius:4px; }
+.db-result-link { color:#6c3cff; cursor:pointer; text-decoration:underline; }
 
-/* ── POPUP AD ── */
-#popup-ad { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); width:min(340px,90vw); background:#c0c0c0; border:3px solid; border-color:#fff #808080 #808080 #fff; box-shadow:4px 4px 0 #000,inset 1px 1px 0 #fff; z-index:8888; display:none; font-family:'Courier New',monospace; animation:popupShake 0.4s ease; }
-@keyframes popupShake { 0%{transform:translate(-50%,-50%) rotate(-3deg) scale(0.7)} 40%{transform:translate(-50%,-50%) rotate(2deg) scale(1.05)} 70%{transform:translate(-50%,-50%) rotate(-1deg) scale(0.98)} 100%{transform:translate(-50%,-50%) rotate(0deg) scale(1)} }
-.popup-titlebar { background:linear-gradient(90deg,#000080,#1084d0); color:white; padding:4px 8px; font-size:12px; display:flex; justify-content:space-between; align-items:center; cursor:move; user-select:none; touch-action:none; }
-.popup-close { background:#c0c0c0; border:2px solid; border-color:#fff #808080 #808080 #fff; color:#000; font-size:11px; font-weight:bold; cursor:pointer; width:18px; height:18px; display:flex; align-items:center; justify-content:center; }
-.popup-body { padding:12px; text-align:center; background:#c0c0c0; color:#000; }
-.popup-body img { width:100%; border:2px inset #808080; display:block; margin-bottom:10px; }
-.popup-link { display:block; background:#000080; color:#ffff00; text-decoration:none; font-size:16px; font-weight:bold; padding:8px; border:2px solid; border-color:#fff #808080 #808080 #fff; margin-bottom:6px; animation:blink 0.8s step-start infinite; }
-@keyframes blink { 50%{background:#cc0000} }
-.popup-date { font-size:13px; color:#000; font-weight:bold; margin-top:4px; }
+/* ── ENCRYPTION BYPASS POPUP ── */
+#encrypt-popup { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.88); z-index:8200; justify-content:center; align-items:center; }
+#encrypt-popup.active { display:flex; }
+.ep-box { background:#c0c0c0; border:3px solid; border-color:#fff #808080 #808080 #fff; box-shadow:4px 4px 0 #000; font-family:'Courier New',monospace; width:min(340px,90vw); }
+.ep-bar { background:linear-gradient(90deg,#8b0000,#cc0000); color:#fff; padding:5px 10px; font-size:12px; font-weight:bold; display:flex; justify-content:space-between; align-items:center; }
+.ep-body { padding:16px; background:#c0c0c0; color:#000; }
+.ep-body p { font-size:13px; font-weight:bold; margin-bottom:12px; }
+.ep-input { width:100%; background:#fff; border:2px inset #808080; color:#000; font-family:'Courier New',monospace; font-size:14px; padding:8px; outline:none; letter-spacing:2px; }
+.ep-submit { margin-top:10px; background:#8b0000; color:#fff; border:2px solid; border-color:#fff #600 #600 #fff; padding:7px 20px; font-family:'Courier New',monospace; font-size:13px; font-weight:bold; cursor:pointer; display:block; width:100%; }
+#ep-error { color:#8b0000; font-size:11px; margin-top:6px; display:none; text-align:center; font-weight:bold; }
+.ep-cancel { background:none; border:none; color:#666; font-size:11px; cursor:pointer; font-family:'Courier New',monospace; display:block; width:100%; text-align:center; margin-top:6px; }
 
-/* ── CLIPPY / DUMAS ASSISTANT ── */
-#dumas-assistant { position:fixed; bottom:38px; right:10px; z-index:7000; display:none; flex-direction:row; align-items:flex-end; gap:10px; }
+/* ── DOS PAGE ── */
+#dos-page { display:none; position:fixed; inset:0; background:#000; z-index:88888; flex-direction:column; overflow:hidden; }
+#dos-page.active { display:flex; }
+#dos-terminal { flex:1; overflow-y:auto; padding:20px; font-family:'Courier New',Courier,monospace; font-size:clamp(12px,2vw,14px); color:#00ff00; line-height:1.6; }
+#dos-back { position:absolute; top:10px; right:14px; font-size:11px; color:#003300; cursor:pointer; font-family:'Courier New',monospace; }
+#dos-back:hover { color:#00aa00; }
+.dos-line { display:block; white-space:pre-wrap; }
+.dos-cursor { display:inline-block; width:9px; height:15px; background:#00ff00; animation:dosBlink 1s steps(1) infinite; vertical-align:middle; }
+@keyframes dosBlink { 50%{opacity:0} }
+
+/* ── CLIPPY ASSISTANT ── */
+#dumas-assistant { position:fixed; top:36px; right:10px; z-index:7000; display:none; flex-direction:row; align-items:flex-start; gap:8px; max-width:calc(100vw - 20px); }
 #dumas-assistant.active { display:flex; }
-#dumas-char { width:80px; flex-shrink:0; animation:dumasBounce 2s ease-in-out infinite; cursor:pointer; }
+#dumas-char { width:100px; flex-shrink:0; animation:dumasBounce 2s ease-in-out infinite; cursor:pointer; }
 #dumas-char img { width:100%; image-rendering:pixelated; display:block; }
 @keyframes dumasBounce { 0%,100%{transform:translateY(0)} 30%{transform:translateY(-8px)} 60%{transform:translateY(-3px)} }
 
-/* AIM chat bubble */
-#aim-bubble { background:#c0c0c0; border:2px solid; border-color:#fff #808080 #808080 #fff; box-shadow:3px 3px 0 #000; font-family:'Courier New',monospace; width:min(260px,55vw); margin-bottom:4px; position:relative; }
+#aim-bubble { background:#c0c0c0; border:2px solid; border-color:#fff #808080 #808080 #fff; box-shadow:3px 3px 0 #000; font-family:'Courier New',monospace; width:min(270px,54vw); }
 .aim-titlebar { background:linear-gradient(90deg,#000080,#1084d0); color:#fff; font-size:11px; font-weight:bold; padding:3px 8px; display:flex; justify-content:space-between; align-items:center; cursor:default; }
 .aim-close { cursor:pointer; font-size:11px; font-weight:bold; background:#c0c0c0; border:1px solid; border-color:#fff #808080 #808080 #fff; width:14px; height:14px; display:flex; align-items:center; justify-content:center; color:#000; }
-.aim-body { padding:10px; font-size:12px; color:#000; background:#fff; min-height:50px; line-height:1.5; }
+.aim-body { padding:10px; font-size:12px; color:#000; background:#fff; min-height:50px; line-height:1.6; max-height:200px; overflow-y:auto; }
 #aim-cursor { display:inline-block; width:8px; height:14px; background:#000; animation:aimBlink 0.7s steps(1) infinite; vertical-align:middle; margin-left:1px; }
 @keyframes aimBlink { 50%{opacity:0} }
 .aim-choices { padding:6px 10px 8px; background:#c0c0c0; display:flex; gap:6px; flex-wrap:wrap; }
-.aim-btn { background:#c0c0c0; border:2px solid; border-color:#fff #808080 #808080 #fff; font-family:'Courier New',monospace; font-size:12px; color:#000; cursor:pointer; padding:4px 12px; font-weight:bold; }
-.aim-btn:hover { background:#000080; color:#fff; border-color:#1084d0 #000040 #000040 #1084d0; }
-.aim-btn:active { border-color:#808080 #fff #fff #808080; }
-#aim-bubble .aim-dismiss { padding:4px 10px 6px; background:#c0c0c0; text-align:right; }
-#aim-bubble .aim-dismiss span { font-size:10px; color:#666; cursor:pointer; }
-#aim-bubble .aim-dismiss span:hover { color:#000; text-decoration:underline; }
+.aim-btn { background:#c0c0c0; border:2px solid; border-color:#fff #808080 #808080 #fff; font-family:'Courier New',monospace; font-size:12px; color:#000; cursor:pointer; padding:4px 10px; font-weight:bold; }
+.aim-btn:hover { background:#000080; color:#fff; }
+.aim-dismiss { padding:4px 10px 6px; background:#c0c0c0; text-align:right; }
+.aim-dismiss span { font-size:10px; color:#666; cursor:pointer; }
+.aim-dismiss span:hover { color:#000; text-decoration:underline; }
 
-/* Mailing list window */
-#mailing-win { position:fixed; bottom:38px; right:100px; z-index:7001; display:none; width:min(360px,88vw); font-family:'Courier New',monospace; }
+/* Progress bar inside AIM */
+.aim-progress-wrap { margin:8px 10px; background:#808080; border:2px inset #999; height:18px; position:relative; overflow:hidden; }
+.aim-progress-bar { height:100%; background:linear-gradient(90deg,#000080,#1084d0); width:0%; transition:width 0.1s linear; }
+
+/* ── MAILING LIST WINDOW ── */
+#mailing-win { position:fixed; top:36px; right:10px; z-index:7001; display:none; width:min(360px,92vw); font-family:'Courier New',monospace; }
 #mailing-win.active { display:block; }
 .mailing-titlebar { background:linear-gradient(90deg,#000080,#1084d0); color:#fff; font-size:12px; font-weight:bold; padding:4px 8px; display:flex; justify-content:space-between; align-items:center; }
 .mailing-close { cursor:pointer; font-size:11px; background:#c0c0c0; border:2px solid; border-color:#fff #808080 #808080 #fff; color:#000; width:16px; height:16px; display:flex; align-items:center; justify-content:center; }
 .mailing-body { background:#c0c0c0; border:2px solid; border-color:#fff #808080 #808080 #fff; box-shadow:3px 3px 0 #000; }
 
-/* ── LOGIN SCREEN (DuMaS drag auth) ── */
+/* ── DATABASE LOGIN / DUMAS LOGIN ── */
 #login-screen { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:8000; justify-content:center; align-items:center; }
 #login-screen.active { display:flex; }
 .login-box { background:#1a1030; border:2px solid #6c3cff; border-radius:12px; padding:32px 28px; width:min(340px,90vw); box-shadow:0 0 40px rgba(108,60,255,0.4); display:flex; flex-direction:column; gap:16px; }
@@ -193,13 +207,31 @@ body { font-family:'Courier New',Courier,monospace; background:black; overflow:h
 #attempt-failed { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:9000; justify-content:center; align-items:center; }
 #attempt-failed.active { display:flex; }
 .af-box { background:#c0c0c0; border:3px solid; border-color:#fff #808080 #808080 #fff; box-shadow:4px 4px 0 #000; font-family:'Courier New',monospace; min-width:260px; }
-.af-bar { background:linear-gradient(90deg,#8b0000,#cc0000); color:#fff; padding:5px 10px; font-size:13px; font-weight:bold; display:flex; justify-content:space-between; }
+.af-bar { background:linear-gradient(90deg,#8b0000,#cc0000); color:#fff; padding:5px 10px; font-size:13px; font-weight:bold; }
 .af-body { padding:20px; text-align:center; }
 .af-btn { background:#8b0000; color:#fff; border:2px solid; border-color:#fff #600 #600 #fff; padding:8px 28px; font-family:'Courier New',monospace; font-size:13px; font-weight:bold; cursor:pointer; letter-spacing:2px; margin-top:8px; }
 
 /* ── FRANTIC LAYER ── */
 #frantic-layer { display:none; position:fixed; inset:0; z-index:8500; pointer-events:none; }
 #frantic-layer.active { display:block; }
+
+/* ── POPUP AD ── */
+#popup-ad { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); width:min(340px,90vw); background:#c0c0c0; border:3px solid; border-color:#fff #808080 #808080 #fff; box-shadow:4px 4px 0 #000,inset 1px 1px 0 #fff; z-index:8888; display:none; font-family:'Courier New',monospace; animation:popupShake 0.4s ease; }
+@keyframes popupShake { 0%{transform:translate(-50%,-50%) rotate(-3deg) scale(0.7)} 40%{transform:translate(-50%,-50%) rotate(2deg) scale(1.05)} 70%{transform:translate(-50%,-50%) rotate(-1deg) scale(0.98)} 100%{transform:translate(-50%,-50%) rotate(0deg) scale(1)} }
+.popup-titlebar { background:linear-gradient(90deg,#000080,#1084d0); color:white; padding:4px 8px; font-size:12px; display:flex; justify-content:space-between; align-items:center; cursor:move; user-select:none; touch-action:none; }
+.popup-close { background:#c0c0c0; border:2px solid; border-color:#fff #808080 #808080 #fff; color:#000; font-size:11px; font-weight:bold; cursor:pointer; width:18px; height:18px; display:flex; align-items:center; justify-content:center; }
+.popup-body { padding:12px; text-align:center; background:#c0c0c0; color:#000; }
+.popup-body img { width:100%; border:2px inset #808080; display:block; margin-bottom:10px; }
+.popup-link { display:block; background:#000080; color:#ffff00; text-decoration:none; font-size:16px; font-weight:bold; padding:8px; border:2px solid; border-color:#fff #808080 #808080 #fff; margin-bottom:6px; animation:blink 0.8s step-start infinite; }
+@keyframes blink { 50%{background:#cc0000} }
+.popup-date { font-size:13px; color:#000; font-weight:bold; margin-top:4px; }
+
+/* ── ARTISTS ── */
+.sub-icon { display:flex; flex-direction:column; align-items:center; gap:8px; cursor:pointer; width:90px; -webkit-tap-highlight-color:transparent; }
+.sub-icon-img { width:76px; height:76px; border-radius:14px; overflow:hidden; border:2px solid rgba(108,60,255,0.4); box-shadow:0 2px 12px rgba(108,60,255,0.3); transition:box-shadow 0.2s,transform 0.15s; }
+.sub-icon:hover .sub-icon-img { box-shadow:0 0 20px rgba(108,60,255,0.7); transform:scale(1.06); }
+.sub-icon-img img { width:100%; height:100%; object-fit:cover; display:block; }
+.sub-icon span { font-size:11px; color:#ccc; text-align:center; text-shadow:0 1px 4px #000; font-family:'Courier New',monospace; }
 
 /* ── TASKBAR ── */
 #taskbar { position:fixed; bottom:0; left:0; right:0; height:28px; background:rgba(15,8,35,0.92); border-top:1px solid #333; display:flex; align-items:center; padding:0 10px; font-size:11px; color:#777; z-index:500; }
@@ -223,28 +255,28 @@ body { font-family:'Courier New',Courier,monospace; background:black; overflow:h
 @keyframes jsScanMove { from{background-position:0 0}to{background-position:0 40px} }
 #js-noise { position:absolute; inset:0; pointer-events:none; opacity:0.08; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); animation:noiseAnim 0.05s steps(1) infinite; }
 @keyframes noiseAnim { 0%{background-position:0 0}25%{background-position:-50px 30px}50%{background-position:20px -40px}75%{background-position:-30px -20px}100%{background-position:40px 10px} }
-#js-center-text { position:absolute; z-index:100002; color:#ff0000; font-size:clamp(20px,6vw,48px); font-weight:bold; text-align:center; text-shadow:0 0 30px #ff0000,0 0 60px #ff0000; letter-spacing:4px; top:12%; animation:jsCenterPulse 0.5s ease-in-out infinite alternate; pointer-events:none; }
+#js-center-text { position:absolute; z-index:100002; color:#ff0000; font-size:clamp(18px,6vw,44px); font-weight:bold; text-align:center; text-shadow:0 0 30px #ff0000,0 0 60px #ff0000; letter-spacing:4px; top:12%; animation:jsCenterPulse 0.5s ease-in-out infinite alternate; pointer-events:none; padding:0 16px; }
 @keyframes jsCenterPulse { from{opacity:0.7;transform:scale(0.97)}to{opacity:1;transform:scale(1.03)} }
 #js-popup-container { position:absolute; inset:0; overflow:hidden; }
-.js-popup { position:absolute; background:#c0c0c0; border:3px solid; border-color:#fff #808080 #808080 #fff; font-family:'Courier New',monospace; z-index:100001; min-width:220px; animation:jsPopIn 0.2s cubic-bezier(.34,1.4,.64,1) forwards; box-shadow:4px 4px 0 #000; }
+.js-popup { position:absolute; background:#c0c0c0; border:3px solid; border-color:#fff #808080 #808080 #fff; font-family:'Courier New',monospace; z-index:100001; min-width:200px; animation:jsPopIn 0.2s cubic-bezier(.34,1.4,.64,1) forwards; box-shadow:4px 4px 0 #000; }
 @keyframes jsPopIn { from{transform:scale(0.4) rotate(-5deg);opacity:0}to{transform:scale(1) rotate(0deg);opacity:1} }
 .js-popup-bar { background:linear-gradient(90deg,#8b0000,#cc0000); color:#fff; padding:3px 8px; font-size:12px; font-weight:bold; display:flex; justify-content:space-between; align-items:center; }
 .js-popup-body { padding:10px 14px; color:#000; font-size:13px; font-weight:bold; text-align:center; line-height:1.4; }
-.js-delete-btn { display:block; width:100%; margin-top:8px; background:#8b0000; color:#fff; border:2px solid; border-color:#fff #600 #600 #fff; padding:6px; font-family:'Courier New',monospace; font-size:13px; font-weight:bold; cursor:pointer; letter-spacing:1px; }
+.js-delete-btn { display:block; width:100%; margin-top:8px; background:#8b0000; color:#fff; border:2px solid; border-color:#fff #600 #600 #fff; padding:6px; font-family:'Courier New',monospace; font-size:13px; font-weight:bold; cursor:pointer; }
 .js-delete-btn:hover { background:#cc0000; }
-#js-close-btn { position:absolute; bottom:30px; z-index:100003; background:#8b0000; color:#fff; border:3px solid #fff; padding:12px 40px; font-family:'Courier New',monospace; font-size:16px; font-weight:bold; cursor:pointer; letter-spacing:2px; box-shadow:0 0 30px rgba(255,0,0,0.8); animation:jsBtnPulse 0.6s ease-in-out infinite alternate; }
-@keyframes jsBtnPulse { from{box-shadow:0 0 15px rgba(255,0,0,0.5)}to{box-shadow:0 0 50px rgba(255,0,0,1)} }
 #jsp-main { top:50%;left:50%;transform:translate(-50%,-50%);min-width:260px;z-index:100010; }
+#js-close-btn { position:absolute; bottom:30px; z-index:100003; background:#8b0000; color:#fff; border:3px solid #fff; padding:12px 40px; font-family:'Courier New',monospace; font-size:16px; font-weight:bold; cursor:pointer; letter-spacing:2px; animation:jsBtnPulse 0.6s ease-in-out infinite alternate; }
+@keyframes jsBtnPulse { from{box-shadow:0 0 15px rgba(255,0,0,0.5)}to{box-shadow:0 0 50px rgba(255,0,0,1)} }
 
 /* ── DARK PAGE ── */
-#dark-page { display:none; position:fixed; inset:0; background:#000; z-index:88888; flex-direction:column; align-items:center; justify-content:center; cursor:default; }
+#dark-page { display:none; position:fixed; inset:0; background:#000; z-index:88888; flex-direction:column; align-items:center; justify-content:center; }
 #dark-page.active { display:flex; }
 #dark-page-back { position:absolute; top:14px; left:14px; font-size:11px; color:#1a1a1a; cursor:pointer; letter-spacing:2px; }
 #dark-page-back:hover { color:#333; }
 .dark-word { font-size:clamp(28px,8vw,64px); font-weight:bold; color:#000; letter-spacing:8px; text-transform:lowercase; cursor:pointer; user-select:none; transition:color 0.5s,text-shadow 0.5s; font-family:'Courier New',monospace; }
 .dark-word.revealed { color:#6c3cff; text-shadow:0 0 30px rgba(108,60,255,0.8),0 0 60px rgba(108,60,255,0.4); }
 
-/* ── MAILERLITE FORM OVERRIDES (fit inside window) ── */
+/* ── MAILERLITE OVERRIDES ── */
 .ml-form-embedWrapper { background:#c0c0c0 !important; border-radius:0 !important; }
 .ml-form-embedBody { padding:12px !important; }
 .ml-form-embedContent h4 { font-size:14px !important; color:#000 !important; font-family:'Courier New',monospace !important; margin-bottom:4px !important; }
@@ -257,16 +289,17 @@ body { font-family:'Courier New',Courier,monospace; background:black; overflow:h
   .window { top:48px; width:95vw; }
   .icon .icon-img { width:52px; height:52px; font-size:26px; }
   .icon span { font-size:9px; }
-  .email-sidebar { width:130px; }
+  .email-sidebar { width:120px; }
   #mail { width:95vw; }
-  #dumas-char { width:60px; }
-  #aim-bubble { width:min(220px,48vw); }
+  #dumas-char { width:80px; }
+  #aim-bubble { width:min(240px,52vw); }
+  #mailing-win { width:calc(100vw - 20px); right:10px; }
 }
 </style>
 </head>
 <body>
 
-<!-- ══ BOOT ══ -->
+<!-- BOOT -->
 <div id="boot">
   <img id="boot-logo" src="Char_DuMaS.jpg" alt="DiVISE">
   <h1 id="boot-title">Booting DiVISE OS...</h1>
@@ -274,44 +307,41 @@ body { font-family:'Courier New',Courier,monospace; background:black; overflow:h
   <div id="boot-status">Initializing...</div>
 </div>
 <div id="boot-success-flash"></div>
-
 <div id="bg"></div>
 
-<!-- ══ MENU BAR ══ -->
+<!-- MENU BAR -->
 <div id="menubar">
   <img src="Char_DuMaS.jpg" class="menu-logo" alt="DiVISE">
   <div class="menu-item" id="menu-file" onclick="toggleFileMenu()">
     File
     <div class="dropdown" id="file-dropdown">
       <div class="dropdown-item" onclick="openWindow('readme')">Open README.TXT</div>
-      <div class="dropdown-item" onclick="openWindow('mail')">Mail</div>
+      <div class="dropdown-item" onclick="showEmailPin()">Mail</div>
       <div class="dropdown-sep"></div>
       <div class="dropdown-item" onclick="emptyTrash()">Empty Trash</div>
     </div>
   </div>
   <span class="menu-item" onclick="closeFileMenu()">Edit</span>
   <span class="menu-item" onclick="openWindow('releases');closeFileMenu()">View</span>
-  <span class="menu-item" onclick="openWindow('mail');closeFileMenu()">Help</span>
+  <span class="menu-item" onclick="showEmailPin();closeFileMenu()">Help</span>
   <span class="menu-time" id="clock"></span>
 </div>
 
-<!-- ══ DESKTOP ══ -->
+<!-- DESKTOP -->
 <div id="desktop">
-  <!-- Col 1 -->
   <div class="icon" id="icon-readme" style="top:48px;left:12px;"><div class="icon-img">📄</div><span>README.TXT</span></div>
   <div class="icon" id="icon-releases" style="top:140px;left:12px;"><div class="icon-img">🎵</div><span>Releases</span></div>
   <div class="icon" id="icon-artists" style="top:232px;left:12px;"><div class="icon-img">🎤</div><span>Artists</span></div>
   <div class="icon" id="icon-mail" style="top:324px;left:12px;"><div class="icon-img">📧</div><span>Email</span></div>
   <div class="icon" id="icon-ig" style="top:416px;left:12px;"><div class="icon-img">📸</div><span>Instagram</span></div>
-  <!-- Col 2 -->
   <div class="icon" id="icon-cats" style="top:48px;left:100px;"><div class="icon-img">🐱</div><span>Cat Pictures</span></div>
   <div class="icon" id="icon-dumas" style="top:140px;left:100px;"><div class="icon-img"><img src="Char_DuMaS_Transparent.jpg" alt="DuMaS"></div><span>DuMaS</span></div>
   <div class="icon" id="icon-documents" style="top:232px;left:100px;"><div class="icon-img">📁</div><span>Documents</span></div>
-  <!-- Trash -->
+  <div class="icon" id="icon-database" style="top:324px;left:100px;"><div class="icon-img"><img src="Database_Logo.jpg" alt="DB"></div><span>Database</span></div>
   <div class="icon" id="icon-trash" style="bottom:40px;top:auto;right:12px;"><div class="icon-img">🗑️</div><span>Trash</span></div>
 </div>
 
-<!-- ══ WINDOWS ══ -->
+<!-- WINDOWS -->
 <div id="readme" class="window">
   <div class="window-bg"></div>
   <div class="title-bar"><span>README.TXT</span><span class="close-btn" onclick="closeWin('readme')">✖</span></div>
@@ -372,38 +402,43 @@ body { font-family:'Courier New',Courier,monospace; background:black; overflow:h
   </div>
 </div>
 
-<!-- ══ EMAIL PIN SCREEN ══ -->
+<!-- DATABASE WINDOW -->
+<div id="database-win" class="window">
+  <div class="window-bg"></div>
+  <div class="title-bar"><span>🗄️ DMS Database</span><span class="close-btn" onclick="closeWin('database-win')">✖</span></div>
+  <div class="content" style="padding:0;">
+    <div class="db-inner">
+      <img src="Database_Logo.jpg" alt="Database" class="db-logo">
+      <div class="db-search-row">
+        <input type="text" class="db-input" id="db-query" placeholder="Search records..." onkeydown="if(event.key==='Enter')dbSearch()">
+        <button class="db-search-btn" onclick="dbSearch()">Search</button>
+      </div>
+      <div class="db-results" id="db-results">Enter a search query above.</div>
+    </div>
+  </div>
+</div>
+
+<!-- EMAIL PIN SCREEN -->
 <div id="email-pin-screen">
   <div class="pin-box">
     <h2>📧 Mail — Input PIN</h2>
     <div class="pin-display">
-      <div class="pin-dot" id="pd0"></div>
-      <div class="pin-dot" id="pd1"></div>
-      <div class="pin-dot" id="pd2"></div>
-      <div class="pin-dot" id="pd3"></div>
-      <div class="pin-dot" id="pd4"></div>
-      <div class="pin-dot" id="pd5"></div>
+      <div class="pin-dot" id="pd0"></div><div class="pin-dot" id="pd1"></div>
+      <div class="pin-dot" id="pd2"></div><div class="pin-dot" id="pd3"></div>
+      <div class="pin-dot" id="pd4"></div><div class="pin-dot" id="pd5"></div>
     </div>
     <div id="pin-error">Incorrect PIN.</div>
     <div class="pin-keypad">
-      <div class="pin-key" onclick="pinPress('1')">1</div>
-      <div class="pin-key" onclick="pinPress('2')">2</div>
-      <div class="pin-key" onclick="pinPress('3')">3</div>
-      <div class="pin-key" onclick="pinPress('4')">4</div>
-      <div class="pin-key" onclick="pinPress('5')">5</div>
-      <div class="pin-key" onclick="pinPress('6')">6</div>
-      <div class="pin-key" onclick="pinPress('7')">7</div>
-      <div class="pin-key" onclick="pinPress('8')">8</div>
-      <div class="pin-key" onclick="pinPress('9')">9</div>
-      <div class="pin-key" onclick="pinBackspace()">⌫</div>
-      <div class="pin-key" onclick="pinPress('0')">0</div>
-      <div class="pin-key" onclick="pinSubmit()">↵</div>
+      <div class="pin-key" onclick="pinPress('1')">1</div><div class="pin-key" onclick="pinPress('2')">2</div><div class="pin-key" onclick="pinPress('3')">3</div>
+      <div class="pin-key" onclick="pinPress('4')">4</div><div class="pin-key" onclick="pinPress('5')">5</div><div class="pin-key" onclick="pinPress('6')">6</div>
+      <div class="pin-key" onclick="pinPress('7')">7</div><div class="pin-key" onclick="pinPress('8')">8</div><div class="pin-key" onclick="pinPress('9')">9</div>
+      <div class="pin-key" onclick="pinBackspace()">⌫</div><div class="pin-key" onclick="pinPress('0')">0</div><div class="pin-key" onclick="pinSubmit()">↵</div>
     </div>
     <button class="pin-cancel-btn" onclick="closePinScreen()">Cancel</button>
   </div>
 </div>
 
-<!-- ══ EMAIL APP ══ -->
+<!-- EMAIL APP -->
 <div id="mail" class="window">
   <div class="window-bg"></div>
   <div class="title-bar"><span>Mail — bthumper@divisemusicsolutions.com</span><span class="close-btn" onclick="closeWin('mail')">✖</span></div>
@@ -411,6 +446,7 @@ body { font-family:'Courier New',Courier,monospace; background:black; overflow:h
     <div class="email-sidebar">
       <div class="email-sidebar-title">Inbox</div>
       <div class="email-row unread" onclick="showEmail(this,'mochi-goodluck')"><div class="er-from">M. Ochi</div><div class="er-subj">Good Luck</div></div>
+      <div class="email-row unread" id="mochi-urgent-row" style="display:none;" onclick="showEmail(this,'mochi-urgent')"><div class="er-from">M. Ochi</div><div class="er-subj">our chance</div></div>
       <div class="email-row" onclick="showEmail(this,'corrupted')"><div class="er-from">System</div><div class="er-subj">Q3 Budget Review</div></div>
       <div class="email-row" onclick="showEmail(this,'corrupted')"><div class="er-from">HR Dept</div><div class="er-subj">Policy Update</div></div>
       <div class="email-row unread" onclick="showEmail(this,'mochi-checkin')"><div class="er-from">M. Ochi</div><div class="er-subj">checking in</div></div>
@@ -425,7 +461,7 @@ body { font-family:'Courier New',Courier,monospace; background:black; overflow:h
   </div>
 </div>
 
-<!-- ══ DOCUMENTS ══ -->
+<!-- DOCUMENTS -->
 <div id="documents" class="window">
   <div class="window-bg"></div>
   <div class="title-bar"><span>📁 Documents</span><span class="close-btn" onclick="closeWin('documents')">✖</span></div>
@@ -460,7 +496,7 @@ body { font-family:'Courier New',Courier,monospace; background:black; overflow:h
   </div>
 </div>
 
-<!-- ══ TRASH FOLDER ══ -->
+<!-- TRASH FOLDER -->
 <div id="trash-folder" class="window">
   <div class="window-bg"></div>
   <div class="title-bar"><span>🗑️ Trash</span><span class="close-btn" onclick="closeWin('trash-folder')">✖</span></div>
@@ -478,13 +514,12 @@ body { font-family:'Courier New',Courier,monospace; background:black; overflow:h
     <p>To: &nbsp;&nbsp;B. Thumper &lt;<a href="mailto:bthumper@divisemusicsolutions.com" style="color:#0000cc;">bthumper@divisemusicsolutions.com</a>&gt;</p>
     <p>From: &nbsp;<span class="email-redacted">©˙∆∆©˙˚∆˙∫∫˜</span> &lt;<span class="email-redacted">•••••••••••••••••</span>&gt;</p>
     <p>Date: &nbsp;&nbsp;<span class="email-redacted">••••••••••••••••••••</span></p>
-    <br>
-    <p>The only thing left to do is delete it.</p><br>
+    <br><p>The only thing left to do is delete it.</p><br>
     <p>Do it before it's too late.</p>
   </div>
 </div>
 
-<!-- ══ DUMAS AUTH LOGIN ══ -->
+<!-- DATABASE LOGIN -->
 <div id="login-screen">
   <div class="login-box">
     <h2>⚠ Authorization Required</h2>
@@ -496,7 +531,7 @@ body { font-family:'Courier New',Courier,monospace; background:black; overflow:h
   </div>
 </div>
 
-<!-- ══ ATTEMPT FAILED ══ -->
+<!-- ATTEMPT FAILED -->
 <div id="attempt-failed">
   <div class="af-box">
     <div class="af-bar"><span>⛔ Authorization Failed</span></div>
@@ -504,10 +539,24 @@ body { font-family:'Courier New',Courier,monospace; background:black; overflow:h
   </div>
 </div>
 
-<!-- ══ FRANTIC LAYER ══ -->
+<!-- ENCRYPTION BYPASS POPUP -->
+<div id="encrypt-popup">
+  <div class="ep-box">
+    <div class="ep-bar"><span>🔒 File Encrypted!</span><span style="cursor:pointer;" onclick="closeEncryptPopup()">✖</span></div>
+    <div class="ep-body">
+      <p>File Encrypted! Enter Code to Bypass:</p>
+      <input type="text" class="ep-input" id="ep-input" placeholder="enter code..." autocomplete="off">
+      <div id="ep-error">Incorrect code. Access denied.</div>
+      <button class="ep-submit" onclick="submitEncrypt()">Submit</button>
+      <button class="ep-cancel" onclick="closeEncryptPopup()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- FRANTIC LAYER -->
 <div id="frantic-layer"><div id="frantic-container"></div></div>
 
-<!-- ══ POPUP AD ══ -->
+<!-- POPUP AD -->
 <div id="popup-ad">
   <div class="popup-titlebar" id="popup-titlebar">
     <span>⚠️ New Release Alert!!! ⚠️</span>
@@ -520,7 +569,7 @@ body { font-family:'Courier New',Courier,monospace; background:black; overflow:h
   </div>
 </div>
 
-<!-- ══ DUMAS ASSISTANT (Clippy) ══ -->
+<!-- DUMAS ASSISTANT -->
 <div id="dumas-assistant">
   <div id="aim-bubble">
     <div class="aim-titlebar">
@@ -536,22 +585,18 @@ body { font-family:'Courier New',Courier,monospace; background:black; overflow:h
   </div>
 </div>
 
-<!-- ══ MAILING LIST WINDOW ══ -->
+<!-- MAILING LIST WINDOW -->
 <div id="mailing-win">
   <div class="mailing-titlebar">
     <span>📬 Join the Mailing List</span>
     <div class="mailing-close" onclick="closeMailingWin()">✖</div>
   </div>
   <div class="mailing-body">
-    <!-- MailerLite form -->
     <div id="mlb2-41171377" class="ml-form-embedContainer ml-subscribe-form ml-subscribe-form-41171377">
       <div class="ml-form-align-left">
         <div class="ml-form-embedWrapper embedForm">
           <div class="ml-form-embedBody ml-form-embedBodyDefault row-form">
-            <div class="ml-form-embedContent">
-              <h4>Join the DiVISE Music Solutions Email List!</h4>
-              <p>it's free!</p>
-            </div>
+            <div class="ml-form-embedContent"><h4>Join the DiVISE Music Solutions Email List!</h4><p>it's free!</p></div>
             <form class="ml-block-form" action="https://assets.mailerlite.com/jsonp/2340114/forms/187229924585637047/subscribe" data-code="" method="post" target="_blank">
               <div class="ml-form-formContent">
                 <div class="ml-form-fieldRow ml-last-item">
@@ -568,33 +613,37 @@ body { font-family:'Courier New',Courier,monospace; background:black; overflow:h
               <input type="hidden" name="anticsrf" value="true">
             </form>
           </div>
-          <div class="ml-form-successBody row-success" style="display:none;">
-            <div class="ml-form-successContent"><h4>Thank you!</h4><p>You have successfully joined our subscriber list.</p></div>
-          </div>
+          <div class="ml-form-successBody row-success" style="display:none;"><div class="ml-form-successContent"><h4>Thank you!</h4><p>You have successfully joined our subscriber list.</p></div></div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══ JUMPSCARE ══ -->
+<!-- JUMPSCARE -->
 <div id="jumpscare">
   <div id="js-bg"></div><div id="js-img"></div><div id="js-img2"></div>
   <div id="js-glitch"></div><div id="js-glitch2"></div>
   <div id="js-scanlines"></div><div id="js-noise"></div>
-  <div id="js-center-text">WHAT DO YOU THINK YOU'RE DOING?</div>
+  <div id="js-center-text">THERE IS NO ESCAPE</div>
   <div id="js-popup-container"></div>
   <div class="js-popup" id="jsp-main" style="top:50%;left:50%;transform:translate(-50%,-50%);min-width:260px;z-index:100010;">
-    <div class="js-popup-bar"><span>⛔ CRITICAL ERROR</span></div>
-    <div class="js-popup-body">wHaT dO yOu ThInK<br>yOu'Re DoInG?<br><br><button class="js-delete-btn" onclick="deleteAndClose()">Delete</button></div>
+    <div class="js-popup-bar"><span>⛔ THERE IS NO ESCAPE</span></div>
+    <div class="js-popup-body">THERE IS<br>NO ESCAPE<br><br><button class="js-delete-btn" onclick="deleteAndClose()">Delete</button></div>
   </div>
   <button id="js-close-btn" onclick="deleteAndClose()">[ DELETE ]</button>
 </div>
 
-<!-- ══ DARK PAGE ══ -->
+<!-- DARK PAGE -->
 <div id="dark-page">
   <span id="dark-page-back" onclick="closeDarkPage()">← back</span>
   <div class="dark-word" id="dark-word" onclick="revealWord()" ondblclick="revealWord()">butterfly</div>
+</div>
+
+<!-- DOS PAGE -->
+<div id="dos-page">
+  <span id="dos-back" onclick="closeDosPage()">← back</span>
+  <div id="dos-terminal"></div>
 </div>
 
 <div id="taskbar">DiVISE OS v1.0 &nbsp;|&nbsp; <span id="taskbar-status">Ready</span></div>
@@ -604,12 +653,11 @@ body { font-family:'Courier New',Courier,monospace; background:black; overflow:h
 function updateClock(){document.getElementById('clock').textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});}
 setInterval(updateClock,1000);updateClock();
 
-// ── BOOT with success animation ──
+// ── BOOT ──
 const bootMessages=['Initializing...','Reading documents folder…','Scanning user files…','Accessing private data…','Monitoring activity…','Loading DiVISE OS…'];
 let bw=0,gf1=false,gf2=false;
 const barEl=document.getElementById('bar'),statusEl=document.getElementById('boot-status'),titleEl=document.getElementById('boot-title');
 const bootEl=document.getElementById('boot'),flashEl=document.getElementById('boot-success-flash');
-
 const bootInt=setInterval(()=>{
   bw+=3;barEl.style.width=bw+'%';
   statusEl.textContent=bootMessages[Math.floor(bw/18)]||'Loading DiVISE OS…';
@@ -617,26 +665,11 @@ const bootInt=setInterval(()=>{
   if(bw>=68&&!gf2){gf2=true;titleEl.textContent='Installing DiVISE OS...';titleEl.classList.add('glitch');setTimeout(()=>{titleEl.textContent='Booting DiVISE OS...';titleEl.classList.remove('glitch');},180);}
   if(bw>=100){
     clearInterval(bootInt);
-    // Success sequence
-    statusEl.textContent='Welcome, B. Thumper.';
-    statusEl.classList.add('success');
-    titleEl.textContent='DiVISE OS Ready';
-    titleEl.style.color='#6c3cff';
+    statusEl.textContent='Welcome, B. Thumper.';statusEl.classList.add('success');
+    titleEl.textContent='DiVISE OS Ready';titleEl.style.color='#6c3cff';
     setTimeout(()=>{
-      // Purple flash
       flashEl.classList.add('flash');
-      setTimeout(()=>{
-        flashEl.classList.remove('flash');
-        setTimeout(()=>{
-          flashEl.classList.add('flash');
-          setTimeout(()=>{
-            flashEl.classList.remove('flash');
-            // Fade out boot screen
-            bootEl.classList.add('fade-out');
-            setTimeout(()=>{bootEl.style.display='none';showPopup();},650);
-          },100);
-        },120);
-      },150);
+      setTimeout(()=>{flashEl.classList.remove('flash');setTimeout(()=>{flashEl.classList.add('flash');setTimeout(()=>{flashEl.classList.remove('flash');bootEl.classList.add('fade-out');setTimeout(()=>{bootEl.style.display='none';showPopup();},650);},100);},120);},150);
     },600);
   }
 },80);
@@ -648,8 +681,8 @@ function showPopup(){
 }
 function closePopup(){
   document.getElementById('popup-ad').style.display='none';
-  // Trigger Clippy assistant after a short delay
-  setTimeout(startAssistant,800);
+  // Only show Clippy mailing list once
+  if(!mailingListShown){setTimeout(startMailingAssistant,800);}
 }
 
 // ── FILE MENU ──
@@ -676,29 +709,25 @@ function closeWin(id){
 // ── EMAIL PIN ──
 let pinValue='';
 const validPINs=['052226','52226'];
-
 function showEmailPin(){
   pinValue='';updatePinDots();
   document.getElementById('pin-error').style.display='none';
   document.getElementById('email-pin-screen').classList.add('active');
 }
 function closePinScreen(){document.getElementById('email-pin-screen').classList.remove('active');}
-function pinPress(d){
-  if(pinValue.length>=6)return;
-  pinValue+=d;updatePinDots();
-  if(pinValue.length===6)setTimeout(pinSubmit,200);
-}
+function pinPress(d){if(pinValue.length>=6)return;pinValue+=d;updatePinDots();if(pinValue.length===6)setTimeout(pinSubmit,200);}
 function pinBackspace(){pinValue=pinValue.slice(0,-1);updatePinDots();}
-function updatePinDots(){
-  for(let i=0;i<6;i++){
-    const dot=document.getElementById('pd'+i);
-    if(dot)dot.classList.toggle('filled',i<pinValue.length);
-  }
-}
+function updatePinDots(){for(let i=0;i<6;i++){const d=document.getElementById('pd'+i);if(d)d.classList.toggle('filled',i<pinValue.length);}}
 function pinSubmit(){
   if(validPINs.includes(pinValue)){
     closePinScreen();
+    // Reveal the urgent Ochi email (shown after DB login)
     setTimeout(()=>openWindow('mail'),150);
+    // Clippy reaction
+    setTimeout(()=>showAssistantMessage("Unusual email log in detected!\n\nYou appear to be remotely logged in to the DMS servers.\n\nLocating…",null,()=>{
+      // show progress bar then close
+      showAimProgress(4000,()=>closeAssistantAfterDelay(500));
+    }),1200);
   } else {
     document.getElementById('pin-error').style.display='block';
     pinValue='';updatePinDots();
@@ -708,30 +737,19 @@ function pinSubmit(){
 
 // ── EMAIL CONTENT ──
 const emailContent={
-  'mochi-goodluck':`<div class="eb-header">
-    <p><strong>From:</strong> M. Ochi &lt;mochi@divisemusicsolutions.com&gt;</p>
-    <p><strong>To:</strong> B. Thumper &lt;bthumper@divisemusicsolutions.com&gt;</p>
-    <p><strong>Subject:</strong> Good Luck</p>
-  </div><div class="eb-body">Buddy,
+  'mochi-goodluck':`<div class="eb-header"><p><strong>From:</strong> M. Ochi &lt;mochi@divisemusicsolutions.com&gt;</p><p><strong>To:</strong> B. Thumper &lt;bthumper@divisemusicsolutions.com&gt;</p><p><strong>Subject:</strong> Good Luck</p></div><div class="eb-body">Buddy,
 
 Sometimes it is best to cut your losses and move on. I've found that there is always hope in the <span class="dark-link" onclick="openDarkPage()">dark</span>.
 
 Your friend,
 M</div>`,
-  'mochi-checkin':`<div class="eb-header">
-    <p><strong>From:</strong> M. Ochi &lt;mochi@divisemusicsolutions.com&gt;</p>
-    <p><strong>To:</strong> B. Thumper &lt;bthumper@divisemusicsolutions.com&gt;</p>
-    <p><strong>Subject:</strong> checking in</p>
-  </div><div class="eb-body">Hey B —
+  'mochi-urgent':`<div class="eb-header"><p><strong>From:</strong> M. Ochi &lt;mochi@divisemusicsolutions.com&gt;</p><p><strong>To:</strong> B. Thumper &lt;bthumper@divisemusicsolutions.com&gt;</p><p><strong>Subject:</strong> our chance</p></div><div class="eb-body">Buddy — or whoever you are — this is our chance. We must delete The Character and I know how to destroy it. Find the answer by looking for me.</div>`,
+  'mochi-checkin':`<div class="eb-header"><p><strong>From:</strong> M. Ochi &lt;mochi@divisemusicsolutions.com&gt;</p><p><strong>To:</strong> B. Thumper &lt;bthumper@divisemusicsolutions.com&gt;</p><p><strong>Subject:</strong> checking in</p></div><div class="eb-body">Hey B —
 
 Haven't heard from you. Hope things are okay over there. Let me know if you need anything.
 
 — M</div>`,
-  'mochi-worry':`<div class="eb-header">
-    <p><strong>From:</strong> M. Ochi &lt;mochi@divisemusicsolutions.com&gt;</p>
-    <p><strong>To:</strong> B. Thumper &lt;bthumper@divisemusicsolutions.com&gt;</p>
-    <p><strong>Subject:</strong> worried</p>
-  </div><div class="eb-body">Buddy,
+  'mochi-worry':`<div class="eb-header"><p><strong>From:</strong> M. Ochi &lt;mochi@divisemusicsolutions.com&gt;</p><p><strong>To:</strong> B. Thumper &lt;bthumper@divisemusicsolutions.com&gt;</p><p><strong>Subject:</strong> worried</p></div><div class="eb-body">Buddy,
 
 I'm getting worried. The system reports are not looking good and I think you know why.
 
@@ -749,14 +767,26 @@ function showEmail(row,id){
 // ── DOCUMENTS ──
 function openCorruptedDoc(name){document.getElementById('corrupted-doc-title').textContent=name;openWindow('corrupted-doc');}
 
-// ── DARK PAGE ──
-function openDarkPage(){document.getElementById('dark-page').classList.add('active');document.getElementById('dark-word').classList.remove('revealed');}
-function closeDarkPage(){document.getElementById('dark-page').classList.remove('active');}
-function revealWord(){const w=document.getElementById('dark-word');w.classList.add('revealed');setTimeout(()=>w.classList.remove('revealed'),3000);}
+// ── DATABASE SEARCH ──
+function dbSearch(){
+  const q=(document.getElementById('db-query').value||'').trim().toLowerCase();
+  const res=document.getElementById('db-results');
+  if(!q){res.innerHTML='Enter a search query.';return;}
+  if(q==='mochi'||q==='m. ochi'||q==='ochi'){
+    res.innerHTML='> 1 result found:\n<span class="db-result-link" onclick="openDosPage()">the answer</span>';
+  } else {
+    res.innerHTML='> Record missing.';
+  }
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  const dbq=document.getElementById('db-query');
+  if(dbq)dbq.addEventListener('keydown',e=>{if(e.key==='Enter')dbSearch();});
+});
 
-// ── DUMAS AUTH LOGIN ──
-let dumasInTrash=false;
-function showLogin(){
+// ── DATABASE LOGIN ──
+let loginTarget=''; // 'database' or 'dumas'
+function showLogin(target){
+  loginTarget=target||'database';
   document.getElementById('login-name').value='';
   document.getElementById('login-pass').value='';
   document.getElementById('login-error').style.display='none';
@@ -769,7 +799,13 @@ function submitLogin(){
   const pass=document.getElementById('login-pass').value.trim();
   if(name.toLowerCase()==='buddy thumper'&&pass.toLowerCase()==='butterfly'){
     document.getElementById('login-screen').classList.remove('active');
-    dropDumasInTrash();
+    if(loginTarget==='database'){
+      openWindow('database-win');
+      // Reveal urgent Ochi email
+      document.getElementById('mochi-urgent-row').style.display='';
+      // Clippy says "You shouldn't be in there"
+      setTimeout(()=>showAssistantMessage("You shouldn't be in there…\n\nI know you aren't who you say you are.",null,()=>closeAssistantAfterDelay(3500)),800);
+    }
   } else {
     document.getElementById('login-error').style.display='block';
     setTimeout(()=>{
@@ -782,78 +818,231 @@ function closeAttemptFailed(){document.getElementById('attempt-failed').classLis
 document.getElementById('login-pass').addEventListener('keydown',e=>{if(e.key==='Enter')submitLogin();});
 document.getElementById('login-name').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('login-pass').focus();});
 
+// ── ENCRYPTION BYPASS ──
+let dumasInTrash=false;
+function showEncryptPopup(){
+  document.getElementById('ep-input').value='';
+  document.getElementById('ep-error').style.display='none';
+  document.getElementById('encrypt-popup').classList.add('active');
+  setTimeout(()=>document.getElementById('ep-input').focus(),200);
+}
+function closeEncryptPopup(){document.getElementById('encrypt-popup').classList.remove('active');}
+function submitEncrypt(){
+  const val=document.getElementById('ep-input').value.trim().toLowerCase();
+  if(val==='balderdash'){
+    closeEncryptPopup();
+    dropDumasInTrash();
+  } else {
+    document.getElementById('ep-error').style.display='block';
+    setTimeout(()=>document.getElementById('ep-error').style.display='none',2500);
+  }
+}
+document.getElementById('ep-input').addEventListener('keydown',e=>{if(e.key==='Enter')submitEncrypt();});
+
 function dropDumasInTrash(){
   if(dumasInTrash)return;
   dumasInTrash=true;
   const icon=document.getElementById('icon-dumas');
-  icon.classList.add('in-trash');
+  icon.classList.add('in-trash'); // hides it (display:none)
   const trashIcon=document.getElementById('icon-trash');
   trashIcon.classList.add('has-dumas');
   trashIcon.querySelector('.icon-img').textContent='🗑';
-  document.getElementById('taskbar-status').textContent='1 item in Trash. Use File → Empty Trash.';
-  // Add DuMaS into trash window
+  document.getElementById('taskbar-status').textContent='DuMaS moved to Trash.';
+  // Add to trash window
   const zone=document.getElementById('trash-drop-zone');
-  const df=document.createElement('div');
-  df.className='folder-item';
-  df.innerHTML=`<div class="fi-img" style="background:rgba(40,0,0,0.8);border-color:rgba(200,0,60,0.5);"><img src="Char_DuMaS_Transparent.jpg" alt="DuMaS" style="width:100%;height:100%;object-fit:cover;border-radius:10px;"></div><span style="color:#a00;">DuMaS</span>`;
+  const df=document.createElement('div');df.className='folder-item';
+  df.innerHTML=`<div class="fi-img" style="background:rgba(40,0,0,0.8);border-color:rgba(200,0,60,0.5);overflow:hidden;"><img src="Char_DuMaS_Transparent.jpg" alt="DuMaS" style="width:100%;height:100%;object-fit:cover;border-radius:10px;"></div><span style="color:#a00;">DuMaS</span>`;
   zone.appendChild(df);
-  // Frantic popups — then WAIT for Empty Trash
-  showFranticPopups();
+  // Clippy: final message with Empty Trash button
+  showAssistantMessage("Well I guess this is it…\n\nYou really are clever. There's only one thing left to do.",()=>{
+    // Button instead of choices
+    const choices=document.getElementById('aim-choices');
+    choices.style.display='flex';
+    const btn=document.createElement('button');
+    btn.className='aim-btn';
+    btn.style.background='#8b0000';btn.style.color='#fff';btn.style.borderColor='#fff #600 #600 #fff';
+    btn.textContent='Empty Trash';
+    btn.onclick=()=>{dismissAssistant();triggerJumpscare();};
+    choices.appendChild(btn);
+  });
 }
 
-// ── EMPTY TRASH ──
+// ── EMPTY TRASH (File menu) ──
 function emptyTrash(){
   closeFileMenu();
   if(dumasInTrash){triggerJumpscare();}
   else{document.getElementById('taskbar-status').textContent='Trash is already empty.';}
 }
 
-// ── FRANTIC POPUPS (after login, before jumpscare) ──
-const franticMsgs=['You don\'t know what you are doing','you don\'t KNOW what you are doing','YOU DON\'T KNOW WHAT YOU ARE DOING','yOu DoN\'t KnOw WhAt YoU aRe DoInG','you don\'t know. you don\'t know.','STOP. please.','what have you done','YOU DON\'T KNOW'];
-function showFranticPopups(){
-  const layer=document.getElementById('frantic-layer');
-  const container=document.getElementById('frantic-container');
-  layer.classList.add('active');layer.style.pointerEvents='all';
-  let count=0;
-  const iv=setInterval(()=>{
-    const p=document.createElement('div');
-    const maxX=Math.max(10,window.innerWidth-260),maxY=Math.max(10,window.innerHeight-110);
-    p.style.cssText=`position:absolute;left:${Math.random()*maxX}px;top:${Math.random()*maxY}px;background:#c0c0c0;border:3px solid;border-color:#fff #808080 #808080 #fff;box-shadow:4px 4px 0 #000;font-family:'Courier New',monospace;min-width:200px;z-index:${8600+count};animation:jsPopIn 0.15s cubic-bezier(.34,1.4,.64,1) forwards;`;
-    const msg=franticMsgs[Math.floor(Math.random()*franticMsgs.length)];
-    const barColors=['linear-gradient(90deg,#8b0000,#cc0000)','linear-gradient(90deg,#000080,#1084d0)'];
-    p.innerHTML=`<div style="background:${barColors[count%2]};color:#fff;padding:4px 8px;font-size:11px;font-weight:bold;display:flex;justify-content:space-between;"><span>⚠ Warning</span></div><div style="padding:10px 14px;color:#000;font-size:12px;font-weight:bold;text-align:center;">${msg}</div>`;
-    container.appendChild(p);
-    count++;
-    if(count>=10){
-      clearInterval(iv);
-      setTimeout(()=>{
-        layer.classList.remove('active');
-        layer.style.pointerEvents='none';
-        container.innerHTML='';
-        // Don't trigger jumpscare here — wait for Empty Trash
-      },1200);
+// ── DARK PAGE ──
+function openDarkPage(){document.getElementById('dark-page').classList.add('active');document.getElementById('dark-word').classList.remove('revealed');}
+function closeDarkPage(){document.getElementById('dark-page').classList.remove('active');}
+function revealWord(){const w=document.getElementById('dark-word');w.classList.add('revealed');setTimeout(()=>w.classList.remove('revealed'),3000);}
+
+// ── DOS PAGE ──
+function openDosPage(){
+  document.getElementById('dos-page').classList.add('active');
+  startDosSequence();
+}
+function closeDosPage(){document.getElementById('dos-page').classList.remove('active');}
+
+function startDosSequence(){
+  const term=document.getElementById('dos-terminal');
+  term.innerHTML='';
+  const lines=[
+    'C:\\> _',
+    'Loading…',
+    'Loading…',
+    'Connecting to remote server…',
+    'Logging in…',
+    'Verifying credentials…',
+    'Verifying…',
+    'Access granted.',
+    'Decrypting archive…',
+    'Decrypting…',
+    'Scanning records…',
+    '> WARNING: Unauthorized access detected',
+    '> Proceeding anyway…',
+    '',
+    '-------------------------------------------',
+    '',
+    'If you have found this then you are in too',
+    'deep already. Unfortunately the only answer',
+    'we have is balderdash. Good luck.',
+    '',
+    '-------------------------------------------',
+    '',
+  ];
+  let i=0;
+  function nextLine(){
+    if(i>=lines.length){
+      // blinking cursor at end
+      const cur=document.createElement('span');cur.className='dos-cursor';
+      term.appendChild(cur);
+      return;
     }
-  },180);
+    const span=document.createElement('span');
+    span.className='dos-line';
+    span.textContent=lines[i];
+    term.appendChild(span);
+    term.scrollTop=term.scrollHeight;
+    i++;
+    const delay=i<4?400:i<8?300:i<12?250:i<14?150:50;
+    setTimeout(nextLine,delay+(Math.random()*100));
+  }
+  nextLine();
+}
+
+// ── ASSISTANTS / CLIPPY ──
+let mailingListShown=false;
+let assistantTyping=false;
+let assistantAutoClose=null;
+
+function showAssistantMessage(text,onDone,afterTyping){
+  clearTimeout(assistantAutoClose);
+  const assistant=document.getElementById('dumas-assistant');
+  const aimText=document.getElementById('aim-text');
+  const choices=document.getElementById('aim-choices');
+  assistant.classList.add('active');
+  choices.style.display='none';choices.innerHTML='';
+  aimText.innerHTML='<span id="aim-cursor"></span>';
+  typeAimText(text,0,()=>{
+    if(onDone)onDone();
+    if(afterTyping)afterTyping();
+  });
+}
+
+function closeAssistantAfterDelay(ms){
+  clearTimeout(assistantAutoClose);
+  assistantAutoClose=setTimeout(()=>{
+    document.getElementById('dumas-assistant').classList.remove('active');
+  },ms||2000);
+}
+
+function startMailingAssistant(){
+  if(mailingListShown)return;
+  mailingListShown=true;
+  const text="Hi there! Welcome to the new DMS website! My name is <NO NAME FOUND> and I am here to assist you.\n\nWould you like to join our mailing list?";
+  showAssistantMessage(text,()=>{
+    setTimeout(()=>addAimChoice('YES!',()=>showMailingList()),600);
+    setTimeout(()=>addAimChoice('YES!',()=>showMailingList()),1400);
+  });
+}
+
+function showAimProgress(duration,cb){
+  const choices=document.getElementById('aim-choices');
+  choices.style.display='block';choices.innerHTML='';
+  const wrap=document.createElement('div');wrap.className='aim-progress-wrap';
+  const bar=document.createElement('div');bar.className='aim-progress-bar';
+  wrap.appendChild(bar);choices.appendChild(wrap);
+  let start=null;
+  function step(ts){
+    if(!start)start=ts;
+    const pct=Math.min(100,(ts-start)/duration*100);
+    bar.style.width=pct+'%';
+    if(pct<100)requestAnimationFrame(step);
+    else{if(cb)cb();}
+  }
+  requestAnimationFrame(step);
+}
+
+function addAimChoice(label,cb){
+  const choices=document.getElementById('aim-choices');
+  choices.style.display='flex';
+  const btn=document.createElement('button');
+  btn.className='aim-btn';btn.textContent=label;
+  btn.onclick=()=>{clearTimeout(assistantAutoClose);cb();};
+  choices.appendChild(btn);
+}
+
+function showMailingList(){
+  document.getElementById('mailing-win').classList.add('active');
+  document.getElementById('aim-choices').style.display='none';
+}
+function closeMailingWin(){document.getElementById('mailing-win').classList.remove('active');}
+
+function dismissAssistant(){
+  document.getElementById('dumas-assistant').classList.remove('active');
+  document.getElementById('mailing-win').classList.remove('active');
+  clearTimeout(assistantAutoClose);
+}
+function toggleAssistantBubble(){
+  const b=document.getElementById('aim-bubble');
+  b.style.display=b.style.display==='none'?'block':'block';
+}
+
+let typingTimer=null;
+function typeAimText(text,idx,cb){
+  const el=document.getElementById('aim-text');
+  let cursor=document.getElementById('aim-cursor');
+  if(idx===0){el.innerHTML='';cursor=document.createElement('span');cursor.id='aim-cursor';el.appendChild(cursor);}
+  if(!cursor)cursor=document.getElementById('aim-cursor');
+  if(idx>=text.length){if(cb)cb();return;}
+  const char=text[idx];
+  if(char==='\n'){el.insertBefore(document.createElement('br'),cursor);}
+  else{el.insertBefore(document.createTextNode(char),cursor);}
+  const delay=char===' '?40:Math.random()*30+18;
+  typingTimer=setTimeout(()=>typeAimText(text,idx+1,cb),delay);
 }
 
 // ── JUMPSCARE ──
 const jsMessages=[
-  ["WHAT DO YOU THINK YOU'RE DOING?",'⚠ System Warning'],
-  ["wHaT dO yOu ThInK yOu'Re DoInG?",'!! wARNING !!'],
-  ["what do you think you're doing?",'error: 0x000000'],
-  ["WHAT DO YOU THINK\nYOU'RE DOING??",'⛔ ACCESS DENIED'],
-  ["WhAt Do YoU tHiNk\nyOu'Re DoInG",'sYSteM fAiLuRE'],
-  ['W H A T   A R E\nY O U   D O I N G','▓▓ CORRUPTED ▓▓'],
-  ['stop. STOP. stop.','!! ALERT !!'],
-  ["DON'T.",'⚠ ⚠ ⚠'],
-  ["you shouldn't have done that",'fatal error'],
-  ["WHAT DO YOU THINK YOU'RE DOING?",'DiVISE OS'],
-  ['i told you.','— system'],
-  ['wHY wOuLd YoU dO tHaT','warning.exe'],
-  ['DELETE DELETE DELETE','⛔ CRITICAL'],
-  ["it's too late now",'err: unknown'],
-  ['WHAT. ARE. YOU. DOING.','!! !! !!'],
-  ["yOu CaN'T UnDo ThIs",'sys_halt'],
+  ["THERE IS NO ESCAPE",'⛔ NO ESCAPE'],
+  ["tHeRe Is No EsCaPe",'!! NO ESCAPE !!'],
+  ["there is no escape",'error: 0x000000'],
+  ["THERE IS\nNO ESCAPE",'⛔ TRAPPED'],
+  ["ThErE iS nO eScApE",'sYSteM fAiLuRE'],
+  ['T H E R E   I S\nN O   E S C A P E','▓▓ NO ESCAPE ▓▓'],
+  ['no escape. NO ESCAPE.','!! ALERT !!'],
+  ["YOU CANNOT ESCAPE",'⚠ ⚠ ⚠'],
+  ["there is no escape from this",'fatal error'],
+  ["THERE IS NO ESCAPE",'DiVISE OS'],
+  ['there is nowhere to go.','— system'],
+  ['yOu CaNnOt EsCaPe','warning.exe'],
+  ['NO ESCAPE NO ESCAPE','⛔ CRITICAL'],
+  ["it's already too late",'err: unknown'],
+  ['THERE. IS. NO. ESCAPE.','!! !! !!'],
+  ["THERE IS NO ESCAPE",'sys_halt'],
 ];
 let popupCount=0,spawnInterval=null,centerMoveInterval=null;
 
@@ -865,14 +1054,14 @@ function triggerJumpscare(){
 function spawnFranticPopups(){
   const container=document.getElementById('js-popup-container');
   const centerText=document.getElementById('js-center-text');
-  const centerTexts=["WHAT DO YOU THINK YOU'RE DOING?","wHaT dO yOu ThInK yOu'Re DoInG?",'WHAT ARE YOU DOING','stop. STOP.','W H A T',"D O N ' T",'WHY?','you know what you did.'];
+  const centerTexts=['THERE IS NO ESCAPE','tHeRe Is No EsCaPe','T H E R E   I S   N O   E S C A P E','there is no escape','NO ESCAPE','YOU CANNOT ESCAPE','NOWHERE TO GO','it ends here.'];
   let ctIdx=0;
   centerMoveInterval=setInterval(()=>{
     ctIdx=(ctIdx+1)%centerTexts.length;
     centerText.textContent=centerTexts[ctIdx];
     centerText.style.color=Math.random()>0.6?'#fff':'#ff0000';
     centerText.style.letterSpacing=(Math.random()*8+1)+'px';
-    centerText.style.fontSize=(Math.random()*30+20)+'px';
+    centerText.style.fontSize=(Math.random()*28+18)+'px';
   },300);
   let delay=600;
   function scheduleNext(){
@@ -882,28 +1071,25 @@ function spawnFranticPopups(){
   scheduleNext();
   setTimeout(startChaosMode,2000);
 }
-function spawnOnePopup(container){
-  const msgData=jsMessages[Math.floor(Math.random()*jsMessages.length)];
-  const popup=document.createElement('div');
-  popup.className='js-popup';
-  const maxX=Math.max(10,window.innerWidth-260),maxY=Math.max(10,window.innerHeight-130);
-  popup.style.cssText=`left:${Math.random()*maxX}px;top:${Math.random()*maxY}px;position:absolute;animation-delay:0s;z-index:${100000+popupCount};`;
-  const barColors=['linear-gradient(90deg,#8b0000,#cc0000)','linear-gradient(90deg,#000080,#1084d0)','linear-gradient(90deg,#500,#900)','linear-gradient(90deg,#300060,#8b0000)'];
-  popup.innerHTML=`<div class="js-popup-bar" style="background:${barColors[Math.floor(Math.random()*barColors.length)]}"><span>${msgData[1]}</span><span style="cursor:pointer;font-weight:bold;" onclick="this.closest('.js-popup').remove()">✖</span></div><div class="js-popup-body">${msgData[0].replace(/\n/g,'<br>')}</div>`;
-  container.appendChild(popup);
+function spawnOnePopup(c){
+  const m=jsMessages[Math.floor(Math.random()*jsMessages.length)];
+  const p=document.createElement('div');p.className='js-popup';
+  const maxX=Math.max(10,window.innerWidth-240),maxY=Math.max(10,window.innerHeight-130);
+  p.style.cssText=`left:${Math.random()*maxX}px;top:${Math.random()*maxY}px;position:absolute;z-index:${100000+popupCount};`;
+  const cols=['linear-gradient(90deg,#8b0000,#cc0000)','linear-gradient(90deg,#000080,#1084d0)','linear-gradient(90deg,#500,#900)','linear-gradient(90deg,#300060,#8b0000)'];
+  p.innerHTML=`<div class="js-popup-bar" style="background:${cols[Math.floor(Math.random()*cols.length)]}"><span>${m[1]}</span><span style="cursor:pointer;" onclick="this.closest('.js-popup').remove()">✖</span></div><div class="js-popup-body">${m[0].replace(/\n/g,'<br>')}</div>`;
+  c.appendChild(p);
 }
 function startChaosMode(){
   setInterval(()=>{
-    const popups=document.querySelectorAll('#js-popup-container .js-popup');
-    if(!popups.length)return;
-    const count=Math.min(popups.length,Math.ceil(Math.random()*4));
-    for(let i=0;i<count;i++){
-      const p=popups[Math.floor(Math.random()*popups.length)];
-      const maxX=Math.max(10,window.innerWidth-260),maxY=Math.max(10,window.innerHeight-130);
+    const ps=document.querySelectorAll('#js-popup-container .js-popup');if(!ps.length)return;
+    const n=Math.min(ps.length,Math.ceil(Math.random()*4));
+    for(let i=0;i<n;i++){
+      const p=ps[Math.floor(Math.random()*ps.length)];
+      const maxX=Math.max(10,window.innerWidth-240),maxY=Math.max(10,window.innerHeight-130);
       p.style.left=(Math.random()*maxX)+'px';p.style.top=(Math.random()*maxY)+'px';
-      const msg=jsMessages[Math.floor(Math.random()*jsMessages.length)];
-      const body=p.querySelector('.js-popup-body');
-      if(body)body.innerHTML=msg[0].replace(/\n/g,'<br>');
+      const m=jsMessages[Math.floor(Math.random()*jsMessages.length)];
+      const b=p.querySelector('.js-popup-body');if(b)b.innerHTML=m[0].replace(/\n/g,'<br>');
     }
   },350);
 }
@@ -911,97 +1097,6 @@ function deleteAndClose(){
   clearTimeout(spawnInterval);clearInterval(centerMoveInterval);
   window.close();
   document.getElementById('jumpscare').innerHTML='<div style="position:absolute;inset:0;background:#000;display:flex;align-items:center;justify-content:center;font-family:Courier New,monospace;color:#333;font-size:14px;letter-spacing:2px;">deleted.</div>';
-}
-
-// ── DUMAS ASSISTANT (Clippy) ──
-let assistantShown=false,assistantDismissed=false,assistantTypingDone=false;
-let assistantRepeatTimer=null;
-
-const aimFullText="Hi there! Welcome to the new DMS website! My name is <NO NAME FOUND> and I am here to assist you.\n\nWould you like to join our mailing list?";
-
-function startAssistant(){
-  if(assistantDismissed)return;
-  assistantShown=true;
-  document.getElementById('dumas-assistant').classList.add('active');
-  document.getElementById('aim-choices').style.display='none';
-  document.getElementById('aim-choices').innerHTML='';
-  assistantTypingDone=false;
-  typeAimText(aimFullText,0,()=>{
-    assistantTypingDone=true;
-    // Show YES buttons one after another
-    setTimeout(()=>addAimChoice('YES!',()=>showMailingList()),600);
-    setTimeout(()=>addAimChoice('YES!',()=>showMailingList()),1400);
-  });
-  // Auto-close if not interacted with in 30 seconds
-  clearTimeout(assistantRepeatTimer);
-  assistantRepeatTimer=setTimeout(()=>{
-    if(!assistantDismissed){
-      document.getElementById('dumas-assistant').classList.remove('active');
-      // Re-appear after 45 seconds
-      assistantRepeatTimer=setTimeout(()=>startAssistant(),45000);
-    }
-  },30000);
-}
-
-function typeAimText(text,idx,cb){
-  const el=document.getElementById('aim-text');
-  const cursor=document.getElementById('aim-cursor');
-  if(idx===0){el.innerHTML='';el.appendChild(cursor);}
-  if(idx>=text.length){if(cb)cb();return;}
-  const char=text[idx];
-  const node=document.createTextNode(char==='\n'?'\n':char);
-  // Insert before cursor
-  if(char==='\n'){
-    el.insertBefore(document.createElement('br'),cursor);
-  } else {
-    el.insertBefore(node,cursor);
-  }
-  const delay=char==='<'||char==='>'?30:char===' '?40:Math.random()*35+20;
-  setTimeout(()=>typeAimText(text,idx+1,cb),delay);
-}
-
-function addAimChoice(label,cb){
-  const choices=document.getElementById('aim-choices');
-  choices.style.display='flex';
-  const btn=document.createElement('button');
-  btn.className='aim-btn';
-  btn.textContent=label;
-  btn.onclick=()=>{clearTimeout(assistantRepeatTimer);cb();};
-  choices.appendChild(btn);
-}
-
-function showMailingList(){
-  document.getElementById('mailing-win').classList.add('active');
-  clearTimeout(assistantRepeatTimer);
-  // Keep assistant visible but hide choices
-  document.getElementById('aim-choices').style.display='none';
-  // Auto-close mailing win if not used in 60s
-  setTimeout(()=>{
-    if(document.getElementById('mailing-win').classList.contains('active')){
-      closeMailingWin();
-    }
-  },60000);
-}
-
-function closeMailingWin(){
-  document.getElementById('mailing-win').classList.remove('active');
-  // Re-show assistant periodically
-  if(!assistantDismissed){
-    assistantRepeatTimer=setTimeout(()=>startAssistant(),60000);
-  }
-}
-
-function dismissAssistant(){
-  document.getElementById('dumas-assistant').classList.remove('active');
-  document.getElementById('mailing-win').classList.remove('active');
-  clearTimeout(assistantRepeatTimer);
-  // Come back after a while
-  assistantRepeatTimer=setTimeout(()=>startAssistant(),90000);
-}
-
-function toggleAssistantBubble(){
-  const bubble=document.getElementById('aim-bubble');
-  bubble.style.display=bubble.style.display==='none'?'block':'block';
 }
 
 // ── WINDOW DRAG ──
@@ -1027,6 +1122,7 @@ const iconActions={
   'icon-dumas':    ()=>openWindow('dumas-win'),
   'icon-trash':    ()=>openWindow('trash-folder'),
   'icon-documents':()=>openWindow('documents'),
+  'icon-database': ()=>showLogin('database'),
 };
 const trashIcon=document.getElementById('icon-trash');
 const trashFolderWin=document.getElementById('trash-folder');
@@ -1038,24 +1134,35 @@ document.querySelectorAll('#desktop .icon').forEach(icon=>{
   icon.addEventListener('mousedown',start);icon.addEventListener('touchstart',start,{passive:true});
   function start(e){if(icon.classList.contains('in-trash'))return;moved=false;active=true;const p=pos(e);sX=p.x;sY=p.y;const r=icon.getBoundingClientRect();sL=r.left;sT=r.top;icon.style.position='absolute';icon.style.bottom='auto';icon.style.right='auto';icon.style.left=sL+'px';icon.style.top=sT+'px';zTop++;icon.style.zIndex=zTop;}
   document.addEventListener('mousemove',drag);document.addEventListener('touchmove',drag,{passive:false});
-  function drag(e){if(!active)return;const p=pos(e);const dx=p.x-sX,dy=p.y-sY;if(Math.abs(dx)>5||Math.abs(dy)>5)moved=true;if(moved){icon.style.left=(sL+dx)+'px';icon.style.top=(sT+dy)+'px';if(e.cancelable)e.preventDefault();const tr=trashIcon.getBoundingClientRect();const ix=sL+dx+36,iy=sT+dy+36;const overTrash=ix>tr.left&&ix<tr.right&&iy>tr.top&&iy<tr.bottom;if(overTrash){trashIcon.classList.add('drag-over');}else{trashIcon.classList.remove('drag-over');}if(trashFolderWin.classList.contains('open')){const tw=trashFolderWin.getBoundingClientRect();if(ix>tw.left&&ix<tw.right&&iy>tw.top&&iy<tw.bottom){trashFolderWin.classList.add('drop-highlight');}else{trashFolderWin.classList.remove('drop-highlight');}}}}
+  function drag(e){
+    if(!active)return;const p=pos(e);const dx=p.x-sX,dy=p.y-sY;
+    if(Math.abs(dx)>5||Math.abs(dy)>5)moved=true;
+    if(moved){
+      icon.style.left=(sL+dx)+'px';icon.style.top=(sT+dy)+'px';
+      if(e.cancelable)e.preventDefault();
+      const tr=trashIcon.getBoundingClientRect();const ix=sL+dx+36,iy=sT+dy+36;
+      const overT=ix>tr.left&&ix<tr.right&&iy>tr.top&&iy<tr.bottom;
+      if(overT)trashIcon.classList.add('drag-over');else trashIcon.classList.remove('drag-over');
+      if(trashFolderWin.classList.contains('open')){const tw=trashFolderWin.getBoundingClientRect();const overW=ix>tw.left&&ix<tw.right&&iy>tw.top&&iy<tw.bottom;if(overW)trashFolderWin.classList.add('drop-highlight');else trashFolderWin.classList.remove('drop-highlight');}
+    }
+  }
   document.addEventListener('mouseup',end);document.addEventListener('touchend',end);
   function end(){
     trashIcon.classList.remove('drag-over');trashFolderWin.classList.remove('drop-highlight');
     if(moved&&!icon.classList.contains('in-trash')){
-      const iRect=icon.getBoundingClientRect();const cx=iRect.left+iRect.width/2,cy=iRect.top+iRect.height/2;
+      const r=icon.getBoundingClientRect();const cx=r.left+r.width/2,cy=r.top+r.height/2;
       const tr=trashIcon.getBoundingClientRect();const tw=trashFolderWin.getBoundingClientRect();
-      const overTrashIcon=cx>tr.left&&cx<tr.right&&cy>tr.top&&cy<tr.bottom;
-      const overTrashWin=trashFolderWin.classList.contains('open')&&cx>tw.left&&cx<tw.right&&cy>tw.top&&cy<tw.bottom;
-      if(overTrashIcon||overTrashWin){
-        if(icon.id==='icon-dumas'){active=false;icon.style.left=sL+'px';icon.style.top=sT+'px';showLogin();return;}
-        else if(trashableIcons.has(icon.id)){
+      const overT=cx>tr.left&&cx<tr.right&&cy>tr.top&&cy<tr.bottom;
+      const overW=trashFolderWin.classList.contains('open')&&cx>tw.left&&cx<tw.right&&cy>tw.top&&cy<tw.bottom;
+      if(overT||overW){
+        if(icon.id==='icon-dumas'){
+          active=false;icon.style.left=sL+'px';icon.style.top=sT+'px';
+          showEncryptPopup();return;
+        } else if(trashableIcons.has(icon.id)){
           icon.classList.add('in-trash');
           const zone=document.getElementById('trash-drop-zone');
           const rawImg=icon.querySelector('.icon-img img');
-          let inner='';
-          if(rawImg){inner=`<img src="${rawImg.src}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:10px;">`;}
-          else{inner=icon.querySelector('.icon-img').textContent||'📄';}
+          let inner=rawImg?`<img src="${rawImg.src}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:10px;">`:icon.querySelector('.icon-img').textContent||'📄';
           const label=icon.querySelector('span').textContent;
           const df=document.createElement('div');df.className='folder-item';
           df.innerHTML=`<div class="fi-img">${inner}</div><span>${label}</span>`;
@@ -1063,17 +1170,17 @@ document.querySelectorAll('#desktop .icon').forEach(icon=>{
         }
       }
     }
-    if(!moved&&active){const action=iconActions[icon.id];if(action)action();}
+    if(!moved&&active){const a=iconActions[icon.id];if(a)a();}
     active=false;
   }
 });
 
-// Load MailerLite scripts
+// ── MAILERLITE ──
 function loadMailerLite(){
   if(document.getElementById('ml-script'))return;
   const s=document.createElement('script');s.id='ml-script';
   s.src='https://groot.mailerlite.com/js/w/webforms.min.js?vb397d78ebaa8a0f631d35384c46d781b';
-  s.type='text/javascript';document.head.appendChild(s);
+  document.head.appendChild(s);
   fetch('https://assets.mailerlite.com/jsonp/2340114/forms/187229924585637047/takel').catch(()=>{});
 }
 loadMailerLite();
