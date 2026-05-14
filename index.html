@@ -1095,8 +1095,110 @@ function startChaosMode(){
 }
 function deleteAndClose(){
   clearTimeout(spawnInterval);clearInterval(centerMoveInterval);
-  window.close();
-  document.getElementById('jumpscare').innerHTML='<div style="position:absolute;inset:0;background:#000;display:flex;align-items:center;justify-content:center;font-family:Courier New,monospace;color:#333;font-size:14px;letter-spacing:2px;">deleted.</div>';
+
+  // Phase 1: wipe the jumpscare to black
+  const js=document.getElementById('jumpscare');
+  js.innerHTML='<div id="delete-screen" style="position:absolute;inset:0;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:Courier New,monospace;gap:0;"></div>';
+
+  const scr=document.getElementById('delete-screen');
+
+  // Phase 2: type "deleting..." with each element of the page "disappearing"
+  const deletionTargets=[
+    'Wallpaper…','Desktop icons…','Menu bar…','Open windows…',
+    'System fonts…','Boot sequence…','Email records…','Music files…',
+    'Artist profiles…','Database entries…','Documents…','User data…',
+    'Operating system…','DiVISE OS…','Everything.'
+  ];
+
+  let lineIdx=0;
+  function addDeleteLine(text,color,delay,cb){
+    setTimeout(()=>{
+      const p=document.createElement('div');
+      p.style.cssText=`font-size:clamp(11px,2.5vw,14px);color:${color||'#333'};letter-spacing:2px;opacity:0;transition:opacity 0.3s;padding:2px 0;`;
+      p.textContent='> Deleting '+text;
+      scr.appendChild(p);
+      requestAnimationFrame(()=>requestAnimationFrame(()=>p.style.opacity='1'));
+      if(cb)setTimeout(cb,300);
+    },delay);
+  }
+
+  // Also physically remove visible elements from the real page as we go
+  const realTargets=[
+    '#bg','#menubar','#desktop',
+    '#readme','#releases','#artists','#frnz-page','#plodes-page',
+    '#dumas-win','#database-win','#mail','#documents','#corrupted-doc',
+    '#notes-doc','#trash-folder','#trash-email','#login-screen',
+    '#attempt-failed','#encrypt-popup','#frantic-layer',
+    '#dumas-assistant','#mailing-win','#dark-page','#dos-page','#taskbar'
+  ];
+
+  let totalDelay=0;
+  deletionTargets.forEach((label,i)=>{
+    totalDelay+=i<5?220:i<10?180:150;
+    const t=totalDelay;
+    addDeleteLine(label, i<12?'#444':'#666', t);
+    // remove a real element in parallel
+    if(realTargets[i]){
+      setTimeout(()=>{
+        const el=document.querySelector(realTargets[i]);
+        if(el){el.style.transition='opacity 0.2s';el.style.opacity='0';setTimeout(()=>el.remove(),220);}
+      },t);
+    }
+  });
+
+  // Phase 3: "Deleting M. Ochi…" — the twist reveal
+  totalDelay+=400;
+  addDeleteLine('M. Ochi…','#6c3cff',totalDelay);
+
+  // Phase 4: pause, then the Mochi message fades in
+  totalDelay+=1200;
+  setTimeout(()=>{
+    scr.innerHTML=''; // clear the deletion list
+    scr.style.justifyContent='center';
+
+    // Mochi's message types out
+    const msg=document.createElement('div');
+    msg.style.cssText='max-width:min(480px,88vw);text-align:center;font-family:Courier New,monospace;line-height:2;padding:20px;';
+    scr.appendChild(msg);
+
+    const lines=[
+      {text:'From: M. Ochi <mochi@divisemusicsolutions.com>', color:'#444', size:'11px', delay:0},
+      {text:'', color:'#000', size:'11px', delay:400},
+      {text:'Thank you.', color:'#6c3cff', size:'clamp(20px,5vw,28px)', delay:800, bold:true},
+      {text:'', color:'#000', size:'11px', delay:1200},
+      {text:'You did exactly what I needed.', color:'#555', size:'13px', delay:1600},
+      {text:'', color:'#000', size:'11px', delay:2100},
+      {text:'The Character is gone.', color:'#555', size:'13px', delay:2500},
+      {text:'And so is everything else.', color:'#555', size:'13px', delay:3200},
+      {text:'', color:'#000', size:'11px', delay:3800},
+      {text:'Sorry about your computer.', color:'#444', size:'12px', delay:4400},
+      {text:'', color:'#000', size:'11px', delay:5000},
+      {text:'— M', color:'#6c3cff', size:'13px', delay:5400, bold:true},
+    ];
+
+    lines.forEach(l=>{
+      setTimeout(()=>{
+        const p=document.createElement('p');
+        p.style.cssText=`font-size:${l.size};color:${l.color};letter-spacing:${l.bold?'2px':'1px'};font-weight:${l.bold?'bold':'normal'};opacity:0;transition:opacity 0.6s;margin:2px 0;`;
+        p.textContent=l.text;
+        msg.appendChild(p);
+        requestAnimationFrame(()=>requestAnimationFrame(()=>p.style.opacity='1'));
+      },l.delay);
+    });
+
+    // Phase 5: after all lines shown, screen slowly fades to pure black — nothing left
+    setTimeout(()=>{
+      const fade=document.createElement('div');
+      fade.style.cssText='position:fixed;inset:0;background:#000;opacity:0;transition:opacity 4s ease;z-index:999999;';
+      document.body.appendChild(fade);
+      requestAnimationFrame(()=>requestAnimationFrame(()=>fade.style.opacity='1'));
+      // After full blackout: one last line in the void
+      setTimeout(()=>{
+        document.body.innerHTML='<div style="position:fixed;inset:0;background:#000;display:flex;align-items:center;justify-content:center;"><span style="font-family:Courier New,monospace;font-size:11px;color:#111;letter-spacing:3px;">divisemusicsolutions.com</span></div>';
+      },4500);
+    },6800);
+
+  },totalDelay);
 }
 
 // ── WINDOW DRAG ──
