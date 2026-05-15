@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>DiVISE OS</title>
+<link rel="icon" type="image/jpeg" href="Char_DuMaS_Transparent.jpg">
 <style>
 @import url("https://assets.mlcdn.com/fonts.css?version=1778566");
 * { box-sizing:border-box; margin:0; padding:0; }
@@ -330,12 +331,12 @@ body { font-family:'Courier New',Courier,monospace; background:black; overflow:h
 <!-- DESKTOP -->
 <div id="desktop">
   <div class="icon" id="icon-readme" style="top:48px;left:12px;"><div class="icon-img">📄</div><span>README.TXT</span></div>
-  <div class="icon" id="icon-releases" style="top:140px;left:12px;"><div class="icon-img">🎵</div><span>Releases</span></div>
-  <div class="icon" id="icon-artists" style="top:232px;left:12px;"><div class="icon-img">🎤</div><span>Artists</span></div>
+  <div class="icon" id="icon-artists" style="top:140px;left:12px;"><div class="icon-img">🎤</div><span>Artists</span></div>
+  <div class="icon" id="icon-releases" style="top:232px;left:12px;"><div class="icon-img">🎵</div><span>Releases</span></div>
   <div class="icon" id="icon-mail" style="top:324px;left:12px;"><div class="icon-img">📧</div><span>Email</span></div>
   <div class="icon" id="icon-ig" style="top:416px;left:12px;"><div class="icon-img">📸</div><span>Instagram</span></div>
   <div class="icon" id="icon-cats" style="top:48px;left:100px;"><div class="icon-img">🐱</div><span>Cat Pictures</span></div>
-  <div class="icon" id="icon-dumas" style="top:140px;left:100px;"><div class="icon-img"><img src="Char_DuMaS_Transparent.jpg" alt="DuMaS"></div><span>DuMaS</span></div>
+  <div class="icon" id="icon-dumas" style="top:140px;left:100px;"><div class="icon-img"><img src="Char_DuMaS_Transparent.jpg" alt="DuMaS"></div><span></span></div>
   <div class="icon" id="icon-documents" style="top:232px;left:100px;"><div class="icon-img">📁</div><span>Documents</span></div>
   <div class="icon" id="icon-database" style="top:324px;left:100px;"><div class="icon-img"><img src="Database_Logo.jpg" alt="DB"></div><span>Database</span></div>
   <div class="icon" id="icon-trash" style="bottom:40px;top:auto;right:12px;"><div class="icon-img">🗑️</div><span>Trash</span></div>
@@ -706,10 +707,18 @@ function closeWin(id){
   setTimeout(()=>{win.style.display='none';win.classList.remove('dragged');win.style.left='';win.style.top='';win.style.transform='';},230);
 }
 
+// ── STATE FLAGS ──
+let isAuthenticated=false;       // Buddy Thumper login
+let isPinUnlocked=false;         // email PIN
+let pinClippyShown=false;        // PIN clippy fires once
+let dbClippyShown=false;         // DB clippy fires once
+let dumasDragCount=0;            // how many times dumas dragged toward trash
+
 // ── EMAIL PIN ──
 let pinValue='';
 const validPINs=['052226','52226'];
 function showEmailPin(){
+  if(isPinUnlocked){openWindow('mail');return;}
   pinValue='';updatePinDots();
   document.getElementById('pin-error').style.display='none';
   document.getElementById('email-pin-screen').classList.add('active');
@@ -720,20 +729,25 @@ function pinBackspace(){pinValue=pinValue.slice(0,-1);updatePinDots();}
 function updatePinDots(){for(let i=0;i<6;i++){const d=document.getElementById('pd'+i);if(d)d.classList.toggle('filled',i<pinValue.length);}}
 function pinSubmit(){
   if(validPINs.includes(pinValue)){
+    isPinUnlocked=true;
     closePinScreen();
-    // Reveal the urgent Ochi email (shown after DB login)
     setTimeout(()=>openWindow('mail'),150);
-    // Clippy reaction
-    setTimeout(()=>showAssistantMessage("Unusual email log in detected!\n\nYou appear to be remotely logged in to the DMS servers.\n\nLocating…",null,()=>{
-      // show progress bar then close
-      showAimProgress(4000,()=>closeAssistantAfterDelay(500));
-    }),1200);
+    if(!pinClippyShown){
+      pinClippyShown=true;
+      setTimeout(()=>showAssistantMessage("Unusual email log in detected!\n\nYou appear to be remotely logged in to the DMS servers.\n\nLocating…",null,()=>{
+        showAimProgress(4000,()=>closeAssistantAfterDelay(500));
+      }),1200);
+    }
   } else {
     document.getElementById('pin-error').style.display='block';
     pinValue='';updatePinDots();
     setTimeout(()=>document.getElementById('pin-error').style.display='none',2000);
   }
 }
+// Outside-click closes PIN screen
+document.getElementById('email-pin-screen').addEventListener('click',e=>{
+  if(e.target===document.getElementById('email-pin-screen'))closePinScreen();
+});
 
 // ── EMAIL CONTENT ──
 const emailContent={
@@ -784,9 +798,13 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 
 // ── DATABASE LOGIN ──
-let loginTarget=''; // 'database' or 'dumas'
+let loginTarget='';
 function showLogin(target){
   loginTarget=target||'database';
+  if(isAuthenticated){
+    if(loginTarget==='database')openWindow('database-win');
+    return;
+  }
   document.getElementById('login-name').value='';
   document.getElementById('login-pass').value='';
   document.getElementById('login-error').style.display='none';
@@ -798,13 +816,15 @@ function submitLogin(){
   const name=document.getElementById('login-name').value.trim();
   const pass=document.getElementById('login-pass').value.trim();
   if(name.toLowerCase()==='buddy thumper'&&pass.toLowerCase()==='butterfly'){
+    isAuthenticated=true;
     document.getElementById('login-screen').classList.remove('active');
     if(loginTarget==='database'){
       openWindow('database-win');
-      // Reveal urgent Ochi email
       document.getElementById('mochi-urgent-row').style.display='';
-      // Clippy says "You shouldn't be in there"
-      setTimeout(()=>showAssistantMessage("You shouldn't be in there…\n\nI know you aren't who you say you are.",null,()=>closeAssistantAfterDelay(3500)),800);
+      if(!dbClippyShown){
+        dbClippyShown=true;
+        setTimeout(()=>showAssistantMessage("You shouldn't be in there…\n\nI know you aren't who you say you are.",null,()=>closeAssistantAfterDelay(3500)),800);
+      }
     }
   } else {
     document.getElementById('login-error').style.display='block';
@@ -817,7 +837,10 @@ function submitLogin(){
 function closeAttemptFailed(){document.getElementById('attempt-failed').classList.remove('active');}
 document.getElementById('login-pass').addEventListener('keydown',e=>{if(e.key==='Enter')submitLogin();});
 document.getElementById('login-name').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('login-pass').focus();});
-
+// Outside-click closes login screen
+document.getElementById('login-screen').addEventListener('click',e=>{
+  if(e.target===document.getElementById('login-screen'))cancelLogin();
+});
 // ── ENCRYPTION BYPASS ──
 let dumasInTrash=false;
 function showEncryptPopup(){
@@ -838,6 +861,46 @@ function submitEncrypt(){
   }
 }
 document.getElementById('ep-input').addEventListener('keydown',e=>{if(e.key==='Enter')submitEncrypt();});
+document.getElementById('encrypt-popup').addEventListener('click',e=>{
+  if(e.target===document.getElementById('encrypt-popup'))closeEncryptPopup();
+});
+
+// Called every time DuMaS is dragged toward trash
+function onDumasDragAttempt(){
+  dumasDragCount++;
+  if(dumasDragCount===1){
+    showAssistantMessage("Lol why would you want to do that?\n\nI'm the only one that can keep this whole system running.",null,null);
+    return false; // block the encrypt popup this time
+  }
+  if(dumasDragCount===3){
+    showAssistantMessage("I am not a soulless machine you know… I feel things and right now I am feeling:",null,()=>{
+      showAimProgress(2200,()=>{
+        // append the feeling after bar
+        const choices=document.getElementById('aim-choices');
+        choices.style.display='block';
+        const p=document.createElement('div');
+        p.style.cssText='padding:6px 10px 8px;background:#fff;color:#000;font-size:13px;font-weight:bold;letter-spacing:1px;text-align:center;border-top:1px solid #ccc;';
+        p.textContent='Slightly irritated.';
+        choices.appendChild(p);
+      });
+    });
+    return false;
+  }
+  if(dumasDragCount===5){
+    showAssistantMessage("I am not a soulless machine you know… I feel things and right now I am feeling:",null,()=>{
+      showAimProgress(2200,()=>{
+        const choices=document.getElementById('aim-choices');
+        choices.style.display='block';
+        const p=document.createElement('div');
+        p.style.cssText='padding:6px 10px 8px;background:#fff;color:#8b0000;font-size:14px;font-weight:bold;letter-spacing:2px;text-align:center;border-top:1px solid #ccc;';
+        p.textContent='VERY irritated.';
+        choices.appendChild(p);
+      });
+    });
+    return false;
+  }
+  return true; // proceed to encrypt popup
+}
 
 function dropDumasInTrash(){
   if(dumasInTrash)return;
@@ -1096,110 +1159,162 @@ function startChaosMode(){
 function deleteAndClose(){
   clearTimeout(spawnInterval);clearInterval(centerMoveInterval);
 
-  // Phase 1: wipe the jumpscare to black
+  // Clear jumpscare, go to black CRT screen
   const js=document.getElementById('jumpscare');
-  js.innerHTML='<div id="delete-screen" style="position:absolute;inset:0;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:Courier New,monospace;gap:0;"></div>';
+  js.style.background='#000';
+  js.innerHTML=`
+    <div id="crt-wrap" style="position:absolute;inset:0;display:flex;flex-direction:column;overflow:hidden;background:#000;">
+      <!-- CRT scanline overlay -->
+      <div style="position:absolute;inset:0;pointer-events:none;z-index:10;
+        background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.18) 3px,rgba(0,0,0,0.18) 4px);"></div>
+      <!-- flicker vignette -->
+      <div id="crt-flicker" style="position:absolute;inset:0;pointer-events:none;z-index:11;
+        background:radial-gradient(ellipse at center,transparent 60%,rgba(0,0,0,0.7) 100%);
+        animation:crtFlicker 0.12s steps(1) infinite;"></div>
+      <div id="del-terminal" style="flex:1;overflow-y:auto;padding:clamp(14px,4vw,32px);
+        font-family:'Courier New',Courier,monospace;font-size:clamp(11px,2.2vw,14px);
+        color:#33ff33;line-height:1.8;position:relative;z-index:5;"></div>
+    </div>
+    <style>
+      @keyframes crtFlicker{0%{opacity:1}50%{opacity:0.92}75%{opacity:1}90%{opacity:0.96}100%{opacity:1}}
+      @keyframes mochiReveal{from{opacity:0;letter-spacing:12px}to{opacity:1;letter-spacing:2px}}
+      @keyframes scanDown{from{background-position:0 0}to{background-position:0 100vh}}
+    </style>`;
 
-  const scr=document.getElementById('delete-screen');
+  const term=document.getElementById('del-terminal');
 
-  // Phase 2: type "deleting..." with each element of the page "disappearing"
-  const deletionTargets=[
-    'Wallpaper…','Desktop icons…','Menu bar…','Open windows…',
-    'System fonts…','Boot sequence…','Email records…','Music files…',
-    'Artist profiles…','Database entries…','Documents…','User data…',
-    'Operating system…','DiVISE OS…','Everything.'
-  ];
-
-  let lineIdx=0;
-  function addDeleteLine(text,color,delay,cb){
-    setTimeout(()=>{
-      const p=document.createElement('div');
-      p.style.cssText=`font-size:clamp(11px,2.5vw,14px);color:${color||'#333'};letter-spacing:2px;opacity:0;transition:opacity 0.3s;padding:2px 0;`;
-      p.textContent='> Deleting '+text;
-      scr.appendChild(p);
-      requestAnimationFrame(()=>requestAnimationFrame(()=>p.style.opacity='1'));
-      if(cb)setTimeout(cb,300);
-    },delay);
-  }
-
-  // Also physically remove visible elements from the real page as we go
-  const realTargets=[
-    '#bg','#menubar','#desktop',
-    '#readme','#releases','#artists','#frnz-page','#plodes-page',
-    '#dumas-win','#database-win','#mail','#documents','#corrupted-doc',
-    '#notes-doc','#trash-folder','#trash-email','#login-screen',
-    '#attempt-failed','#encrypt-popup','#frantic-layer',
-    '#dumas-assistant','#mailing-win','#dark-page','#dos-page','#taskbar'
+  // Deletion lines — each removes a real page element in parallel
+  const deletionLines=[
+    {text:'> INITIATING SYSTEM PURGE…',           color:'#33ff33', id:null},
+    {text:'> Deleting wallpaper…',                color:'#2ade2a', id:'#bg'},
+    {text:'> Deleting desktop icons…',            color:'#2ade2a', id:'#desktop'},
+    {text:'> Deleting menu bar…',                 color:'#2ade2a', id:'#menubar'},
+    {text:'> Deleting open windows…',             color:'#2ade2a', id:null, multi:['#readme','#releases','#artists','#frnz-page','#plodes-page','#dumas-win','#database-win','#mail','#documents','#corrupted-doc','#notes-doc','#trash-folder','#trash-email']},
+    {text:'> Deleting email records…',            color:'#2ade2a', id:'#email-pin-screen'},
+    {text:'> Deleting database entries…',         color:'#2ade2a', id:'#login-screen'},
+    {text:'> Deleting user credentials…',         color:'#2ade2a', id:'#attempt-failed'},
+    {text:'> Deleting music files…',              color:'#2ade2a', id:'#frantic-layer'},
+    {text:'> Deleting artist profiles…',          color:'#2ade2a', id:'#dumas-assistant'},
+    {text:'> Deleting mailing list…',             color:'#2ade2a', id:'#mailing-win'},
+    {text:'> Deleting documents…',               color:'#2ade2a', id:'#dark-page'},
+    {text:'> Deleting system fonts…',             color:'#2ade2a', id:'#dos-page'},
+    {text:'> Deleting DiVISE OS…',               color:'#2ade2a', id:'#taskbar'},
+    {text:'> Deleting boot sequence…',            color:'#2ade2a', id:'#boot'},
+    {text:'',                                     color:'#000',    id:null},
+    {text:'> ALL RECORDS PURGED.',                color:'#ff3333', id:null},
+    {text:'',                                     color:'#000',    id:null},
+    {text:'> PROCESS COMPLETE.',                  color:'#33ff33', id:null},
+    {text:'',                                     color:'#000',    id:null},
   ];
 
   let totalDelay=0;
-  deletionTargets.forEach((label,i)=>{
-    totalDelay+=i<5?220:i<10?180:150;
+  deletionLines.forEach((line,i)=>{
+    totalDelay += i===0?600: i<3?280: i<14?220: i<16?180:300;
     const t=totalDelay;
-    addDeleteLine(label, i<12?'#444':'#666', t);
-    // remove a real element in parallel
-    if(realTargets[i]){
-      setTimeout(()=>{
-        const el=document.querySelector(realTargets[i]);
-        if(el){el.style.transition='opacity 0.2s';el.style.opacity='0';setTimeout(()=>el.remove(),220);}
-      },t);
-    }
+    setTimeout(()=>{
+      const span=document.createElement('div');
+      span.style.cssText=`color:${line.color};opacity:0;transition:opacity 0.25s;`;
+      span.textContent=line.text;
+      term.appendChild(span);
+      requestAnimationFrame(()=>requestAnimationFrame(()=>span.style.opacity='1'));
+      term.scrollTop=term.scrollHeight;
+      // Remove real elements
+      if(line.id){const el=document.querySelector(line.id);if(el){el.style.transition='opacity 0.18s';el.style.opacity='0';setTimeout(()=>el.remove(),200);}}
+      if(line.multi){line.multi.forEach(sel=>{const el=document.querySelector(sel);if(el){el.style.transition='opacity 0.18s';el.style.opacity='0';setTimeout(()=>el.remove(),200);}});}
+    },t);
   });
 
-  // Phase 3: "Deleting M. Ochi…" — the twist reveal
-  totalDelay+=400;
-  addDeleteLine('M. Ochi…','#6c3cff',totalDelay);
-
-  // Phase 4: pause, then the Mochi message fades in
-  totalDelay+=1200;
+  // ── THE REVEAL ──
+  totalDelay+=900;
   setTimeout(()=>{
-    scr.innerHTML=''; // clear the deletion list
-    scr.style.justifyContent='center';
+    const wrap=document.getElementById('crt-wrap');
+    if(!wrap)return;
 
-    // Mochi's message types out
-    const msg=document.createElement('div');
-    msg.style.cssText='max-width:min(480px,88vw);text-align:center;font-family:Courier New,monospace;line-height:2;padding:20px;';
-    scr.appendChild(msg);
+    // Clear terminal, keep scanlines
+    term.innerHTML='';
+    term.style.display='flex';
+    term.style.flexDirection='column';
+    term.style.alignItems='center';
+    term.style.justifyContent='center';
+    term.style.minHeight='100%';
+    term.style.padding='clamp(20px,6vw,60px)';
 
-    const lines=[
-      {text:'From: M. Ochi <mochi@divisemusicsolutions.com>', color:'#444', size:'11px', delay:0},
-      {text:'', color:'#000', size:'11px', delay:400},
-      {text:'Thank you.', color:'#6c3cff', size:'clamp(20px,5vw,28px)', delay:800, bold:true},
-      {text:'', color:'#000', size:'11px', delay:1200},
-      {text:'You did exactly what I needed.', color:'#555', size:'13px', delay:1600},
-      {text:'', color:'#000', size:'11px', delay:2100},
-      {text:'The Character is gone.', color:'#555', size:'13px', delay:2500},
-      {text:'And so is everything else.', color:'#555', size:'13px', delay:3200},
-      {text:'', color:'#000', size:'11px', delay:3800},
-      {text:'Sorry about your computer.', color:'#444', size:'12px', delay:4400},
-      {text:'', color:'#000', size:'11px', delay:5000},
-      {text:'— M', color:'#6c3cff', size:'13px', delay:5400, bold:true},
-    ];
-
-    lines.forEach(l=>{
+    // Horizontal rule CRT-style
+    function addLine(text,css,delay){
       setTimeout(()=>{
-        const p=document.createElement('p');
-        p.style.cssText=`font-size:${l.size};color:${l.color};letter-spacing:${l.bold?'2px':'1px'};font-weight:${l.bold?'bold':'normal'};opacity:0;transition:opacity 0.6s;margin:2px 0;`;
-        p.textContent=l.text;
-        msg.appendChild(p);
-        requestAnimationFrame(()=>requestAnimationFrame(()=>p.style.opacity='1'));
-      },l.delay);
+        const d=document.createElement('div');
+        d.style.cssText=`font-family:'Courier New',monospace;opacity:0;transition:opacity 0.5s;${css}`;
+        d.innerHTML=text;
+        term.appendChild(d);
+        requestAnimationFrame(()=>requestAnimationFrame(()=>d.style.opacity='1'));
+        term.scrollTop=term.scrollHeight;
+      },delay);
+    }
+
+    addLine('─────────────────────────────────────',
+      'color:#1a661a;font-size:clamp(10px,2vw,13px);letter-spacing:1px;width:100%;text-align:center;',0);
+
+    addLine('INCOMING TRANSMISSION',
+      'color:#33ff33;font-size:clamp(11px,2.5vw,14px);letter-spacing:4px;text-align:center;margin:12px 0 4px;',300);
+
+    addLine('FROM: M. OCHI &lt;mochi@divisemusicsolutions.com&gt;',
+      'color:#1a881a;font-size:clamp(9px,2vw,12px);letter-spacing:2px;text-align:center;margin-bottom:4px;',700);
+
+    addLine('─────────────────────────────────────',
+      'color:#1a661a;font-size:clamp(10px,2vw,13px);letter-spacing:1px;width:100%;text-align:center;margin-bottom:24px;',1000);
+
+    // The big THANK YOU — delayed for impact
+    setTimeout(()=>{
+      const ty=document.createElement('div');
+      ty.style.cssText=`font-family:'Courier New',monospace;color:#33ff33;
+        font-size:clamp(36px,10vw,80px);font-weight:bold;letter-spacing:2px;
+        text-align:center;margin:10px 0 20px;opacity:0;
+        text-shadow:0 0 20px #33ff33,0 0 40px #1a991a;
+        animation:mochiReveal 1.2s ease forwards;`;
+      ty.textContent='THANK YOU.';
+      term.appendChild(ty);
+      term.scrollTop=term.scrollHeight;
+    },1600);
+
+    addLine('',  'height:8px;',2900);
+
+    // Message lines — typed out one by one
+    const msgLines=[
+      {t:'You did exactly what I needed.',      delay:3000, color:'#aaff88'},
+      {t:'',                                    delay:3700, color:'#000'},
+      {t:'The Character is gone.',              delay:4100, color:'#aaff88'},
+      {t:'',                                    delay:4600, color:'#000'},
+      {t:'And so is everything else.',          delay:5000, color:'#ff8844'},
+      {t:'',                                    delay:5800, color:'#000'},
+      {t:'Sorry about your computer.',          delay:6400, color:'#886644'},
+      {t:'',                                    delay:7000, color:'#000'},
+      {t:'— M',                                 delay:7500, color:'#33ff33'},
+    ];
+    msgLines.forEach(l=>{
+      addLine(l.t,
+        `color:${l.color};font-size:clamp(12px,2.5vw,16px);letter-spacing:2px;text-align:center;line-height:1.6;`,
+        l.delay);
     });
 
-    // Phase 5: after all lines shown, screen slowly fades to pure black — nothing left
+    addLine('─────────────────────────────────────',
+      'color:#1a661a;font-size:clamp(10px,2vw,13px);letter-spacing:1px;width:100%;text-align:center;margin-top:24px;',8200);
+
+    // Phase: fade everything to black
     setTimeout(()=>{
       const fade=document.createElement('div');
-      fade.style.cssText='position:fixed;inset:0;background:#000;opacity:0;transition:opacity 4s ease;z-index:999999;';
+      fade.style.cssText='position:fixed;inset:0;background:#000;opacity:0;transition:opacity 5s ease;z-index:999999;pointer-events:none;';
       document.body.appendChild(fade);
       requestAnimationFrame(()=>requestAnimationFrame(()=>fade.style.opacity='1'));
-      // After full blackout: one last line in the void
       setTimeout(()=>{
-        document.body.innerHTML='<div style="position:fixed;inset:0;background:#000;display:flex;align-items:center;justify-content:center;"><span style="font-family:Courier New,monospace;font-size:11px;color:#111;letter-spacing:3px;">divisemusicsolutions.com</span></div>';
-      },4500);
-    },6800);
+        document.body.innerHTML=`<div style="position:fixed;inset:0;background:#000;display:flex;align-items:center;justify-content:center;">
+          <span style="font-family:'Courier New',monospace;font-size:11px;color:#0a1a0a;letter-spacing:4px;">divisemusicsolutions.com</span>
+        </div>`;
+      },5200);
+    },9400);
 
   },totalDelay);
 }
+
 
 // ── WINDOW DRAG ──
 function makeDraggable(el,handle){
@@ -1259,7 +1374,9 @@ document.querySelectorAll('#desktop .icon').forEach(icon=>{
       if(overT||overW){
         if(icon.id==='icon-dumas'){
           active=false;icon.style.left=sL+'px';icon.style.top=sT+'px';
-          showEncryptPopup();return;
+          const proceed=onDumasDragAttempt();
+          if(proceed)showEncryptPopup();
+          return;
         } else if(trashableIcons.has(icon.id)){
           icon.classList.add('in-trash');
           const zone=document.getElementById('trash-drop-zone');
