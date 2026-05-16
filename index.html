@@ -150,6 +150,24 @@ body { font-family:'Courier New',Courier,monospace; background:black; overflow:h
 #ep-error { color:#8b0000; font-size:11px; margin-top:6px; display:none; text-align:center; font-weight:bold; }
 .ep-cancel { background:none; border:none; color:#666; font-size:11px; cursor:pointer; font-family:'Courier New',monospace; display:block; width:100%; text-align:center; margin-top:6px; }
 
+/* ── DINER PAGE ── */
+#diner-page { display:none; position:fixed; inset:0; background:#fdf6e3; z-index:88889; flex-direction:column; overflow-y:auto; }
+#diner-page.active { display:flex; }
+#diner-back { position:fixed; top:10px; left:14px; font-size:11px; color:#888; cursor:pointer; font-family:'Courier New',monospace; background:#fdf6e3; padding:2px 6px; border-radius:4px; z-index:88890; }
+.diner-inner { max-width:500px; margin:0 auto; padding:40px 20px 60px; font-family:Georgia,serif; color:#2a1a0a; }
+.diner-logo { text-align:center; margin-bottom:8px; }
+.diner-logo h1 { font-size:clamp(28px,7vw,48px); font-family:Georgia,serif; color:#8b2500; text-shadow:2px 2px 0 rgba(0,0,0,0.1); }
+.diner-logo p { font-size:13px; color:#888; font-style:italic; margin-bottom:4px; }
+.diner-divider { border:none; border-top:3px double #8b2500; margin:16px 0; }
+.diner-section-title { font-size:18px; font-weight:bold; color:#8b2500; text-transform:uppercase; letter-spacing:2px; margin:24px 0 10px; border-bottom:1px solid #d4a56a; padding-bottom:4px; }
+.diner-item { margin-bottom:16px; }
+.diner-item-row { display:flex; justify-content:space-between; align-items:baseline; gap:8px; }
+.diner-item-name { font-weight:bold; font-size:14px; color:#2a1a0a; }
+.diner-item-price { font-size:13px; color:#8b2500; white-space:nowrap; font-weight:bold; }
+.diner-item-desc { font-size:12px; color:#666; font-style:italic; margin-top:2px; line-height:1.5; }
+.diner-item-desc strong { color:#8b2500; font-style:normal; }
+.diner-footer { text-align:center; font-size:11px; color:#aaa; margin-top:32px; font-style:italic; }
+
 /* ── DOS PAGE ── */
 #dos-page { display:none; position:fixed; inset:0; background:#000; z-index:88888; flex-direction:column; overflow:hidden; }
 #dos-page.active { display:flex; }
@@ -456,6 +474,7 @@ body { font-family:'Courier New',Courier,monospace; background:black; overflow:h
       <div class="email-row" onclick="showEmail(this,'corrupted')"><div class="er-from">Admin</div><div class="er-subj">Meeting Notes 4/18</div></div>
       <div class="email-row unread" onclick="showEmail(this,'mochi-worry')"><div class="er-from">M. Ochi</div><div class="er-subj">worried</div></div>
       <div class="email-row" onclick="showEmail(this,'corrupted')"><div class="er-from">Payroll</div><div class="er-subj">Direct Deposit Conf.</div></div>
+      <div class="email-row unread" onclick="showEmail(this,'lunch-invite')"><div class="er-from">M. Ochi</div><div class="er-subj">Lunch run — Pal's Diner</div></div>
       <div class="email-row" onclick="showEmail(this,'corrupted')"><div class="er-from">Server</div><div class="er-subj">Backup Log</div></div>
     </div>
     <div class="email-body-pane" id="email-body"><p style="color:#aaa;font-style:italic;padding-top:60px;text-align:center;">Select a message.</p></div>
@@ -491,9 +510,13 @@ body { font-family:'Courier New',Courier,monospace; background:black; overflow:h
     <p><strong>4/19</strong></p>
     <p>Last night I ran the module and didn't like what I saw. Random data everywhere and it seemed to be upset.</p><br>
     <p><strong>4/23</strong></p>
-    <p>More problems, less answers as to why. Data going missing or just all around corrupted.</p><br>
+    <p>More problems, less answers as to why. Data going missing or just all around corrupted. M says not to worry. M says a lot of things.</p><br>
+    <p><strong>4/30</strong></p>
+    <p>Lunch at Pal's with M. She wouldn't stop talking about the mac and cheese. Something's off with her. She kept saying "the answer is always on the menu." I don't know what that means.</p><br>
     <p><strong>5/1</strong></p>
-    <p>Need to change my passwords as I don't think my data is secure anymore. Changed my email pin to the date FRNZ Season 1 remastered drops.</p>
+    <p>Need to change my passwords as I don't think my data is secure anymore. Changed my email pin to the date FRNZ Season 1 remastered drops.</p><br>
+    <p><strong>5/3</strong></p>
+    <p>I looked up M in the database today. I shouldn't have.</p>
   </div>
 </div>
 
@@ -621,6 +644,83 @@ body { font-family:'Courier New',Courier,monospace; background:black; overflow:h
   </div>
 </div>
 
+<!-- DINER MENU PAGE -->
+<div id="diner-page">
+  <span id="diner-back" onclick="closeDinerPage()">← back</span>
+  <div class="diner-inner">
+    <div class="diner-logo">
+      <h1>🍳 Pal's Diner</h1>
+      <p>Est. 1987 &nbsp;·&nbsp; "Come hungry, leave happy"</p>
+      <p style="font-size:11px;color:#aaa;">Account #: PD-0091 | Vendor Record</p>
+    </div>
+    <hr class="diner-divider">
+
+    <div class="diner-section-title">Breakfast All Day</div>
+    <div class="diner-item">
+      <div class="diner-item-row"><span class="diner-item-name">Classic Pancakes</span><span class="diner-item-price">$9.99</span></div>
+      <div class="diner-item-desc">Three fluffy buttermilk pancakes served with maple syrup and butter.</div>
+    </div>
+    <div class="diner-item">
+      <div class="diner-item-row"><span class="diner-item-name">The Full Stack</span><span class="diner-item-price">$13.49</span></div>
+      <div class="diner-item-desc">Two eggs any style, bacon, sausage, hash browns, and toast. A real commitment.</div>
+    </div>
+    <div class="diner-item">
+      <div class="diner-item-row"><span class="diner-item-name">Veggie Omelette</span><span class="diner-item-price">$11.25</span></div>
+      <div class="diner-item-desc">Bell peppers, mushrooms, spinach, and feta. Served with fruit cup.</div>
+    </div>
+
+    <div class="diner-section-title">Lunch &amp; Dinner</div>
+    <div class="diner-item">
+      <div class="diner-item-row"><span class="diner-item-name">Turkey Dinner Plate</span><span class="diner-item-price">$15.99</span></div>
+      <div class="diner-item-desc">Roast turkey, mashed potatoes, green beans, and cranberry sauce. Just like home.</div>
+    </div>
+    <div class="diner-item">
+      <div class="diner-item-row"><span class="diner-item-name">Pal's Classic Burger</span><span class="diner-item-price">$13.75</span></div>
+      <div class="diner-item-desc">Half-pound beef patty, lettuce, tomato, pickles, house sauce. Add cheese $1.</div>
+    </div>
+    <div class="diner-item">
+      <div class="diner-item-row"><span class="diner-item-name">Grilled Cheese &amp; Tomato Soup</span><span class="diner-item-price">$10.50</span></div>
+      <div class="diner-item-desc">Sourdough with three-cheese blend, paired with our house tomato bisque.</div>
+    </div>
+    <div class="diner-item">
+      <div class="diner-item-row"><span class="diner-item-name">Chicken Pot Pie</span><span class="diner-item-price">$14.25</span></div>
+      <div class="diner-item-desc">Golden flaky crust, slow-cooked chicken and vegetables in a creamy broth.</div>
+    </div>
+    <div class="diner-item">
+      <div class="diner-item-row"><span class="diner-item-name">Mac &amp; Cheese</span><span class="diner-item-price">$12.99</span></div>
+      <div class="diner-item-desc">Creamy four-cheese sauce, cavatappi pasta, breadcrumb crust. <strong>Add extra bacon if you're dangerous.</strong></div>
+    </div>
+    <div class="diner-item">
+      <div class="diner-item-row"><span class="diner-item-name">BLT Club</span><span class="diner-item-price">$11.99</span></div>
+      <div class="diner-item-desc">Triple-decker with bacon, lettuce, tomato, and mayo on toasted white.</div>
+    </div>
+
+    <div class="diner-section-title">Sides</div>
+    <div class="diner-item">
+      <div class="diner-item-row"><span class="diner-item-name">French Fries</span><span class="diner-item-price">$4.50</span></div>
+    </div>
+    <div class="diner-item">
+      <div class="diner-item-row"><span class="diner-item-name">Onion Rings</span><span class="diner-item-price">$5.25</span></div>
+    </div>
+    <div class="diner-item">
+      <div class="diner-item-row"><span class="diner-item-name">Side Salad</span><span class="diner-item-price">$4.00</span></div>
+    </div>
+
+    <div class="diner-section-title">Dessert</div>
+    <div class="diner-item">
+      <div class="diner-item-row"><span class="diner-item-name">Slice of Pie</span><span class="diner-item-price">$5.99</span></div>
+      <div class="diner-item-desc">Ask your server for today's selection.</div>
+    </div>
+    <div class="diner-item">
+      <div class="diner-item-row"><span class="diner-item-name">Milkshake</span><span class="diner-item-price">$6.75</span></div>
+      <div class="diner-item-desc">Vanilla, chocolate, or strawberry.</div>
+    </div>
+
+    <hr class="diner-divider">
+    <div class="diner-footer">Pal's Diner · Open 7am–10pm daily · Cash &amp; card accepted<br>We reserve the right to refuse service to anyone who doesn't appreciate good food.</div>
+  </div>
+</div>
+
 <!-- JUMPSCARE -->
 <div id="jumpscare">
   <div id="js-bg"></div><div id="js-img"></div><div id="js-img2"></div>
@@ -735,7 +835,15 @@ function pinSubmit(){
     if(!pinClippyShown){
       pinClippyShown=true;
       setTimeout(()=>showAssistantMessage("Unusual email log in detected!\n\nYou appear to be remotely logged in to the DMS servers.\n\nLocating…",null,()=>{
-        showAimProgress(4000,()=>closeAssistantAfterDelay(500));
+        showAimProgress(4000,()=>{
+          // Append "There you are :)" after bar
+          const choices=document.getElementById('aim-choices');
+          const p=document.createElement('div');
+          p.style.cssText='padding:8px 10px 6px;background:#fff;color:#000;font-size:13px;font-weight:bold;text-align:center;border-top:1px solid #ccc;';
+          p.textContent='There you are :)';
+          choices.appendChild(p);
+          closeAssistantAfterDelay(2500);
+        });
       }),1200);
     }
   } else {
@@ -751,25 +859,43 @@ document.getElementById('email-pin-screen').addEventListener('click',e=>{
 
 // ── EMAIL CONTENT ──
 const emailContent={
-  'mochi-goodluck':`<div class="eb-header"><p><strong>From:</strong> M. Ochi &lt;mochi@divisemusicsolutions.com&gt;</p><p><strong>To:</strong> B. Thumper &lt;bthumper@divisemusicsolutions.com&gt;</p><p><strong>Subject:</strong> Good Luck</p></div><div class="eb-body">Buddy,
+  'mochi-goodluck':`<div class="eb-header"><p><strong>From:</strong> M. Ochi &lt;mochi@divisemusicsolutions.com&gt;</p><p><strong>To:</strong> B. Thumper &lt;bthumper@divisemusicsolutions.com&gt;</p><p><strong>Subject:</strong> Good Luck</p><p style="font-size:10px;color:#888;">X-Originating-IP: 192.168.4.77 | X-Forwarded: mochi-ext-node</p></div><div class="eb-body">Buddy,
 
 Sometimes it is best to cut your losses and move on. I've found that there is always hope in the <span class="dark-link" onclick="openDarkPage()">dark</span>.
 
 Your friend,
-M</div>`,
-  'mochi-urgent':`<div class="eb-header"><p><strong>From:</strong> M. Ochi &lt;mochi@divisemusicsolutions.com&gt;</p><p><strong>To:</strong> B. Thumper &lt;bthumper@divisemusicsolutions.com&gt;</p><p><strong>Subject:</strong> our chance</p></div><div class="eb-body">Buddy — or whoever you are — this is our chance. We must delete The Character and I know how to destroy it. Find the answer by looking for me.</div>`,
+M
+
+--
+M. Ochi | DiVISE Music Solutions
+"good food, good music, good people"
+Usual table at Pal's if you need me.</div>`,
+  'mochi-urgent':`<div class="eb-header"><p><strong>From:</strong> M. Ochi &lt;mochi@divisemusicsolutions.com&gt;</p><p><strong>To:</strong> B. Thumper &lt;bthumper@divisemusicsolutions.com&gt;</p><p><strong>Subject:</strong> our chance</p><p style="font-size:10px;color:#888;">X-Originating-IP: 192.168.4.77 | Priority: URGENT</p></div><div class="eb-body">Buddy — or whoever you are — this is our chance. We must delete The Character and I know how to destroy it. Find the answer by looking for me.
+
+You know where to find me if you know anything about me at all.
+
+— M</div>`,
   'mochi-checkin':`<div class="eb-header"><p><strong>From:</strong> M. Ochi &lt;mochi@divisemusicsolutions.com&gt;</p><p><strong>To:</strong> B. Thumper &lt;bthumper@divisemusicsolutions.com&gt;</p><p><strong>Subject:</strong> checking in</p></div><div class="eb-body">Hey B —
 
 Haven't heard from you. Hope things are okay over there. Let me know if you need anything.
 
+I'll be at Pal's most of the week if you want to grab lunch.
+
 — M</div>`,
-  'mochi-worry':`<div class="eb-header"><p><strong>From:</strong> M. Ochi &lt;mochi@divisemusicsolutions.com&gt;</p><p><strong>To:</strong> B. Thumper &lt;bthumper@divisemusicsolutions.com&gt;</p><p><strong>Subject:</strong> worried</p></div><div class="eb-body">Buddy,
+  'mochi-worry':`<div class="eb-header"><p><strong>From:</strong> M. Ochi &lt;mochi@divisemusicsolutions.com&gt;</p><p><strong>To:</strong> B. Thumper &lt;bthumper@divisemusicsolutions.com&gt;</p><p><strong>Subject:</strong> worried</p><p style="font-size:10px;color:#888;">X-Originating-IP: 192.168.4.77</p></div><div class="eb-body">Buddy,
 
 I'm getting worried. The system reports are not looking good and I think you know why.
 
 You know what you have to do.
 
-M</div>`,
+M
+
+p.s. — the mac and cheese at Pal's is dangerous. just saying.</div>`,
+  'lunch-invite':`<div class="eb-header"><p><strong>From:</strong> M. Ochi &lt;mochi@divisemusicsolutions.com&gt;</p><p><strong>To:</strong> All Staff &lt;staff@divisemusicsolutions.com&gt;</p><p><strong>Subject:</strong> Lunch run — Pal's Diner</p></div><div class="eb-body">Hey all —
+
+Heading to Pal's Diner for lunch around 12:30 if anyone wants to join. Best diner in the city, fight me.
+
+— M</div>`,
   'corrupted':`<div class="eb-body email-corrupted" style="padding-top:60px;text-align:center;">[ File Corrupted ]</div>`
 };
 function showEmail(row,id){
@@ -786,18 +912,45 @@ function dbSearch(){
   const q=(document.getElementById('db-query').value||'').trim().toLowerCase();
   const res=document.getElementById('db-results');
   if(!q){res.innerHTML='Enter a search query.';return;}
+
   if(q==='mochi'||q==='m. ochi'||q==='ochi'){
-    res.innerHTML='> 1 result found:\n<span class="db-result-link" onclick="openDosPage()">the answer</span>';
+    res.innerHTML='> 1 result found:\n> Employee: M. Ochi | Dept: Systems | Status: <span style="color:#ff4444;">FLAGGED</span>\n> Note: External access authorized. IP: 192.168.4.77\n<span class="db-result-link" onclick="openDosPage()">▶ view full record</span>';
+  } else if(q=="pal's"||q==='pals'||q==="pal's diner"||q==='pals diner'||q==='diner'){
+    res.innerHTML='> 1 result found:\n> Local vendor: Pal\'s Diner | Account #: PD-0091\n<span class="db-result-link" onclick="openDinerPage()">▶ view menu</span>';
+  } else if(q==='thumper'||q==='b. thumper'||q==='buddy thumper'){
+    res.innerHTML='> 1 result found:\n> Employee: B. Thumper | Dept: Admin | Status: <span style="color:#ff4444;">COMPROMISED</span>\n> Note: Account flagged — external access authorized by: M.O.\n> Last login: <span style="color:#ff4444;">unknown origin</span>';
+  } else if(q==='bacon'){
+    res.innerHTML='> 0 direct results.\n> Did you mean: <span class="db-result-link" onclick="document.getElementById(\'db-query\').value=\"pal\'s diner\";dbSearch()">Pal\'s Diner (vendor)</span>?';
+  } else if(q==='jax'||q==='jax@divisemusicsolutions.com'){
+    res.innerHTML='> 1 result found:\n> Employee: Jax | Dept: <span style="color:#ff4444;">[REDACTED]</span> | Status: <span style="color:#ff4444;">DELETED</span>\n> Contact: <span class="db-result-link" onclick="window.location.href=\'mailto:jax@divisemusicsolutions.com\'">jax@divisemusicsolutions.com</span>\n> Note: If you found this, you went further than anyone else. Write to Jax.';
   } else {
     res.innerHTML='> Record missing.';
   }
 }
+
+// wire db Enter key
 document.addEventListener('DOMContentLoaded',()=>{
   const dbq=document.getElementById('db-query');
   if(dbq)dbq.addEventListener('keydown',e=>{if(e.key==='Enter')dbSearch();});
 });
 
-// ── DATABASE LOGIN ──
+// ── DINER PAGE ──
+function openDinerPage(){
+  document.getElementById('diner-page').classList.add('active');
+}
+function closeDinerPage(){document.getElementById('diner-page').classList.remove('active');}
+
+// ── ENCRYPT: also accept 12.99 as valid code ──
+function submitEncrypt(){
+  const val=document.getElementById('ep-input').value.trim().toLowerCase().replace(/\$/g,'');
+  if(val==='balderdash'||val==='12.99'){
+    closeEncryptPopup();
+    dropDumasInTrash();
+  } else {
+    document.getElementById('ep-error').style.display='block';
+    setTimeout(()=>document.getElementById('ep-error').style.display='none',2500);
+  }
+}
 let loginTarget='';
 function showLogin(target){
   loginTarget=target||'database';
@@ -850,16 +1003,6 @@ function showEncryptPopup(){
   setTimeout(()=>document.getElementById('ep-input').focus(),200);
 }
 function closeEncryptPopup(){document.getElementById('encrypt-popup').classList.remove('active');}
-function submitEncrypt(){
-  const val=document.getElementById('ep-input').value.trim().toLowerCase();
-  if(val==='balderdash'){
-    closeEncryptPopup();
-    dropDumasInTrash();
-  } else {
-    document.getElementById('ep-error').style.display='block';
-    setTimeout(()=>document.getElementById('ep-error').style.display='none',2500);
-  }
-}
 document.getElementById('ep-input').addEventListener('keydown',e=>{if(e.key==='Enter')submitEncrypt();});
 document.getElementById('encrypt-popup').addEventListener('click',e=>{
   if(e.target===document.getElementById('encrypt-popup'))closeEncryptPopup();
@@ -887,7 +1030,7 @@ function onDumasDragAttempt(){
     return false;
   }
   if(dumasDragCount===5){
-    showAssistantMessage("I am not a soulless machine you know… I feel things and right now I am feeling:",null,()=>{
+    showAssistantMessage("Urgh…c'mon man…\n\nNow I am feeling:",null,()=>{
       showAimProgress(2200,()=>{
         const choices=document.getElementById('aim-choices');
         choices.style.display='block';
@@ -1089,6 +1232,7 @@ function typeAimText(text,idx,cb){
 }
 
 // ── JUMPSCARE ──
+// ── JUMPSCARE ──
 const jsMessages=[
   ["THERE IS NO ESCAPE",'⛔ NO ESCAPE'],
   ["tHeRe Is No EsCaPe",'!! NO ESCAPE !!'],
@@ -1108,10 +1252,27 @@ const jsMessages=[
   ["THERE IS NO ESCAPE",'sys_halt'],
 ];
 let popupCount=0,spawnInterval=null,centerMoveInterval=null;
+let jumpscareActive=false;
 
 function triggerJumpscare(){
-  document.getElementById('jumpscare').classList.add('active');
+  if(jumpscareActive)return;
+  jumpscareActive=true;
+  // Rebuild the jumpscare DOM fresh each time so it works on repeat
+  const js=document.getElementById('jumpscare');
+  js.innerHTML=`
+    <div id="js-bg"></div><div id="js-img"></div><div id="js-img2"></div>
+    <div id="js-glitch"></div><div id="js-glitch2"></div>
+    <div id="js-scanlines"></div><div id="js-noise"></div>
+    <div id="js-center-text">THERE IS NO ESCAPE</div>
+    <div id="js-popup-container"></div>
+    <div class="js-popup" id="jsp-main" style="top:50%;left:50%;transform:translate(-50%,-50%);min-width:260px;z-index:100010;">
+      <div class="js-popup-bar"><span>⛔ THERE IS NO ESCAPE</span></div>
+      <div class="js-popup-body">THERE IS<br>NO ESCAPE<br><br><button class="js-delete-btn" onclick="deleteAndClose()">Delete</button></div>
+    </div>
+    <button id="js-close-btn" onclick="deleteAndClose()">[ DELETE ]</button>`;
+  js.classList.add('active');
   document.getElementById('taskbar-status').textContent='!!!';
+  popupCount=0;
   spawnFranticPopups();
 }
 function spawnFranticPopups(){
@@ -1158,6 +1319,7 @@ function startChaosMode(){
 }
 function deleteAndClose(){
   clearTimeout(spawnInterval);clearInterval(centerMoveInterval);
+  jumpscareActive=false; // allow re-trigger if needed
 
   // Clear jumpscare, go to black CRT screen
   const js=document.getElementById('jumpscare');
