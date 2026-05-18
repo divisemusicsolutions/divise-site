@@ -1378,72 +1378,90 @@ function deleteAndClose(){
   });
 
   // ── THE REVEAL ──
-  totalDelay+=900;
+  totalDelay+=1200;
   setTimeout(()=>{
-    const termEl=document.getElementById('del-terminal');
-    if(!termEl)return;
-    termEl.innerHTML='';
-    termEl.style.cssText='flex:1;overflow-y:auto;padding:clamp(20px,6vw,60px);font-family:Courier New,monospace;font-size:clamp(11px,2.2vw,14px);color:#33ff33;line-height:1.8;position:relative;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100%;';
-
-    function addLine(html,css,delay){
-      setTimeout(()=>{
-        const termNow=document.getElementById('del-terminal');
-        if(!termNow)return;
-        const d=document.createElement('div');
-        d.style.cssText=`font-family:'Courier New',monospace;opacity:0;transition:opacity 0.5s;${css}`;
-        d.innerHTML=html;
-        termNow.appendChild(d);
-        requestAnimationFrame(()=>requestAnimationFrame(()=>d.style.opacity='1'));
-        termNow.scrollTop=termNow.scrollHeight;
-      },delay);
-    }
-
-    addLine('─────────────────────────────────────',
-      'color:#1a661a;font-size:clamp(10px,2vw,13px);letter-spacing:1px;width:100%;text-align:center;',0);
-    addLine('INCOMING TRANSMISSION',
-      'color:#33ff33;font-size:clamp(11px,2.5vw,14px);letter-spacing:4px;text-align:center;margin:12px 0 4px;',300);
-    addLine('FROM: M. OCHI &lt;mochi@divisemusicsolutions.com&gt;',
-      'color:#1a881a;font-size:clamp(9px,2vw,12px);letter-spacing:2px;text-align:center;margin-bottom:4px;',700);
-    addLine('─────────────────────────────────────',
-      'color:#1a661a;font-size:clamp(10px,2vw,13px);letter-spacing:1px;width:100%;text-align:center;margin-bottom:24px;',1000);
+    // Fade out the CRT terminal screen
+    const crt=document.getElementById('crt-screen');
+    if(crt){crt.style.transition='opacity 1s ease';crt.style.opacity='0';}
 
     setTimeout(()=>{
-      const termNow=document.getElementById('del-terminal');
-      if(!termNow)return;
-      const ty=document.createElement('div');
-      ty.style.cssText='font-family:Courier New,monospace;color:#33ff33;font-size:clamp(36px,10vw,80px);font-weight:bold;letter-spacing:2px;text-align:center;margin:10px 0 20px;text-shadow:0 0 20px #33ff33,0 0 40px #1a991a;animation:mochiReveal 1.2s ease forwards;opacity:0;';
-      ty.textContent='THANK YOU.';
-      termNow.appendChild(ty);
-      requestAnimationFrame(()=>requestAnimationFrame(()=>ty.style.opacity='1'));
-    },1600);
+      // Remove CRT, build the reveal as a clean full-body div
+      if(crt)crt.remove();
 
-    const msgLines=[
-      {t:'You did exactly what I needed.',  delay:3000, color:'#aaff88'},
-      {t:'',                                delay:3700, color:'#000'},
-      {t:'The Character is gone.',          delay:4100, color:'#aaff88'},
-      {t:'',                                delay:4600, color:'#000'},
-      {t:'And so is everything else.',      delay:5000, color:'#ff8844'},
-      {t:'',                                delay:5800, color:'#000'},
-      {t:'Sorry about your computer.',      delay:6400, color:'#886644'},
-      {t:'',                                delay:7000, color:'#000'},
-      {t:'— M',                             delay:7500, color:'#33ff33'},
-    ];
-    msgLines.forEach(l=>{
-      addLine(l.t,`color:${l.color};font-size:clamp(12px,2.5vw,16px);letter-spacing:2px;text-align:center;line-height:1.6;`,l.delay);
-    });
-    addLine('─────────────────────────────────────',
-      'color:#1a661a;font-size:clamp(10px,2vw,13px);letter-spacing:1px;width:100%;text-align:center;margin-top:24px;',8200);
+      const reveal=document.createElement('div');
+      reveal.style.cssText='position:fixed;inset:0;background:#000;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:clamp(20px,6vw,60px);overflow-y:auto;';
+      // inject keyframes
+      reveal.innerHTML='<style>@keyframes mochiReveal{from{opacity:0;letter-spacing:12px}to{opacity:1;letter-spacing:2px}}@keyframes crtFlicker{0%{opacity:1}50%{opacity:0.92}75%{opacity:1}90%{opacity:0.96}100%{opacity:1}}</style>';
+      // scanlines + vignette
+      const scan=document.createElement('div');
+      scan.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:1;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.15) 3px,rgba(0,0,0,0.15) 4px);';
+      reveal.appendChild(scan);
+      const vig=document.createElement('div');
+      vig.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:2;background:radial-gradient(ellipse at center,transparent 50%,rgba(0,0,0,0.8) 100%);animation:crtFlicker 0.12s steps(1) infinite;';
+      reveal.appendChild(vig);
+      // content wrapper
+      const box=document.createElement('div');
+      box.style.cssText='position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;max-width:min(520px,92vw);width:100%;';
+      reveal.appendChild(box);
+      document.body.appendChild(reveal);
 
-    setTimeout(()=>{
-      const fade=document.createElement('div');
-      fade.style.cssText='position:fixed;inset:0;background:#000;opacity:0;transition:opacity 5s ease;z-index:999999;pointer-events:none;';
-      document.body.appendChild(fade);
-      requestAnimationFrame(()=>requestAnimationFrame(()=>fade.style.opacity='1'));
+      function addLine(html,css,delay){
+        setTimeout(()=>{
+          const d=document.createElement('div');
+          d.style.cssText=`font-family:'Courier New',monospace;opacity:0;transition:opacity 0.6s;${css}`;
+          d.innerHTML=html;
+          box.appendChild(d);
+          requestAnimationFrame(()=>requestAnimationFrame(()=>d.style.opacity='1'));
+        },delay);
+      }
+
+      addLine('─────────────────────────────────────',
+        'color:#1a661a;font-size:clamp(10px,2vw,13px);letter-spacing:1px;width:100%;text-align:center;margin-bottom:4px;', 300);
+      addLine('INCOMING TRANSMISSION',
+        'color:#33ff33;font-size:clamp(11px,2.5vw,14px);letter-spacing:4px;text-align:center;margin:10px 0 4px;', 700);
+      addLine('FROM: M. OCHI &lt;mochi@divisemusicsolutions.com&gt;',
+        'color:#1a881a;font-size:clamp(9px,2vw,12px);letter-spacing:2px;text-align:center;margin-bottom:4px;', 1100);
+      addLine('─────────────────────────────────────',
+        'color:#1a661a;font-size:clamp(10px,2vw,13px);letter-spacing:1px;width:100%;text-align:center;margin-bottom:28px;', 1400);
+
+      // THANK YOU — big impact moment
       setTimeout(()=>{
-        document.body.innerHTML='<div style="position:fixed;inset:0;background:#000;display:flex;align-items:center;justify-content:center;"><span style="font-family:\'Courier New\',monospace;font-size:11px;color:#0a1a0a;letter-spacing:4px;">divisemusicsolutions.com</span></div>';
-      },5200);
-    },9400);
+        const ty=document.createElement('div');
+        ty.style.cssText='font-family:Courier New,monospace;color:#33ff33;font-size:clamp(40px,11vw,88px);font-weight:bold;text-align:center;margin:8px 0 24px;text-shadow:0 0 24px #33ff33,0 0 50px #1a991a;opacity:0;animation:mochiReveal 1.4s ease forwards;';
+        ty.textContent='THANK YOU.';
+        box.appendChild(ty);
+        requestAnimationFrame(()=>requestAnimationFrame(()=>ty.style.opacity='1'));
+      },2000);
 
+      const msgLines=[
+        {t:'You did exactly what I needed.',  delay:3400, color:'#aaff88'},
+        {t:'',                                delay:4100, color:'transparent'},
+        {t:'The Character is gone.',          delay:4600, color:'#aaff88'},
+        {t:'',                                delay:5100, color:'transparent'},
+        {t:'And so is everything else.',      delay:5600, color:'#ff8844'},
+        {t:'',                                delay:6300, color:'transparent'},
+        {t:'Sorry about your computer.',      delay:7000, color:'#886644'},
+        {t:'',                                delay:7600, color:'transparent'},
+        {t:'— M',                             delay:8100, color:'#33ff33'},
+      ];
+      msgLines.forEach(l=>{
+        addLine(l.t,`color:${l.color};font-size:clamp(13px,2.8vw,17px);letter-spacing:2px;text-align:center;line-height:1.8;`,l.delay);
+      });
+      addLine('─────────────────────────────────────',
+        'color:#1a661a;font-size:clamp(10px,2vw,13px);letter-spacing:1px;width:100%;text-align:center;margin-top:24px;', 9000);
+
+      // Final fade to black
+      setTimeout(()=>{
+        const fade=document.createElement('div');
+        fade.style.cssText='position:fixed;inset:0;background:#000;opacity:0;transition:opacity 5s ease;z-index:999999;pointer-events:none;';
+        document.body.appendChild(fade);
+        requestAnimationFrame(()=>requestAnimationFrame(()=>fade.style.opacity='1'));
+        setTimeout(()=>{
+          document.body.innerHTML='<div style="position:fixed;inset:0;background:#000;display:flex;align-items:center;justify-content:center;"><span style="font-family:\'Courier New\',monospace;font-size:11px;color:#0a1a0a;letter-spacing:4px;">divisemusicsolutions.com</span></div>';
+        },5200);
+      },10200);
+
+    },1100); // wait for CRT fade-out
   },totalDelay);
 }
 
