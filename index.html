@@ -474,7 +474,7 @@ body { font-family:'Courier New',Courier,monospace; background:black; overflow:h
       <div class="email-row" onclick="showEmail(this,'corrupted')"><div class="er-from">Admin</div><div class="er-subj">Meeting Notes 4/18</div></div>
       <div class="email-row unread" onclick="showEmail(this,'mochi-worry')"><div class="er-from">M. Ochi</div><div class="er-subj">worried</div></div>
       <div class="email-row" onclick="showEmail(this,'corrupted')"><div class="er-from">Payroll</div><div class="er-subj">Direct Deposit Conf.</div></div>
-      <div class="email-row unread" onclick="showEmail(this,'lunch-invite')"><div class="er-from">M. Ochi</div><div class="er-subj">Lunch run — Pal's Diner</div></div>
+      <div class="email-row unread" onclick="showEmail(this,'lunch-invite')"><div class="er-from">M. Ochi</div><div class="er-subj">lunch</div></div>
       <div class="email-row" onclick="showEmail(this,'corrupted')"><div class="er-from">Server</div><div class="er-subj">Backup Log</div></div>
     </div>
     <div class="email-body-pane" id="email-body"><p style="color:#aaa;font-style:italic;padding-top:60px;text-align:center;">Select a message.</p></div>
@@ -512,7 +512,7 @@ body { font-family:'Courier New',Courier,monospace; background:black; overflow:h
     <p><strong>4/23</strong></p>
     <p>More problems, less answers as to why. Data going missing or just all around corrupted. M says not to worry. M says a lot of things.</p><br>
     <p><strong>4/30</strong></p>
-    <p>Lunch at Pal's with M. She wouldn't stop talking about the mac and cheese. Something's off with her. She kept saying "the answer is always on the menu." I don't know what that means.</p><br>
+    <p>Lunch again. M picked the place. She ordered the same thing she always does. Said something strange — "the answer is always on the menu." I laughed. She didn't.</p><br>
     <p><strong>5/1</strong></p>
     <p>Need to change my passwords as I don't think my data is secure anymore. Changed my email pin to the date FRNZ Season 1 remastered drops.</p><br>
     <p><strong>5/3</strong></p>
@@ -888,12 +888,8 @@ I'm getting worried. The system reports are not looking good and I think you kno
 
 You know what you have to do.
 
-M
-
-p.s. — the mac and cheese at Pal's is dangerous. just saying.</div>`,
-  'lunch-invite':`<div class="eb-header"><p><strong>From:</strong> M. Ochi &lt;mochi@divisemusicsolutions.com&gt;</p><p><strong>To:</strong> All Staff &lt;staff@divisemusicsolutions.com&gt;</p><p><strong>Subject:</strong> Lunch run — Pal's Diner</p></div><div class="eb-body">Hey all —
-
-Heading to Pal's Diner for lunch around 12:30 if anyone wants to join. Best diner in the city, fight me.
+M</div>`,
+  'lunch-invite':`<div class="eb-header"><p><strong>From:</strong> M. Ochi &lt;mochi@divisemusicsolutions.com&gt;</p><p><strong>To:</strong> All Staff &lt;staff@divisemusicsolutions.com&gt;</p><p><strong>Subject:</strong> lunch</p></div><div class="eb-body">Usual spot. 12:30.
 
 — M</div>`,
   'corrupted':`<div class="eb-body email-corrupted" style="padding-top:60px;text-align:center;">[ File Corrupted ]</div>`
@@ -1232,7 +1228,6 @@ function typeAimText(text,idx,cb){
 }
 
 // ── JUMPSCARE ──
-// ── JUMPSCARE ──
 const jsMessages=[
   ["THERE IS NO ESCAPE",'⛔ NO ESCAPE'],
   ["tHeRe Is No EsCaPe",'!! NO ESCAPE !!'],
@@ -1319,33 +1314,29 @@ function startChaosMode(){
 }
 function deleteAndClose(){
   clearTimeout(spawnInterval);clearInterval(centerMoveInterval);
-  jumpscareActive=false; // allow re-trigger if needed
+  jumpscareActive=false;
 
-  // Clear jumpscare, go to black CRT screen
+  // Hide the jumpscare entirely, build the CRT reveal at body level
   const js=document.getElementById('jumpscare');
-  js.style.background='#000';
-  js.innerHTML=`
-    <div id="crt-wrap" style="position:absolute;inset:0;display:flex;flex-direction:column;overflow:hidden;background:#000;">
-      <!-- CRT scanline overlay -->
-      <div style="position:absolute;inset:0;pointer-events:none;z-index:10;
-        background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.18) 3px,rgba(0,0,0,0.18) 4px);"></div>
-      <!-- flicker vignette -->
-      <div id="crt-flicker" style="position:absolute;inset:0;pointer-events:none;z-index:11;
-        background:radial-gradient(ellipse at center,transparent 60%,rgba(0,0,0,0.7) 100%);
-        animation:crtFlicker 0.12s steps(1) infinite;"></div>
-      <div id="del-terminal" style="flex:1;overflow-y:auto;padding:clamp(14px,4vw,32px);
-        font-family:'Courier New',Courier,monospace;font-size:clamp(11px,2.2vw,14px);
-        color:#33ff33;line-height:1.8;position:relative;z-index:5;"></div>
-    </div>
+  js.classList.remove('active');
+  js.style.display='none';
+
+  // Inject CRT screen directly into body so no CSS conflicts
+  const crtDiv=document.createElement('div');
+  crtDiv.id='crt-screen';
+  crtDiv.style.cssText='position:fixed;inset:0;background:#000;z-index:99999;display:flex;flex-direction:column;overflow:hidden;';
+  crtDiv.innerHTML=`
+    <div style="position:absolute;inset:0;pointer-events:none;z-index:10;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.18) 3px,rgba(0,0,0,0.18) 4px);"></div>
+    <div style="position:absolute;inset:0;pointer-events:none;z-index:11;background:radial-gradient(ellipse at center,transparent 60%,rgba(0,0,0,0.7) 100%);animation:crtFlicker 0.12s steps(1) infinite;"></div>
+    <div id="del-terminal" style="flex:1;overflow-y:auto;padding:clamp(14px,4vw,32px);font-family:'Courier New',Courier,monospace;font-size:clamp(11px,2.2vw,14px);color:#33ff33;line-height:1.8;position:relative;z-index:5;"></div>
     <style>
       @keyframes crtFlicker{0%{opacity:1}50%{opacity:0.92}75%{opacity:1}90%{opacity:0.96}100%{opacity:1}}
       @keyframes mochiReveal{from{opacity:0;letter-spacing:12px}to{opacity:1;letter-spacing:2px}}
-      @keyframes scanDown{from{background-position:0 0}to{background-position:0 100vh}}
     </style>`;
+  document.body.appendChild(crtDiv);
 
   const term=document.getElementById('del-terminal');
 
-  // Deletion lines — each removes a real page element in parallel
   const deletionLines=[
     {text:'> INITIATING SYSTEM PURGE…',           color:'#33ff33', id:null},
     {text:'> Deleting wallpaper…',                color:'#2ade2a', id:'#bg'},
@@ -1374,13 +1365,13 @@ function deleteAndClose(){
     totalDelay += i===0?600: i<3?280: i<14?220: i<16?180:300;
     const t=totalDelay;
     setTimeout(()=>{
+      if(!document.getElementById('del-terminal'))return;
       const span=document.createElement('div');
       span.style.cssText=`color:${line.color};opacity:0;transition:opacity 0.25s;`;
       span.textContent=line.text;
       term.appendChild(span);
       requestAnimationFrame(()=>requestAnimationFrame(()=>span.style.opacity='1'));
       term.scrollTop=term.scrollHeight;
-      // Remove real elements
       if(line.id){const el=document.querySelector(line.id);if(el){el.style.transition='opacity 0.18s';el.style.opacity='0';setTimeout(()=>el.remove(),200);}}
       if(line.multi){line.multi.forEach(sel=>{const el=document.querySelector(sel);if(el){el.style.transition='opacity 0.18s';el.style.opacity='0';setTimeout(()=>el.remove(),200);}});}
     },t);
@@ -1389,94 +1380,72 @@ function deleteAndClose(){
   // ── THE REVEAL ──
   totalDelay+=900;
   setTimeout(()=>{
-    const wrap=document.getElementById('crt-wrap');
-    if(!wrap)return;
+    const termEl=document.getElementById('del-terminal');
+    if(!termEl)return;
+    termEl.innerHTML='';
+    termEl.style.cssText='flex:1;overflow-y:auto;padding:clamp(20px,6vw,60px);font-family:Courier New,monospace;font-size:clamp(11px,2.2vw,14px);color:#33ff33;line-height:1.8;position:relative;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100%;';
 
-    // Clear terminal, keep scanlines
-    term.innerHTML='';
-    term.style.display='flex';
-    term.style.flexDirection='column';
-    term.style.alignItems='center';
-    term.style.justifyContent='center';
-    term.style.minHeight='100%';
-    term.style.padding='clamp(20px,6vw,60px)';
-
-    // Horizontal rule CRT-style
-    function addLine(text,css,delay){
+    function addLine(html,css,delay){
       setTimeout(()=>{
+        const termNow=document.getElementById('del-terminal');
+        if(!termNow)return;
         const d=document.createElement('div');
         d.style.cssText=`font-family:'Courier New',monospace;opacity:0;transition:opacity 0.5s;${css}`;
-        d.innerHTML=text;
-        term.appendChild(d);
+        d.innerHTML=html;
+        termNow.appendChild(d);
         requestAnimationFrame(()=>requestAnimationFrame(()=>d.style.opacity='1'));
-        term.scrollTop=term.scrollHeight;
+        termNow.scrollTop=termNow.scrollHeight;
       },delay);
     }
 
     addLine('─────────────────────────────────────',
       'color:#1a661a;font-size:clamp(10px,2vw,13px);letter-spacing:1px;width:100%;text-align:center;',0);
-
     addLine('INCOMING TRANSMISSION',
       'color:#33ff33;font-size:clamp(11px,2.5vw,14px);letter-spacing:4px;text-align:center;margin:12px 0 4px;',300);
-
     addLine('FROM: M. OCHI &lt;mochi@divisemusicsolutions.com&gt;',
       'color:#1a881a;font-size:clamp(9px,2vw,12px);letter-spacing:2px;text-align:center;margin-bottom:4px;',700);
-
     addLine('─────────────────────────────────────',
       'color:#1a661a;font-size:clamp(10px,2vw,13px);letter-spacing:1px;width:100%;text-align:center;margin-bottom:24px;',1000);
 
-    // The big THANK YOU — delayed for impact
     setTimeout(()=>{
+      const termNow=document.getElementById('del-terminal');
+      if(!termNow)return;
       const ty=document.createElement('div');
-      ty.style.cssText=`font-family:'Courier New',monospace;color:#33ff33;
-        font-size:clamp(36px,10vw,80px);font-weight:bold;letter-spacing:2px;
-        text-align:center;margin:10px 0 20px;opacity:0;
-        text-shadow:0 0 20px #33ff33,0 0 40px #1a991a;
-        animation:mochiReveal 1.2s ease forwards;`;
+      ty.style.cssText='font-family:Courier New,monospace;color:#33ff33;font-size:clamp(36px,10vw,80px);font-weight:bold;letter-spacing:2px;text-align:center;margin:10px 0 20px;text-shadow:0 0 20px #33ff33,0 0 40px #1a991a;animation:mochiReveal 1.2s ease forwards;opacity:0;';
       ty.textContent='THANK YOU.';
-      term.appendChild(ty);
-      term.scrollTop=term.scrollHeight;
+      termNow.appendChild(ty);
+      requestAnimationFrame(()=>requestAnimationFrame(()=>ty.style.opacity='1'));
     },1600);
 
-    addLine('',  'height:8px;',2900);
-
-    // Message lines — typed out one by one
     const msgLines=[
-      {t:'You did exactly what I needed.',      delay:3000, color:'#aaff88'},
-      {t:'',                                    delay:3700, color:'#000'},
-      {t:'The Character is gone.',              delay:4100, color:'#aaff88'},
-      {t:'',                                    delay:4600, color:'#000'},
-      {t:'And so is everything else.',          delay:5000, color:'#ff8844'},
-      {t:'',                                    delay:5800, color:'#000'},
-      {t:'Sorry about your computer.',          delay:6400, color:'#886644'},
-      {t:'',                                    delay:7000, color:'#000'},
-      {t:'— M',                                 delay:7500, color:'#33ff33'},
+      {t:'You did exactly what I needed.',  delay:3000, color:'#aaff88'},
+      {t:'',                                delay:3700, color:'#000'},
+      {t:'The Character is gone.',          delay:4100, color:'#aaff88'},
+      {t:'',                                delay:4600, color:'#000'},
+      {t:'And so is everything else.',      delay:5000, color:'#ff8844'},
+      {t:'',                                delay:5800, color:'#000'},
+      {t:'Sorry about your computer.',      delay:6400, color:'#886644'},
+      {t:'',                                delay:7000, color:'#000'},
+      {t:'— M',                             delay:7500, color:'#33ff33'},
     ];
     msgLines.forEach(l=>{
-      addLine(l.t,
-        `color:${l.color};font-size:clamp(12px,2.5vw,16px);letter-spacing:2px;text-align:center;line-height:1.6;`,
-        l.delay);
+      addLine(l.t,`color:${l.color};font-size:clamp(12px,2.5vw,16px);letter-spacing:2px;text-align:center;line-height:1.6;`,l.delay);
     });
-
     addLine('─────────────────────────────────────',
       'color:#1a661a;font-size:clamp(10px,2vw,13px);letter-spacing:1px;width:100%;text-align:center;margin-top:24px;',8200);
 
-    // Phase: fade everything to black
     setTimeout(()=>{
       const fade=document.createElement('div');
       fade.style.cssText='position:fixed;inset:0;background:#000;opacity:0;transition:opacity 5s ease;z-index:999999;pointer-events:none;';
       document.body.appendChild(fade);
       requestAnimationFrame(()=>requestAnimationFrame(()=>fade.style.opacity='1'));
       setTimeout(()=>{
-        document.body.innerHTML=`<div style="position:fixed;inset:0;background:#000;display:flex;align-items:center;justify-content:center;">
-          <span style="font-family:'Courier New',monospace;font-size:11px;color:#0a1a0a;letter-spacing:4px;">divisemusicsolutions.com</span>
-        </div>`;
+        document.body.innerHTML='<div style="position:fixed;inset:0;background:#000;display:flex;align-items:center;justify-content:center;"><span style="font-family:\'Courier New\',monospace;font-size:11px;color:#0a1a0a;letter-spacing:4px;">divisemusicsolutions.com</span></div>';
       },5200);
     },9400);
 
   },totalDelay);
 }
-
 
 // ── WINDOW DRAG ──
 function makeDraggable(el,handle){
