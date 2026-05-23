@@ -1319,90 +1319,227 @@ function deleteAndClose(){
   clearTimeout(spawnInterval);clearInterval(centerMoveInterval);
   jumpscareActive=false;
 
-  // Hide the jumpscare entirely, build the CRT reveal at body level
+  // Hide jumpscare
   const js=document.getElementById('jumpscare');
   js.classList.remove('active');
   js.style.display='none';
 
-  // Inject CRT screen directly into body so no CSS conflicts
+  // ── WEB AUDIO ──
+  const AC=window.AudioContext||window.webkitAudioContext;
+  let audioCtx=null;
+  try{audioCtx=new AC();}catch(e){}
+
+  function playGlitch(freq=80,dur=0.08,vol=0.4){
+    if(!audioCtx)return;
+    try{
+      const buf=audioCtx.createBuffer(1,audioCtx.sampleRate*dur,audioCtx.sampleRate);
+      const d=buf.getChannelData(0);
+      for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,0.5);
+      const src=audioCtx.createBufferSource();
+      src.buffer=buf;
+      const g=audioCtx.createGain();g.gain.value=vol;
+      const f=audioCtx.createBiquadFilter();f.type='bandpass';f.frequency.value=freq;f.Q.value=0.5;
+      src.connect(f);f.connect(g);g.connect(audioCtx.destination);
+      src.start();
+    }catch(e){}
+  }
+  function playDelete(){
+    if(!audioCtx)return;
+    try{
+      const osc=audioCtx.createOscillator();
+      const g=audioCtx.createGain();
+      osc.type='sawtooth';osc.frequency.setValueAtTime(440,audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(20,audioCtx.currentTime+0.25);
+      g.gain.setValueAtTime(0.3,audioCtx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+0.25);
+      osc.connect(g);g.connect(audioCtx.destination);
+      osc.start();osc.stop(audioCtx.currentTime+0.25);
+    }catch(e){}
+  }
+  function playStatic(vol=0.15,dur=0.12){
+    if(!audioCtx)return;
+    try{
+      const buf=audioCtx.createBuffer(1,audioCtx.sampleRate*dur,audioCtx.sampleRate);
+      const d=buf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;
+      const src=audioCtx.createBufferSource();src.buffer=buf;
+      const g=audioCtx.createGain();g.gain.value=vol;
+      src.connect(g);g.connect(audioCtx.destination);src.start();
+    }catch(e){}
+  }
+  function playFinalBoom(){
+    if(!audioCtx)return;
+    try{
+      const osc=audioCtx.createOscillator();
+      const g=audioCtx.createGain();
+      osc.type='square';osc.frequency.setValueAtTime(60,audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(1,audioCtx.currentTime+1.5);
+      g.gain.setValueAtTime(0.5,audioCtx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+1.5);
+      osc.connect(g);g.connect(audioCtx.destination);
+      osc.start();osc.stop(audioCtx.currentTime+1.5);
+      playStatic(0.2,1.5);
+    }catch(e){}
+  }
+
+  // ── INJECT CSS FOR DEATH ANIMATIONS ──
+  const styleTag=document.createElement('style');
+  styleTag.textContent=`
+    @keyframes iconFall{0%{transform:translateY(0) rotate(0deg);opacity:1}60%{opacity:1}100%{transform:translateY(120vh) rotate(${Math.random()>0.5?'':'-'}25deg);opacity:0}}
+    @keyframes iconGlitch{0%{filter:none;transform:translate(0,0)}15%{filter:hue-rotate(90deg) saturate(8) contrast(3);transform:translate(-6px,2px) scaleX(1.04)}30%{filter:invert(1) contrast(4);transform:translate(5px,-3px)}45%{filter:hue-rotate(180deg) saturate(6);transform:translate(-4px,4px) scaleX(0.97)}60%{filter:brightness(3) contrast(2);transform:translate(3px,-2px)}75%{filter:invert(0.8) hue-rotate(270deg);transform:translate(-2px,1px)}100%{filter:none;transform:translate(0,0)}}
+    @keyframes windowCrumple{0%{transform:translateX(-50%) scale(1);opacity:1}30%{transform:translateX(-50%) scale(1.03) skewX(-3deg);opacity:0.9}60%{transform:translateX(-50%) scale(0.5) skewX(8deg);opacity:0.5}100%{transform:translateX(-50%) scale(0) skewX(15deg);opacity:0}}
+    @keyframes windowCrumpleDragged{0%{transform:scale(1);opacity:1}30%{transform:scale(1.03) skewX(-3deg);opacity:0.9}60%{transform:scale(0.5) skewX(8deg);opacity:0.5}100%{transform:scale(0) skewX(15deg);opacity:0}}
+    @keyframes menuSlice{0%{transform:translateY(0);opacity:1}40%{transform:translateY(-4px) scaleY(1.1);opacity:0.8}100%{transform:translateY(-100%);opacity:0}}
+    @keyframes bgCorrupt{0%{opacity:0.18;filter:none}20%{opacity:0.5;filter:hue-rotate(120deg) saturate(8) contrast(4)}40%{opacity:0.3;filter:invert(1) contrast(3)}60%{opacity:0.6;filter:hue-rotate(240deg) saturate(10)}80%{opacity:0.2;filter:brightness(4) contrast(5)}100%{opacity:0;filter:none}}
+    @keyframes crtFlicker{0%{opacity:1}50%{opacity:0.92}75%{opacity:1}90%{opacity:0.96}100%{opacity:1}}
+    @keyframes mochiReveal{from{opacity:0;letter-spacing:12px}to{opacity:1;letter-spacing:2px}}
+    .dying-icon{pointer-events:none!important;}
+  `;
+  document.head.appendChild(styleTag);
+
+  // ── CRT TERMINAL OVERLAY (semi-transparent so desktop visible behind) ──
   const crtDiv=document.createElement('div');
   crtDiv.id='crt-screen';
-  crtDiv.style.cssText='position:fixed;inset:0;background:#000;z-index:99999;display:flex;flex-direction:column;overflow:hidden;';
+  crtDiv.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.82);z-index:99998;display:flex;flex-direction:column;overflow:hidden;';
   crtDiv.innerHTML=`
     <div style="position:absolute;inset:0;pointer-events:none;z-index:10;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.18) 3px,rgba(0,0,0,0.18) 4px);"></div>
     <div style="position:absolute;inset:0;pointer-events:none;z-index:11;background:radial-gradient(ellipse at center,transparent 60%,rgba(0,0,0,0.7) 100%);animation:crtFlicker 0.12s steps(1) infinite;"></div>
-    <div id="del-terminal" style="flex:1;overflow-y:auto;padding:clamp(14px,4vw,32px);font-family:'Courier New',Courier,monospace;font-size:clamp(11px,2.2vw,14px);color:#33ff33;line-height:1.8;position:relative;z-index:5;"></div>
-    <style>
-      @keyframes crtFlicker{0%{opacity:1}50%{opacity:0.92}75%{opacity:1}90%{opacity:0.96}100%{opacity:1}}
-      @keyframes mochiReveal{from{opacity:0;letter-spacing:12px}to{opacity:1;letter-spacing:2px}}
-    </style>`;
+    <div id="del-terminal" style="flex:1;overflow-y:auto;padding:clamp(14px,4vw,28px);font-family:'Courier New',Courier,monospace;font-size:clamp(11px,2.2vw,14px);color:#33ff33;line-height:1.9;position:relative;z-index:5;"></div>`;
   document.body.appendChild(crtDiv);
-
   const term=document.getElementById('del-terminal');
 
-  const deletionLines=[
-    {text:'> INITIATING SYSTEM PURGE…',           color:'#33ff33', id:null},
-    {text:'> Deleting wallpaper…',                color:'#2ade2a', id:'#bg'},
-    {text:'> Deleting desktop icons…',            color:'#2ade2a', id:'#desktop'},
-    {text:'> Deleting menu bar…',                 color:'#2ade2a', id:'#menubar'},
-    {text:'> Deleting open windows…',             color:'#2ade2a', id:null, multi:['#readme','#releases','#artists','#frnz-page','#plodes-page','#dumas-win','#database-win','#mail','#documents','#corrupted-doc','#notes-doc','#trash-folder','#trash-email']},
-    {text:'> Deleting email records…',            color:'#2ade2a', id:'#email-pin-screen'},
-    {text:'> Deleting database entries…',         color:'#2ade2a', id:'#login-screen'},
-    {text:'> Deleting user credentials…',         color:'#2ade2a', id:'#attempt-failed'},
-    {text:'> Deleting music files…',              color:'#2ade2a', id:'#frantic-layer'},
-    {text:'> Deleting artist profiles…',          color:'#2ade2a', id:'#dumas-assistant'},
-    {text:'> Deleting mailing list…',             color:'#2ade2a', id:'#mailing-win'},
-    {text:'> Deleting documents…',               color:'#2ade2a', id:'#dark-page'},
-    {text:'> Deleting system fonts…',             color:'#2ade2a', id:'#dos-page'},
-    {text:'> Deleting DiVISE OS…',               color:'#2ade2a', id:'#taskbar'},
-    {text:'> Deleting boot sequence…',            color:'#2ade2a', id:'#boot'},
-    {text:'',                                     color:'#000',    id:null},
-    {text:'> ALL RECORDS PURGED.',                color:'#ff3333', id:null},
-    {text:'',                                     color:'#000',    id:null},
-    {text:'> PROCESS COMPLETE.',                  color:'#33ff33', id:null},
-    {text:'',                                     color:'#000',    id:null},
+  // helper: kill an element with a specific animation
+  function killEl(sel,animName,duration,delay){
+    setTimeout(()=>{
+      const el=document.querySelector(sel);
+      if(!el)return;
+      playDelete();
+      el.style.animation=`${animName} ${duration}ms ease forwards`;
+      el.style.pointerEvents='none';
+      setTimeout(()=>{try{el.remove();}catch(e){}},duration+50);
+    },delay);
+  }
+
+  // helper: kill all icons with staggered falls
+  function killIcons(startDelay){
+    const icons=document.querySelectorAll('#desktop .icon');
+    icons.forEach((icon,i)=>{
+      const d=startDelay+(i*80);
+      setTimeout(()=>{
+        // glitch first
+        playGlitch(100+i*30,0.06,0.3);
+        icon.style.animation='iconGlitch 0.35s steps(1) forwards';
+        icon.classList.add('dying-icon');
+        setTimeout(()=>{
+          // then fall
+          playDelete();
+          const rot=(Math.random()>0.5?1:-1)*(10+Math.random()*20);
+          icon.style.animation=`iconFall 0.6s ease-in forwards`;
+          icon.style.setProperty('--rot',rot+'deg');
+        },350);
+        setTimeout(()=>{try{icon.remove();}catch(e){}},950+i*80);
+      },d);
+    });
+  }
+
+  // helper: kill all open windows with crumple
+  function killWindows(startDelay){
+    const wins=document.querySelectorAll('.window.open, .window[style*="flex"]');
+    wins.forEach((win,i)=>{
+      const d=startDelay+(i*60);
+      setTimeout(()=>{
+        playStatic(0.12,0.1);
+        const isDragged=win.classList.contains('dragged');
+        win.style.animation=isDragged?
+          `windowCrumpleDragged 0.5s ease forwards`:
+          `windowCrumple 0.5s ease forwards`;
+        win.style.pointerEvents='none';
+        setTimeout(()=>{try{win.remove();}catch(e){}},600);
+      },d);
+    });
+  }
+
+  // ── DELETION SEQUENCE — each line fires its death on screen ──
+  const sequence=[
+    {text:'> INITIATING SYSTEM PURGE…',    color:'#33ff33', action:null,           gap:800},
+    {text:'> Purging open windows…',       color:'#2ade2a', action:(t)=>killWindows(0),  gap:260},
+    {text:'> Purging desktop icons…',      color:'#2ade2a', action:(t)=>killIcons(0),    gap:900},
+    {text:'> Purging menu bar…',           color:'#2ade2a', action:(t)=>{killEl('#menubar','menuSlice',400,0);}, gap:260},
+    {text:'> Purging email records…',      color:'#2ade2a', action:(t)=>{[
+      '#email-pin-screen','#login-screen','#attempt-failed','#frantic-layer',
+      '#dumas-assistant','#mailing-win','#dark-page','#dos-page',
+      '#diner-page','#dos-page','#taskbar','#boot'
+    ].forEach((s,i)=>setTimeout(()=>{const e=document.querySelector(s);if(e)e.remove();},i*40));},gap:260},
+    {text:'> Purging database entries…',   color:'#2ade2a', action:null,           gap:220},
+    {text:'> Purging music files…',        color:'#2ade2a', action:null,           gap:220},
+    {text:'> Purging user credentials…',   color:'#2ade2a', action:null,           gap:220},
+    {text:'> Purging artist profiles…',    color:'#2ade2a', action:null,           gap:220},
+    {text:'> Purging documents…',          color:'#2ade2a', action:null,           gap:220},
+    {text:'> Purging system files…',       color:'#2ade2a', action:null,           gap:220},
+    {text:'> Purging DiVISE OS…',          color:'#ff3333', action:null,           gap:300},
+    {text:'',                              color:'#000',    action:null,           gap:200},
+    {text:'> ALL RECORDS PURGED.',         color:'#ff3333', action:null,           gap:400},
+    {text:'',                              color:'#000',    action:null,           gap:100},
+    {text:'> PROCESS COMPLETE.',           color:'#33ff33', action:null,           gap:300},
+    {text:'',                              color:'#000',    action:null,           gap:100},
   ];
 
   let totalDelay=0;
-  deletionLines.forEach((line,i)=>{
-    totalDelay += i===0?600: i<3?280: i<14?220: i<16?180:300;
+  sequence.forEach((item,i)=>{
+    totalDelay+=item.gap;
     const t=totalDelay;
     setTimeout(()=>{
+      // Print the line
       if(!document.getElementById('del-terminal'))return;
       const span=document.createElement('div');
-      span.style.cssText=`color:${line.color};opacity:0;transition:opacity 0.25s;`;
-      span.textContent=line.text;
+      span.style.cssText=`color:${item.color};opacity:0;transition:opacity 0.2s;`;
+      span.textContent=item.text;
       term.appendChild(span);
       requestAnimationFrame(()=>requestAnimationFrame(()=>span.style.opacity='1'));
       term.scrollTop=term.scrollHeight;
-      if(line.id){const el=document.querySelector(line.id);if(el){el.style.transition='opacity 0.18s';el.style.opacity='0';setTimeout(()=>el.remove(),200);}}
-      if(line.multi){line.multi.forEach(sel=>{const el=document.querySelector(sel);if(el){el.style.transition='opacity 0.18s';el.style.opacity='0';setTimeout(()=>el.remove(),200);}});}
+      // Fire the death action
+      if(item.action)item.action(t);
     },t);
   });
 
-  // ── THE REVEAL ──
-  totalDelay+=1200;
+  // ── WALLPAPER DIES LAST — after everything else ──
+  totalDelay+=500;
   setTimeout(()=>{
-    // Fade out the CRT terminal screen
+    const bg=document.getElementById('bg');
+    if(bg){
+      playFinalBoom();
+      bg.style.animation='bgCorrupt 1.8s steps(1) forwards';
+      // screen flash on "death"
+      const flash=document.createElement('div');
+      flash.style.cssText='position:fixed;inset:0;background:#fff;z-index:99997;opacity:0;pointer-events:none;transition:opacity 0.06s;';
+      document.body.appendChild(flash);
+      setTimeout(()=>{flash.style.opacity='0.9';},400);
+      setTimeout(()=>{flash.style.opacity='0';},500);
+      setTimeout(()=>{flash.style.opacity='0.6';},700);
+      setTimeout(()=>{flash.style.opacity='0';},820);
+      setTimeout(()=>{try{bg.remove();flash.remove();}catch(e){}},1900);
+    }
+    // Make terminal fully opaque now that desktop is gone
+    if(crtDiv)crtDiv.style.background='#000';
+  },totalDelay);
+
+  // ── THE REVEAL ──
+  totalDelay+=2600;
+  setTimeout(()=>{
     const crt=document.getElementById('crt-screen');
     if(crt){crt.style.transition='opacity 1s ease';crt.style.opacity='0';}
 
     setTimeout(()=>{
-      // Remove CRT, build the reveal as a clean full-body div
       if(crt)crt.remove();
 
       const reveal=document.createElement('div');
       reveal.style.cssText='position:fixed;inset:0;background:#000;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:clamp(20px,6vw,60px);overflow-y:auto;';
-      // inject keyframes
       reveal.innerHTML='<style>@keyframes mochiReveal{from{opacity:0;letter-spacing:12px}to{opacity:1;letter-spacing:2px}}@keyframes crtFlicker{0%{opacity:1}50%{opacity:0.92}75%{opacity:1}90%{opacity:0.96}100%{opacity:1}}</style>';
-      // scanlines + vignette
       const scan=document.createElement('div');
       scan.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:1;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.15) 3px,rgba(0,0,0,0.15) 4px);';
       reveal.appendChild(scan);
       const vig=document.createElement('div');
       vig.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:2;background:radial-gradient(ellipse at center,transparent 50%,rgba(0,0,0,0.8) 100%);animation:crtFlicker 0.12s steps(1) infinite;';
       reveal.appendChild(vig);
-      // content wrapper
       const box=document.createElement('div');
       box.style.cssText='position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;max-width:min(520px,92vw);width:100%;';
       reveal.appendChild(box);
@@ -1418,17 +1555,13 @@ function deleteAndClose(){
         },delay);
       }
 
-      addLine('─────────────────────────────────────',
-        'color:#1a661a;font-size:clamp(10px,2vw,13px);letter-spacing:1px;width:100%;text-align:center;margin-bottom:4px;', 300);
-      addLine('INCOMING TRANSMISSION',
-        'color:#33ff33;font-size:clamp(11px,2.5vw,14px);letter-spacing:4px;text-align:center;margin:10px 0 4px;', 700);
-      addLine('FROM: M. OCHI &lt;mochi@divisemusicsolutions.com&gt;',
-        'color:#1a881a;font-size:clamp(9px,2vw,12px);letter-spacing:2px;text-align:center;margin-bottom:4px;', 1100);
-      addLine('─────────────────────────────────────',
-        'color:#1a661a;font-size:clamp(10px,2vw,13px);letter-spacing:1px;width:100%;text-align:center;margin-bottom:28px;', 1400);
+      addLine('─────────────────────────────────────','color:#1a661a;font-size:clamp(10px,2vw,13px);letter-spacing:1px;width:100%;text-align:center;margin-bottom:4px;',300);
+      addLine('INCOMING TRANSMISSION','color:#33ff33;font-size:clamp(11px,2.5vw,14px);letter-spacing:4px;text-align:center;margin:10px 0 4px;',700);
+      addLine('FROM: M. OCHI &lt;mochi@divisemusicsolutions.com&gt;','color:#1a881a;font-size:clamp(9px,2vw,12px);letter-spacing:2px;text-align:center;margin-bottom:4px;',1100);
+      addLine('─────────────────────────────────────','color:#1a661a;font-size:clamp(10px,2vw,13px);letter-spacing:1px;width:100%;text-align:center;margin-bottom:28px;',1400);
 
-      // THANK YOU — big impact moment
       setTimeout(()=>{
+        playStatic(0.08,0.3);
         const ty=document.createElement('div');
         ty.style.cssText='font-family:Courier New,monospace;color:#33ff33;font-size:clamp(40px,11vw,88px);font-weight:bold;text-align:center;margin:8px 0 24px;text-shadow:0 0 24px #33ff33,0 0 50px #1a991a;opacity:0;animation:mochiReveal 1.4s ease forwards;';
         ty.textContent='THANK YOU.';
@@ -1450,10 +1583,8 @@ function deleteAndClose(){
       msgLines.forEach(l=>{
         addLine(l.t,`color:${l.color};font-size:clamp(13px,2.8vw,17px);letter-spacing:2px;text-align:center;line-height:1.8;`,l.delay);
       });
-      addLine('─────────────────────────────────────',
-        'color:#1a661a;font-size:clamp(10px,2vw,13px);letter-spacing:1px;width:100%;text-align:center;margin-top:24px;', 9000);
+      addLine('─────────────────────────────────────','color:#1a661a;font-size:clamp(10px,2vw,13px);letter-spacing:1px;width:100%;text-align:center;margin-top:24px;',9000);
 
-      // Final fade to black
       setTimeout(()=>{
         const fade=document.createElement('div');
         fade.style.cssText='position:fixed;inset:0;background:#000;opacity:0;transition:opacity 5s ease;z-index:999999;pointer-events:none;';
@@ -1464,7 +1595,7 @@ function deleteAndClose(){
         },5200);
       },10200);
 
-    },1100); // wait for CRT fade-out
+    },1100);
   },totalDelay);
 }
 
