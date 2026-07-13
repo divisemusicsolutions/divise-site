@@ -7,369 +7,312 @@
 <link rel="icon" type="image/jpeg" href="Char_DuMaS_Transparent.jpg">
 <style>
 @import url("https://assets.mlcdn.com/fonts.css?version=1778566");
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Courier New',Courier,monospace;background:#000;overflow:hidden;color:#fff;height:100dvh;width:100vw;touch-action:manipulation}
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:'Courier New',Courier,monospace; background:black; overflow:hidden; color:white; height:100dvh; width:100vw; position:relative; touch-action:manipulation; }
 
 /* ── BOOT ── */
-#boot{position:fixed;inset:0;background:#000;display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:9999;gap:24px;transition:opacity .6s ease}
-#boot.fade-out{opacity:0;pointer-events:none}
-#boot-logo{width:min(120px,30vw);animation:bootSpin 1.2s linear infinite,bootSlide 1.8s ease-in-out infinite alternate}
-@keyframes bootSpin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
-@keyframes bootSlide{from{margin-left:-100px}to{margin-left:100px}}
-#boot-title{font-size:clamp(14px,4vw,22px);color:#6c3cff;letter-spacing:3px;text-transform:uppercase}
-#boot-title.glitch{color:#ff003c;animation:glitchFlash .12s steps(1) forwards}
-@keyframes glitchFlash{0%{letter-spacing:8px;opacity:.7;color:#ff003c}50%{letter-spacing:1px;opacity:1;color:#fff}100%{letter-spacing:3px;opacity:.9;color:#ff003c}}
-.bar-wrap{width:min(300px,70vw);border:1px solid #6c3cff;height:14px;background:#111}
-#bar{width:0%;height:100%;background:linear-gradient(90deg,#6c3cff,#ff3cf0);transition:width .1s linear}
-#boot-status{font-size:11px;color:#555;letter-spacing:1px;transition:color .3s}
-#boot-status.success{color:#6c3cff}
-#boot-success-flash{position:fixed;inset:0;background:#6c3cff;opacity:0;z-index:9998;pointer-events:none;transition:opacity .15s}
-#boot-success-flash.flash{opacity:.25}
+#boot { position:fixed; inset:0; background:#000; display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:9999; gap:24px; transition:opacity 0.6s ease; }
+#boot.fade-out { opacity:0; pointer-events:none; }
+#boot-logo { width:min(120px,30vw); animation:bootSpin 1.2s linear infinite, bootSlide 1.8s ease-in-out infinite alternate; }
+@keyframes bootSpin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+@keyframes bootSlide { from{margin-left:-100px} to{margin-left:100px} }
+#boot-title { font-size:clamp(14px,4vw,22px); color:#6c3cff; letter-spacing:3px; text-transform:uppercase; }
+#boot-title.glitch { color:#ff003c; animation:glitchFlash 0.12s steps(1) forwards; }
+@keyframes glitchFlash { 0%{letter-spacing:8px;opacity:0.7;color:#ff003c} 50%{letter-spacing:1px;opacity:1;color:#fff} 100%{letter-spacing:3px;opacity:0.9;color:#ff003c} }
+.bar-wrap { width:min(300px,70vw); border:1px solid #6c3cff; height:14px; background:#111; }
+#bar { width:0%; height:100%; background:linear-gradient(90deg,#6c3cff,#ff3cf0); transition:width 0.1s linear; }
+#boot-status { font-size:11px; color:#555; letter-spacing:1px; transition:color 0.3s; }
+#boot-status.success { color:#6c3cff; }
+#boot-success-flash { position:fixed; inset:0; background:#6c3cff; opacity:0; z-index:9998; pointer-events:none; transition:opacity 0.15s; }
+#boot-success-flash.flash { opacity:0.25; }
 
 /* ── WALLPAPER ── */
-#bg{position:fixed;inset:0;background:url('DMS_Logo_v1.png') center/contain no-repeat;opacity:.18;z-index:0}
+#bg { position:fixed; inset:0; background:url('DMS_Logo_v1.png') center/contain no-repeat; opacity:0.18; z-index:0; }
 
 /* ── MENU BAR ── */
-#menubar{position:fixed;top:0;left:0;right:0;height:28px;background:rgba(20,10,40,.92);backdrop-filter:blur(8px);border-bottom:1px solid #333;display:flex;align-items:center;padding:0 10px;z-index:500;user-select:none}
-.menu-logo{height:22px;width:22px;object-fit:contain;border-radius:4px;margin-right:12px;cursor:default;image-rendering:pixelated}
-.menu-item{font-size:13px;color:#ddd;cursor:pointer;padding:2px 10px;border-radius:4px;position:relative}
-.menu-item:hover{background:#6c3cff;color:#fff}
-.dropdown{display:none;position:absolute;top:26px;left:0;background:rgba(20,10,40,.98);border:1px solid #444;border-radius:0 0 6px 6px;min-width:180px;z-index:9000}
-.dropdown.open{display:block}
-.dropdown-item{padding:8px 14px;font-size:12px;cursor:pointer;color:#ccc;white-space:nowrap}
-.dropdown-item:hover{background:#6c3cff;color:#fff}
-.dropdown-sep{border-top:1px solid #333;margin:4px 0}
-.menu-time{margin-left:auto;font-size:12px;color:#aaa}
+#menubar { position:fixed; top:0; left:0; right:0; height:28px; background:rgba(20,10,40,0.92); backdrop-filter:blur(8px); border-bottom:1px solid #333; display:flex; align-items:center; padding:0 10px; gap:0; z-index:500; user-select:none; }
+#menubar .menu-logo { height:22px; width:22px; object-fit:contain; border-radius:4px; margin-right:12px; cursor:default; image-rendering:pixelated; }
+.menu-item { font-size:13px; color:#ddd; cursor:pointer; padding:2px 10px; border-radius:4px; position:relative; }
+.menu-item:hover { background:#6c3cff; color:#fff; }
+.dropdown { display:none; position:absolute; top:26px; left:0; background:rgba(20,10,40,0.98); border:1px solid #444; border-radius:0 0 6px 6px; min-width:180px; z-index:9000; }
+.dropdown.open { display:block; }
+.dropdown-item { padding:8px 14px; font-size:12px; cursor:pointer; color:#ccc; white-space:nowrap; }
+.dropdown-item:hover { background:#6c3cff; color:#fff; }
+.dropdown-sep { border-top:1px solid #333; margin:4px 0; }
+.menu-time { margin-left:auto; font-size:12px; color:#aaa; }
 
 /* ── DESKTOP ── */
-#desktop{position:relative;width:100vw;height:100dvh;z-index:1}
+#desktop { position:relative; width:100vw; height:100dvh; z-index:1; }
 
 /* ── ICONS ── */
-.icon{position:absolute;display:flex;flex-direction:column;align-items:center;cursor:grab;color:#ddd;gap:5px;width:72px;-webkit-tap-highlight-color:transparent;touch-action:none;user-select:none;z-index:10}
-.icon:active{cursor:grabbing}
-.icon.in-trash{display:none}
-.icon .icon-img{width:58px;height:58px;border-radius:12px;background:rgba(108,60,255,.18);border:1px solid rgba(108,60,255,.35);display:flex;align-items:center;justify-content:center;font-size:30px;transition:background .2s,box-shadow .2s;box-shadow:0 2px 10px rgba(108,60,255,.2);pointer-events:none;overflow:hidden}
-.icon:hover .icon-img{background:rgba(108,60,255,.4);box-shadow:0 0 18px rgba(108,60,255,.6)}
-.icon .icon-img img{width:100%;height:100%;object-fit:cover;pointer-events:none}
-.icon span{font-size:10px;text-align:center;color:#ccc;text-shadow:0 1px 4px #000;line-height:1.2;max-width:72px;word-break:break-word;pointer-events:none}
-#icon-dumas .icon-img{background:rgba(40,0,0,.6);border-color:rgba(180,0,60,.4)}
-#icon-trash.has-dumas .icon-img{border-color:rgba(255,0,60,.7)!important;box-shadow:0 0 18px rgba(255,0,60,.6)!important;animation:trashPulse 1s ease-in-out infinite alternate}
-@keyframes trashPulse{from{box-shadow:0 0 8px rgba(255,0,60,.4)}to{box-shadow:0 0 28px rgba(255,0,60,.9)}}
-#icon-trash.drag-over .icon-img{background:rgba(255,0,60,.35)!important;box-shadow:0 0 28px rgba(255,0,60,1)!important}
-/* PLX file glitch */
-#icon-plx .icon-img{background:rgba(60,0,80,.7);border-color:rgba(180,0,255,.5);animation:plxGlitch 2.5s steps(1) infinite}
-@keyframes plxGlitch{0%,89%{filter:none;transform:none}90%{filter:hue-rotate(180deg) saturate(8) contrast(3);transform:translateX(-3px)}92%{filter:invert(1);transform:translateX(3px)}94%{filter:none;transform:none}96%{filter:hue-rotate(90deg) contrast(4);transform:translateX(-2px) scaleX(1.04)}98%{filter:none;transform:none}}
+.icon { position:absolute; display:flex; flex-direction:column; align-items:center; cursor:grab; color:#ddd; gap:5px; width:72px; -webkit-tap-highlight-color:transparent; touch-action:none; user-select:none; z-index:10; transition:filter 0.3s; }
+.icon:active { cursor:grabbing; }
+.icon.in-trash { display:none; }
+#icon-trash.has-dumas .icon-img { border-color:rgba(255,0,60,0.7) !important; box-shadow:0 0 18px rgba(255,0,60,0.6) !important; animation:trashPulse 1s ease-in-out infinite alternate; }
+@keyframes trashPulse { from{box-shadow:0 0 8px rgba(255,0,60,0.4)} to{box-shadow:0 0 28px rgba(255,0,60,0.9)} }
+.icon .icon-img { width:58px; height:58px; border-radius:12px; background:rgba(108,60,255,0.18); border:1px solid rgba(108,60,255,0.35); display:flex; align-items:center; justify-content:center; font-size:30px; transition:background 0.2s,box-shadow 0.2s; box-shadow:0 2px 10px rgba(108,60,255,0.2); pointer-events:none; overflow:hidden; }
+.icon:hover .icon-img { background:rgba(108,60,255,0.4); box-shadow:0 0 18px rgba(108,60,255,0.6); }
+.icon .icon-img img { width:100%; height:100%; object-fit:cover; pointer-events:none; }
+.icon span { font-size:10px; text-align:center; color:#ccc; text-shadow:0 1px 4px #000; line-height:1.2; max-width:72px; word-break:break-word; pointer-events:none; }
+#icon-dumas .icon-img { background:rgba(40,0,0,0.6); border-color:rgba(180,0,60,0.4); }
+#icon-dumas:hover .icon-img { box-shadow:0 0 20px rgba(200,0,50,0.7); }
+#icon-trash.drag-over .icon-img { background:rgba(255,0,60,0.35) !important; box-shadow:0 0 28px rgba(255,0,60,1) !important; }
 
 /* ── WINDOWS ── */
-.window{position:absolute;top:80px;left:50%;transform:translateX(-50%) scale(.85);width:min(420px,92vw);max-height:78vh;background:#111;border:2px solid #444;border-radius:10px;display:none;flex-direction:column;z-index:100;opacity:0;transition:opacity .22s ease,transform .22s cubic-bezier(.34,1.4,.64,1);overflow:hidden}
-.window.open{display:flex!important;opacity:1;transform:translateX(-50%) scale(1)}
-.window.dragged{transform:none!important}
-.window.dragged.open{opacity:1}
-.window-bg{position:absolute;inset:0;background:url('DMS_Logo_v1.png') center/contain no-repeat;opacity:.10;pointer-events:none;z-index:0}
-#dumas-win{background:#000;border-color:#300}
-#dumas-win .window-bg{opacity:0}
-#dumas-win .title-bar{background:linear-gradient(to right,#1a0000,#500020)}
-.title-bar{background:linear-gradient(to right,#1a1030,#6c3cff);padding:7px 10px;cursor:move;display:flex;justify-content:space-between;align-items:center;font-size:13px;flex-shrink:0;position:relative;z-index:1;user-select:none;touch-action:none}
-.close-btn{cursor:pointer;color:#ff5f57;font-size:14px;font-weight:bold;width:20px;height:20px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:rgba(255,95,87,.15)}
-.close-btn:hover{background:rgba(255,95,87,.4)}
-.content{padding:16px;position:relative;z-index:1;overflow-y:auto;-webkit-overflow-scrolling:touch;flex:1}
+.window { position:absolute; top:80px; left:50%; transform:translateX(-50%) scale(0.85); width:min(420px,92vw); max-height:78vh; background:#111; border:2px solid #444; border-radius:10px; display:none; flex-direction:column; z-index:100; opacity:0; transition:opacity 0.22s ease,transform 0.22s cubic-bezier(.34,1.4,.64,1); overflow:hidden; }
+.window.open { display:flex !important; opacity:1; transform:translateX(-50%) scale(1); }
+.window.dragged { transform:none !important; }
+.window.dragged.open { opacity:1; }
+.window-bg { position:absolute; inset:0; background:url('DMS_Logo_v1.png') center/contain no-repeat; opacity:0.10; pointer-events:none; z-index:0; }
+#dumas-win { background:#000; border-color:#300; }
+#dumas-win .window-bg { opacity:0; }
+#dumas-win .title-bar { background:linear-gradient(to right,#1a0000,#500020); }
+.title-bar { background:linear-gradient(to right,#1a1030,#6c3cff); padding:7px 10px; cursor:move; display:flex; justify-content:space-between; align-items:center; font-size:13px; flex-shrink:0; position:relative; z-index:1; user-select:none; touch-action:none; }
+.close-btn { cursor:pointer; color:#ff5f57; font-size:14px; font-weight:bold; width:20px; height:20px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:rgba(255,95,87,0.15); }
+.close-btn:hover { background:rgba(255,95,87,0.4); }
+.content { padding:16px; position:relative; z-index:1; overflow-y:auto; -webkit-overflow-scrolling:touch; flex:1; }
 
 /* ── TEXTEDIT ── */
-.textedit-content{background:#fff;color:#111;font-family:'Courier New',monospace;font-size:13px;line-height:1.7;min-height:140px;padding:16px}
-.textedit-content a{color:#00c;text-decoration:underline}
-.email-redacted{background:#111;color:#111;border-radius:2px;user-select:none}
+.textedit-content { background:#fff; color:#111; font-family:'Courier New',Courier,monospace; font-size:13px; line-height:1.7; min-height:140px; padding:16px; }
+.textedit-content a { color:#0000cc; text-decoration:underline; }
+.email-redacted { background:#111; color:#111; border-radius:2px; letter-spacing:1px; user-select:none; }
 
 /* ── EMAIL PIN ── */
-#email-pin-screen{display:none;position:fixed;inset:0;background:rgba(0,0,0,.94);z-index:8100;justify-content:center;align-items:center}
-#email-pin-screen.active{display:flex}
-.pin-box{background:#0d0820;border:2px solid #6c3cff;border-radius:14px;padding:36px 32px;width:min(320px,88vw);display:flex;flex-direction:column;align-items:center;gap:14px;box-shadow:0 0 50px rgba(108,60,255,.35)}
-.pin-box h2{color:#6c3cff;font-size:13px;letter-spacing:4px;text-transform:uppercase;text-align:center}
-.pin-display{display:flex;gap:10px;margin:4px 0}
-.pin-dot{width:16px;height:16px;border-radius:50%;border:2px solid #6c3cff;background:transparent;transition:background .15s}
-.pin-dot.filled{background:#6c3cff}
-/* text input for typing PIN directly */
-#pin-text-input{width:100%;background:#0a0018;border:1px solid #333;color:#6c3cff;font-family:'Courier New',monospace;font-size:20px;padding:10px;text-align:center;letter-spacing:6px;outline:none;border-radius:6px;transition:border-color .2s}
-#pin-text-input:focus{border-color:#6c3cff}
-.pin-keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%}
-.pin-key{background:#1a1030;border:1px solid #333;border-radius:8px;color:#ddd;font-family:'Courier New',monospace;font-size:18px;padding:12px;cursor:pointer;text-align:center;transition:background .15s,border-color .15s;user-select:none}
-.pin-key:hover{background:#2a1050;border-color:#6c3cff}
-.pin-key:active{background:#6c3cff;color:#fff}
-#pin-error{color:#ff3c3c;font-size:11px;letter-spacing:1px;display:none;text-align:center}
-.pin-cancel-btn{background:none;border:none;color:#444;font-family:'Courier New',monospace;font-size:11px;cursor:pointer;letter-spacing:1px}
+#email-pin-screen { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.94); z-index:8100; justify-content:center; align-items:center; }
+#email-pin-screen.active { display:flex; }
+.pin-box { background:#0d0820; border:2px solid #6c3cff; border-radius:14px; padding:36px 32px; width:min(320px,88vw); display:flex; flex-direction:column; align-items:center; gap:18px; box-shadow:0 0 50px rgba(108,60,255,0.35); }
+.pin-box h2 { color:#6c3cff; font-size:13px; letter-spacing:4px; text-transform:uppercase; text-align:center; }
+.pin-display { display:flex; gap:10px; margin:8px 0; }
+.pin-dot { width:16px; height:16px; border-radius:50%; border:2px solid #6c3cff; background:transparent; transition:background 0.15s; }
+.pin-dot.filled { background:#6c3cff; }
+.pin-keypad { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; width:100%; }
+.pin-key { background:#1a1030; border:1px solid #333; border-radius:8px; color:#ddd; font-family:'Courier New',monospace; font-size:18px; padding:14px; cursor:pointer; text-align:center; transition:background 0.15s,border-color 0.15s; user-select:none; }
+.pin-key:hover { background:#2a1050; border-color:#6c3cff; }
+.pin-key:active { background:#6c3cff; color:#fff; }
+#pin-error { color:#ff3c3c; font-size:11px; letter-spacing:1px; display:none; text-align:center; }
+.pin-cancel-btn { background:none; border:none; color:#444; font-family:'Courier New',monospace; font-size:11px; cursor:pointer; letter-spacing:1px; }
 
 /* ── EMAIL APP ── */
-#mail{width:min(700px,96vw)}
-.email-app{display:flex;height:100%;min-height:340px;position:relative;z-index:1}
-.email-sidebar{width:190px;flex-shrink:0;background:#1a1a2e;border-right:1px solid #333;overflow-y:auto;padding:8px 0}
-.email-sidebar-title{padding:8px 12px;font-size:11px;color:#666;letter-spacing:2px;text-transform:uppercase}
-.email-row{padding:10px 12px;cursor:pointer;border-bottom:1px solid #222;font-size:11px;line-height:1.4}
-.email-row:hover{background:#2a2a4a}
-.email-row.active{background:#2a1050;border-left:3px solid #6c3cff}
-.email-row .er-from{color:#aaa;font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.email-row .er-subj{color:#666;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.email-row.unread .er-from{color:#fff}
-.email-row.unread .er-subj{color:#aaa}
-.email-body-pane{flex:1;background:#fff;color:#111;font-family:'Courier New',monospace;font-size:12px;line-height:1.7;padding:16px;overflow-y:auto}
-.email-body-pane .eb-header{border-bottom:1px solid #ddd;margin-bottom:12px;padding-bottom:10px}
-.email-body-pane .eb-header p{margin-bottom:2px;font-size:11px;color:#555}
-.email-body-pane .eb-body{white-space:pre-wrap}
-.email-corrupted{color:#bbb;font-style:italic}
-.dark-link{color:#111!important;text-decoration:none;background:linear-gradient(to bottom,transparent 60%,rgba(108,60,255,.15) 60%);font-weight:bold;cursor:pointer;transition:color .3s,letter-spacing .2s}
-.dark-link:hover{color:#6c3cff!important;letter-spacing:2px}
+#mail { width:min(700px,96vw); }
+.email-app { display:flex; height:100%; min-height:340px; position:relative; z-index:1; }
+.email-sidebar { width:200px; flex-shrink:0; background:#1a1a2e; border-right:1px solid #333; overflow-y:auto; padding:8px 0; }
+.email-sidebar-title { padding:8px 12px; font-size:11px; color:#666; letter-spacing:2px; text-transform:uppercase; }
+.email-row { padding:10px 12px; cursor:pointer; border-bottom:1px solid #222; font-size:11px; line-height:1.4; }
+.email-row:hover { background:#2a2a4a; }
+.email-row.active { background:#2a1050; border-left:3px solid #6c3cff; }
+.email-row .er-from { color:#aaa; font-weight:bold; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.email-row .er-subj { color:#666; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.email-row.unread .er-from { color:#fff; }
+.email-row.unread .er-subj { color:#aaa; }
+.email-body-pane { flex:1; background:#fff; color:#111; font-family:'Courier New',monospace; font-size:12px; line-height:1.7; padding:16px; overflow-y:auto; }
+.email-body-pane .eb-header { border-bottom:1px solid #ddd; margin-bottom:12px; padding-bottom:10px; }
+.email-body-pane .eb-header p { margin-bottom:2px; font-size:11px; color:#555; }
+.email-body-pane .eb-body { white-space:pre-wrap; }
+.email-corrupted { color:#bbb; font-style:italic; }
+.dark-link { color:#111 !important; text-decoration:none; background:linear-gradient(to bottom,transparent 60%,rgba(108,60,255,0.15) 60%); font-weight:bold; font-size:14px; cursor:pointer; transition:color 0.3s,letter-spacing 0.2s; }
+.dark-link:hover { color:#6c3cff !important; letter-spacing:2px; }
 
 /* ── DOCUMENTS ── */
-.folder-grid{display:flex;flex-direction:row;gap:18px;flex-wrap:wrap;align-items:flex-start;padding:20px 16px}
-.folder-item{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;width:70px;-webkit-tap-highlight-color:transparent}
-.folder-item .fi-img{width:54px;height:54px;border-radius:10px;background:rgba(108,60,255,.12);border:1px solid rgba(108,60,255,.28);display:flex;align-items:center;justify-content:center;font-size:28px;transition:background .2s,box-shadow .2s}
-.folder-item:hover .fi-img{background:rgba(108,60,255,.35);box-shadow:0 0 14px rgba(108,60,255,.5)}
-.folder-item span{font-size:10px;color:#ccc;text-align:center;word-break:break-all;line-height:1.2;max-width:70px}
-.folder-item.notes-file .fi-img{background:rgba(80,200,80,.12);border-color:rgba(80,200,80,.3)}
-.folder-item.notes-file:hover .fi-img{box-shadow:0 0 14px rgba(80,200,80,.5)}
+.folder-grid { display:flex; flex-direction:row; gap:18px; flex-wrap:wrap; align-items:flex-start; padding:20px 16px; }
+.folder-item { display:flex; flex-direction:column; align-items:center; gap:6px; cursor:pointer; width:70px; -webkit-tap-highlight-color:transparent; }
+.folder-item .fi-img { width:54px; height:54px; border-radius:10px; background:rgba(108,60,255,0.12); border:1px solid rgba(108,60,255,0.28); display:flex; align-items:center; justify-content:center; font-size:28px; transition:background 0.2s,box-shadow 0.2s; }
+.folder-item:hover .fi-img { background:rgba(108,60,255,0.35); box-shadow:0 0 14px rgba(108,60,255,0.5); }
+.folder-item span { font-size:10px; color:#ccc; text-align:center; word-break:break-all; line-height:1.2; max-width:70px; }
+.folder-item.notes-file .fi-img { background:rgba(80,200,80,0.12); border-color:rgba(80,200,80,0.3); }
+.folder-item.notes-file:hover .fi-img { box-shadow:0 0 14px rgba(80,200,80,0.5); }
 
 /* ── TRASH ── */
-#trash-folder .content{display:flex;flex-direction:row;gap:20px;flex-wrap:wrap;align-items:flex-start;padding:20px 16px;min-height:160px}
-.trash-drop-zone{min-height:120px;width:100%;display:flex;flex-wrap:wrap;gap:18px;align-items:flex-start}
-#trash-folder.drop-highlight{box-shadow:0 0 0 3px rgba(108,60,255,.8) inset}
+#trash-folder .content { display:flex; flex-direction:row; gap:20px; flex-wrap:wrap; align-items:flex-start; padding:20px 16px; min-height:160px; }
+.trash-drop-zone { min-height:120px; width:100%; display:flex; flex-wrap:wrap; gap:18px; align-items:flex-start; }
+#trash-folder.drop-highlight { box-shadow:0 0 0 3px rgba(108,60,255,0.8) inset; }
 
 /* ── DATABASE ── */
-#database-win{width:min(500px,94vw)}
-.db-inner{background:#0a0a1a;padding:20px;display:flex;flex-direction:column;align-items:center;gap:14px}
-.db-logo{width:min(260px,80%);display:block}
-.db-search-row{display:flex;gap:8px;width:100%}
-.db-input{flex:1;background:#111;border:1px solid #6c3cff;color:#0f0;font-family:'Courier New',monospace;font-size:13px;padding:8px 10px;outline:none;border-radius:4px}
-.db-input:focus{border-color:#a060ff}
-.db-search-btn{background:#6c3cff;color:#fff;border:none;padding:8px 14px;font-family:'Courier New',monospace;font-size:12px;cursor:pointer;border-radius:4px}
-.db-results{width:100%;min-height:60px;background:#000;border:1px solid #333;padding:12px;font-size:12px;color:#0f0;font-family:'Courier New',monospace;line-height:1.8;border-radius:4px;white-space:pre-wrap}
-.db-result-link{color:#6c3cff;cursor:pointer;text-decoration:underline}
+#database-win { width:min(500px,94vw); }
+.db-inner { background:#0a0a1a; padding:20px; display:flex; flex-direction:column; align-items:center; gap:14px; }
+.db-logo { width:min(260px,80%); display:block; }
+.db-search-row { display:flex; gap:8px; width:100%; }
+.db-input { flex:1; background:#111; border:1px solid #6c3cff; color:#0f0; font-family:'Courier New',monospace; font-size:13px; padding:8px 10px; outline:none; border-radius:4px; }
+.db-input:focus { border-color:#a060ff; }
+.db-search-btn { background:#6c3cff; color:#fff; border:none; padding:8px 14px; font-family:'Courier New',monospace; font-size:12px; cursor:pointer; border-radius:4px; }
+.db-search-btn:hover { background:#8a5cff; }
+.db-results { width:100%; min-height:60px; background:#000; border:1px solid #333; padding:12px; font-size:12px; color:#0f0; font-family:'Courier New',monospace; line-height:1.7; border-radius:4px; }
+.db-result-link { color:#6c3cff; cursor:pointer; text-decoration:underline; }
 
-/* ── BROWSER WINDOW ── */
-#browser-win{width:min(600px,96vw)}
-.browser-chrome{background:#c0c0c0;border-bottom:2px solid #808080;padding:6px 8px;display:flex;flex-direction:column;gap:4px;flex-shrink:0;position:relative;z-index:1}
-.browser-nav-row{display:flex;gap:4px;align-items:center}
-.browser-btn{background:#c0c0c0;border:2px solid;border-color:#fff #808080 #808080 #fff;font-family:'Courier New',monospace;font-size:11px;padding:2px 8px;cursor:pointer;color:#000;min-width:30px;text-align:center}
-.browser-btn:active{border-color:#808080 #fff #fff #808080}
-.browser-url{flex:1;background:#fff;border:2px inset #808080;font-family:'Courier New',monospace;font-size:11px;padding:2px 6px;color:#000;outline:none}
-.browser-title-bar-text{font-size:10px;color:#444;letter-spacing:1px;padding:0 2px}
-.browser-toolbar{display:flex;gap:2px;align-items:center;border-top:1px solid #808080;padding-top:4px}
-.browser-content{flex:1;overflow-y:auto;background:#fff;color:#000;font-family:Arial,sans-serif;font-size:13px;position:relative;z-index:1}
-.browser-statusbar{background:#c0c0c0;border-top:1px solid #808080;padding:2px 8px;font-size:10px;color:#444;font-family:'Courier New',monospace;flex-shrink:0;position:relative;z-index:1}
-
-/* ── NETSCAPE DOWNLOAD PAGE ── */
-.ns-page{padding:16px;background:#fff;min-height:100%}
-.ns-page h2{font-size:16px;color:#00008b;margin-bottom:8px;font-family:Arial,sans-serif}
-.ns-page p{font-size:12px;margin-bottom:8px;line-height:1.5;color:#333;font-family:Arial,sans-serif}
-.ns-download-btn{display:inline-block;background:#c0c0c0;border:2px solid;border-color:#fff #808080 #808080 #fff;font-family:'Courier New',monospace;font-size:12px;padding:6px 16px;cursor:pointer;color:#000;margin-top:8px;text-decoration:none}
-.ns-download-btn:active{border-color:#808080 #fff #fff #808080}
-.ns-quote{font-style:italic;border-left:3px solid #aaa;padding-left:8px;color:#555;margin:8px 0;font-family:Arial,sans-serif;font-size:12px}
-.redacted-block{background:#000;color:#000;display:inline;padding:0 2px;user-select:none}
-
-/* ── STUFFIT PROGRESS ── */
-#stuffit-screen{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:8600;justify-content:center;align-items:center}
-#stuffit-screen.active{display:flex}
-.stuffit-box{background:#c0c0c0;border:3px solid;border-color:#fff #808080 #808080 #fff;box-shadow:4px 4px 0 #000;font-family:'Courier New',monospace;width:min(340px,90vw)}
-.stuffit-bar-title{background:linear-gradient(90deg,#4b0082,#8b00ff);color:#fff;padding:4px 8px;font-size:12px;font-weight:bold;display:flex;justify-content:space-between;align-items:center}
-.stuffit-body{padding:14px;color:#000}
-.stuffit-body p{font-size:12px;margin-bottom:10px;font-weight:bold}
-.stuffit-prog-wrap{background:#808080;border:2px inset #999;height:22px;position:relative;overflow:hidden;margin-bottom:8px}
-.stuffit-prog-fill{height:100%;width:0%;transition:width .1s linear}
-.stuffit-prog-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:bold;color:#000}
-.stuffit-status{font-size:10px;color:#555;text-align:center}
-
-/* ── JAX EXPANDER PROGRESS ── */
-#expander-screen{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:8600;justify-content:center;align-items:center}
-#expander-screen.active{display:flex}
-
-/* ── PLX LOGIN ── */
-#plx-login-screen{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:8200;justify-content:center;align-items:center}
-#plx-login-screen.active{display:flex}
-
-/* ── INDESTRUCTIBLE ERROR ── */
-#indestructible-popup{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:8700;justify-content:center;align-items:center}
-#indestructible-popup.active{display:flex}
-
-/* ── ARTISTS ── */
-.sub-icon{display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;width:90px;-webkit-tap-highlight-color:transparent}
-.sub-icon-img{width:76px;height:76px;border-radius:14px;overflow:hidden;border:2px solid rgba(108,60,255,.4);box-shadow:0 2px 12px rgba(108,60,255,.3);transition:box-shadow .2s,transform .15s}
-.sub-icon:hover .sub-icon-img{box-shadow:0 0 20px rgba(108,60,255,.7);transform:scale(1.06)}
-.sub-icon-img img{width:100%;height:100%;object-fit:cover;display:block}
-.sub-icon span{font-size:11px;color:#ccc;text-align:center;text-shadow:0 1px 4px #000;font-family:'Courier New',monospace}
-
-/* ── POPUP AD ── */
-#popup-ad{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:min(360px,92vw);background:#c0c0c0;border:3px solid;border-color:#fff #808080 #808080 #fff;box-shadow:4px 4px 0 #000,inset 1px 1px 0 #fff;z-index:8888;display:none;font-family:'Courier New',monospace;animation:popupShake .4s ease}
-@keyframes popupShake{0%{transform:translate(-50%,-50%) rotate(-3deg) scale(.7)}40%{transform:translate(-50%,-50%) rotate(2deg) scale(1.05)}70%{transform:translate(-50%,-50%) rotate(-1deg) scale(.98)}100%{transform:translate(-50%,-50%) rotate(0) scale(1)}}
-.popup-titlebar{background:linear-gradient(90deg,#000080,#1084d0);color:#fff;padding:4px 8px;font-size:12px;display:flex;justify-content:space-between;align-items:center;cursor:move;user-select:none;touch-action:none}
-.popup-close{background:#c0c0c0;border:2px solid;border-color:#fff #808080 #808080 #fff;color:#000;font-size:11px;font-weight:bold;cursor:pointer;width:18px;height:18px;display:flex;align-items:center;justify-content:center}
-.popup-body{padding:12px;text-align:center;background:#c0c0c0;color:#000}
-.popup-body img{width:100%;border:2px inset #808080;display:block;margin-bottom:10px}
-.popup-body-label{font-family:'Courier New',monospace;font-size:12px;color:#000;font-weight:bold;margin:8px 0 6px;letter-spacing:1px}
-.popup-stream-btn{display:flex;align-items:center;justify-content:center;gap:6px;padding:9px;font-family:'Courier New',monospace;font-size:13px;font-weight:bold;color:#fff;text-decoration:none;margin-bottom:6px;border:2px solid;border-color:#fff #808080 #808080 #fff}
-.popup-presave-btn{display:block;background:#6c3cff;color:#fff!important;text-align:center;padding:8px;font-family:'Courier New',monospace;font-size:12px;font-weight:bold;text-decoration:none;margin-top:6px;border:2px solid;border-color:#fff #808080 #808080 #fff;letter-spacing:1px}
-
-/* ── CLIPPY ── */
-#dumas-assistant{position:fixed;top:36px;right:10px;z-index:7000;display:none;flex-direction:row;align-items:flex-start;gap:8px;max-width:calc(100vw - 20px)}
-#dumas-assistant.active{display:flex}
-#dumas-char{width:100px;flex-shrink:0;animation:dumasBounce 2s ease-in-out infinite;cursor:pointer}
-#dumas-char img{width:100%;image-rendering:pixelated;display:block}
-@keyframes dumasBounce{0%,100%{transform:translateY(0)}30%{transform:translateY(-8px)}60%{transform:translateY(-3px)}}
-#dumas-char.glitch-char{animation:charGlitch .3s steps(1) infinite!important}
-@keyframes charGlitch{0%{filter:none;transform:none}20%{filter:hue-rotate(180deg) saturate(8) contrast(3);transform:translate(-4px,2px) scaleX(1.05)}40%{filter:invert(1) contrast(4);transform:translate(4px,-3px)}60%{filter:hue-rotate(90deg) saturate(6);transform:translate(-3px,3px)}80%{filter:brightness(3);transform:translate(2px,-1px)}100%{filter:none;transform:none}}
-#aim-bubble{background:#c0c0c0;border:2px solid;border-color:#fff #808080 #808080 #fff;box-shadow:3px 3px 0 #000;font-family:'Courier New',monospace;width:min(270px,54vw)}
-.aim-titlebar{background:linear-gradient(90deg,#000080,#1084d0);color:#fff;font-size:11px;font-weight:bold;padding:3px 8px;display:flex;justify-content:space-between;align-items:center}
-.aim-close{cursor:pointer;background:#c0c0c0;border:1px solid;border-color:#fff #808080 #808080 #fff;width:14px;height:14px;display:flex;align-items:center;justify-content:center;color:#000;font-size:11px;font-weight:bold}
-.aim-body{padding:10px;font-size:12px;color:#000;background:#fff;min-height:50px;line-height:1.6;max-height:200px;overflow-y:auto}
-#aim-cursor{display:inline-block;width:8px;height:14px;background:#000;animation:aimBlink .7s steps(1) infinite;vertical-align:middle;margin-left:1px}
-@keyframes aimBlink{50%{opacity:0}}
-.aim-choices{padding:6px 10px 8px;background:#c0c0c0;display:flex;gap:6px;flex-wrap:wrap}
-.aim-btn{background:#c0c0c0;border:2px solid;border-color:#fff #808080 #808080 #fff;font-family:'Courier New',monospace;font-size:12px;color:#000;cursor:pointer;padding:4px 10px;font-weight:bold}
-.aim-btn:hover{background:#000080;color:#fff}
-.aim-progress-wrap{margin:8px 10px;background:#808080;border:2px inset #999;height:18px;position:relative;overflow:hidden}
-.aim-progress-bar{height:100%;background:linear-gradient(90deg,#000080,#1084d0);width:0%;transition:width .1s linear}
-.aim-dismiss{padding:4px 10px 6px;background:#c0c0c0;text-align:right}
-.aim-dismiss span{font-size:10px;color:#666;cursor:pointer}
-.aim-dismiss span:hover{color:#000;text-decoration:underline}
-
-/* ── MAILING LIST ── */
-#mailing-win{position:fixed;top:36px;right:10px;z-index:7001;display:none;width:min(360px,92vw)}
-#mailing-win.active{display:block}
-.mailing-titlebar{background:linear-gradient(90deg,#000080,#1084d0);color:#fff;font-size:12px;font-weight:bold;padding:4px 8px;display:flex;justify-content:space-between;align-items:center}
-.mailing-close{cursor:pointer;background:#c0c0c0;border:2px solid;border-color:#fff #808080 #808080 #fff;color:#000;width:16px;height:16px;display:flex;align-items:center;justify-content:center;font-size:11px}
-.mailing-body{background:#c0c0c0;border:2px solid;border-color:#fff #808080 #808080 #fff;box-shadow:3px 3px 0 #000}
-
-/* ── LOGIN (Buddy Thumper / DB) ── */
-#login-screen{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:8000;justify-content:center;align-items:center}
-#login-screen.active{display:flex}
-.login-box{background:#1a1030;border:2px solid #6c3cff;border-radius:12px;padding:32px 28px;width:min(340px,90vw);box-shadow:0 0 40px rgba(108,60,255,.4);display:flex;flex-direction:column;gap:16px}
-.login-box h2{color:#6c3cff;font-size:16px;letter-spacing:3px;text-align:center;text-transform:uppercase}
-.login-box label{font-size:11px;color:#888;letter-spacing:1px;display:block;margin-bottom:4px}
-.login-box input{width:100%;background:#0d0820;border:1px solid #333;color:#fff;font-family:'Courier New',monospace;padding:8px 10px;font-size:13px;border-radius:6px;outline:none;transition:border-color .2s}
-.login-box input:focus{border-color:#6c3cff}
-.login-box button{background:#6c3cff;color:#fff;border:none;padding:10px;border-radius:6px;cursor:pointer;font-family:'Courier New',monospace;font-size:13px;letter-spacing:2px}
-.login-cancel{background:none!important;color:#555!important;font-size:11px!important;padding:4px!important;cursor:pointer;text-align:center}
-#login-error{color:#ff3c3c;font-size:12px;text-align:center;display:none}
-
-/* ── ATTEMPT FAILED ── */
-#attempt-failed{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9000;justify-content:center;align-items:center}
-#attempt-failed.active{display:flex}
-.af-box{background:#c0c0c0;border:3px solid;border-color:#fff #808080 #808080 #fff;box-shadow:4px 4px 0 #000;min-width:260px}
-.af-bar{background:linear-gradient(90deg,#8b0000,#cc0000);color:#fff;padding:5px 10px;font-size:13px;font-weight:bold}
-.af-body{padding:20px;text-align:center}
-.af-btn{background:#8b0000;color:#fff;border:2px solid;border-color:#fff #600 #600 #fff;padding:8px 28px;font-family:'Courier New',monospace;font-size:13px;font-weight:bold;cursor:pointer;letter-spacing:2px;margin-top:8px}
-
-/* ── ENCRYPT POPUP ── */
-#encrypt-popup{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:8200;justify-content:center;align-items:center}
-#encrypt-popup.active{display:flex}
-.ep-box{background:#c0c0c0;border:3px solid;border-color:#fff #808080 #808080 #fff;box-shadow:4px 4px 0 #000;width:min(340px,90vw)}
-.ep-bar{background:linear-gradient(90deg,#8b0000,#cc0000);color:#fff;padding:5px 10px;font-size:12px;font-weight:bold;display:flex;justify-content:space-between;align-items:center}
-.ep-body{padding:16px;background:#c0c0c0;color:#000}
-.ep-body p{font-size:13px;font-weight:bold;margin-bottom:12px}
-.ep-input{width:100%;background:#fff;border:2px inset #808080;color:#000;font-family:'Courier New',monospace;font-size:14px;padding:8px;outline:none;letter-spacing:2px}
-.ep-submit{margin-top:10px;background:#8b0000;color:#fff;border:2px solid;border-color:#fff #600 #600 #fff;padding:7px 20px;font-family:'Courier New',monospace;font-size:13px;font-weight:bold;cursor:pointer;display:block;width:100%}
-#ep-error{color:#8b0000;font-size:11px;margin-top:6px;display:none;text-align:center;font-weight:bold}
-.ep-cancel{background:none;border:none;color:#666;font-size:11px;cursor:pointer;display:block;width:100%;text-align:center;margin-top:6px}
-
-/* ── FRANTIC ── */
-#frantic-layer{display:none;position:fixed;inset:0;z-index:8500;pointer-events:none}
-#frantic-layer.active{display:block}
-
-/* ── TASKBAR ── */
-#taskbar{position:fixed;bottom:0;left:0;right:0;height:28px;background:rgba(15,8,35,.92);border-top:1px solid #333;display:flex;align-items:center;padding:0 10px;font-size:11px;color:#777;z-index:500}
+/* ── ENCRYPTION BYPASS POPUP ── */
+#encrypt-popup { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.88); z-index:8200; justify-content:center; align-items:center; }
+#encrypt-popup.active { display:flex; }
+.ep-box { background:#c0c0c0; border:3px solid; border-color:#fff #808080 #808080 #fff; box-shadow:4px 4px 0 #000; font-family:'Courier New',monospace; width:min(340px,90vw); }
+.ep-bar { background:linear-gradient(90deg,#8b0000,#cc0000); color:#fff; padding:5px 10px; font-size:12px; font-weight:bold; display:flex; justify-content:space-between; align-items:center; }
+.ep-body { padding:16px; background:#c0c0c0; color:#000; }
+.ep-body p { font-size:13px; font-weight:bold; margin-bottom:12px; }
+.ep-input { width:100%; background:#fff; border:2px inset #808080; color:#000; font-family:'Courier New',monospace; font-size:14px; padding:8px; outline:none; letter-spacing:2px; }
+.ep-submit { margin-top:10px; background:#8b0000; color:#fff; border:2px solid; border-color:#fff #600 #600 #fff; padding:7px 20px; font-family:'Courier New',monospace; font-size:13px; font-weight:bold; cursor:pointer; display:block; width:100%; }
+#ep-error { color:#8b0000; font-size:11px; margin-top:6px; display:none; text-align:center; font-weight:bold; }
+.ep-cancel { background:none; border:none; color:#666; font-size:11px; cursor:pointer; font-family:'Courier New',monospace; display:block; width:100%; text-align:center; margin-top:6px; }
 
 /* ── DINER PAGE ── */
-#diner-page{display:none;position:fixed;inset:0;background:#fdf6e3;z-index:88889;flex-direction:column;overflow-y:auto}
-#diner-page.active{display:flex}
-#diner-back{position:fixed;top:10px;left:14px;font-size:11px;color:#888;cursor:pointer;font-family:'Courier New',monospace;background:#fdf6e3;padding:2px 6px;border-radius:4px;z-index:88890}
-.diner-inner{max-width:500px;margin:0 auto;padding:40px 20px 60px;font-family:Georgia,serif;color:#2a1a0a}
-.diner-logo{text-align:center;margin-bottom:8px}
-.diner-logo h1{font-size:clamp(28px,7vw,48px);color:#8b2500;text-shadow:2px 2px 0 rgba(0,0,0,.1)}
-.diner-logo p{font-size:13px;color:#888;font-style:italic;margin-bottom:4px}
-.diner-divider{border:none;border-top:3px double #8b2500;margin:16px 0}
-.diner-section-title{font-size:18px;font-weight:bold;color:#8b2500;text-transform:uppercase;letter-spacing:2px;margin:24px 0 10px;border-bottom:1px solid #d4a56a;padding-bottom:4px}
-.diner-item{margin-bottom:16px}
-.diner-item-row{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
-.diner-item-name{font-weight:bold;font-size:14px;color:#2a1a0a}
-.diner-item-price{font-size:13px;color:#8b2500;white-space:nowrap;font-weight:bold}
-.diner-item-desc{font-size:12px;color:#666;font-style:italic;margin-top:2px;line-height:1.5}
-.diner-item-desc strong{color:#8b2500;font-style:normal}
-.diner-footer{text-align:center;font-size:11px;color:#aaa;margin-top:32px;font-style:italic}
-
-/* ── NEWS ARTICLE PAGE ── */
-#news-page{display:none;position:fixed;inset:0;background:#f5f0e8;z-index:88890;flex-direction:column;overflow-y:auto}
-#news-page.active{display:flex}
-#news-back{position:fixed;top:10px;left:14px;font-size:11px;color:#888;cursor:pointer;font-family:'Courier New',monospace;background:#f5f0e8;padding:2px 6px;border-radius:4px;z-index:88891}
-.news-inner{max-width:520px;margin:0 auto;padding:48px 20px 60px;font-family:Georgia,serif}
-.news-dateline{font-size:11px;color:#888;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
-.news-headline{font-size:clamp(18px,4vw,26px);font-weight:bold;color:#111;margin-bottom:12px;line-height:1.3}
-.news-body{font-size:13px;color:#333;line-height:1.8}
-.news-body p{margin-bottom:12px}
-.news-redacted{background:#111;color:#111;padding:0 3px;border-radius:1px;user-select:none;display:inline}
+#diner-page { display:none; position:fixed; inset:0; background:#fdf6e3; z-index:88889; flex-direction:column; overflow-y:auto; }
+#diner-page.active { display:flex; }
+#diner-back { position:fixed; top:10px; left:14px; font-size:11px; color:#888; cursor:pointer; font-family:'Courier New',monospace; background:#fdf6e3; padding:2px 6px; border-radius:4px; z-index:88890; }
+.diner-inner { max-width:500px; margin:0 auto; padding:40px 20px 60px; font-family:Georgia,serif; color:#2a1a0a; }
+.diner-logo { text-align:center; margin-bottom:8px; }
+.diner-logo h1 { font-size:clamp(28px,7vw,48px); font-family:Georgia,serif; color:#8b2500; text-shadow:2px 2px 0 rgba(0,0,0,0.1); }
+.diner-logo p { font-size:13px; color:#888; font-style:italic; margin-bottom:4px; }
+.diner-divider { border:none; border-top:3px double #8b2500; margin:16px 0; }
+.diner-section-title { font-size:18px; font-weight:bold; color:#8b2500; text-transform:uppercase; letter-spacing:2px; margin:24px 0 10px; border-bottom:1px solid #d4a56a; padding-bottom:4px; }
+.diner-item { margin-bottom:16px; }
+.diner-item-row { display:flex; justify-content:space-between; align-items:baseline; gap:8px; }
+.diner-item-name { font-weight:bold; font-size:14px; color:#2a1a0a; }
+.diner-item-price { font-size:13px; color:#8b2500; white-space:nowrap; font-weight:bold; }
+.diner-item-desc { font-size:12px; color:#666; font-style:italic; margin-top:2px; line-height:1.5; }
+.diner-item-desc strong { color:#8b2500; font-style:normal; }
+.diner-footer { text-align:center; font-size:11px; color:#aaa; margin-top:32px; font-style:italic; }
 
 /* ── DOS PAGE ── */
-#dos-page{display:none;position:fixed;inset:0;background:#000;z-index:88888;flex-direction:column;overflow:hidden}
-#dos-page.active{display:flex}
-#dos-terminal{flex:1;overflow-y:auto;padding:clamp(14px,4vw,32px);font-family:'Courier New',Courier,monospace;font-size:clamp(12px,2vw,14px);color:#0f0;line-height:1.6;position:relative;z-index:5}
-#dos-back{position:absolute;top:10px;right:14px;font-size:11px;color:#030;cursor:pointer;font-family:'Courier New',monospace}
-#dos-back:hover{color:#0a0}
-.dos-cursor{display:inline-block;width:9px;height:15px;background:#0f0;animation:dosBlink 1s steps(1) infinite;vertical-align:middle}
-@keyframes dosBlink{50%{opacity:0}}
+#dos-page { display:none; position:fixed; inset:0; background:#000; z-index:88888; flex-direction:column; overflow:hidden; }
+#dos-page.active { display:flex; }
+#dos-terminal { flex:1; overflow-y:auto; padding:20px; font-family:'Courier New',Courier,monospace; font-size:clamp(12px,2vw,14px); color:#00ff00; line-height:1.6; }
+#dos-back { position:absolute; top:10px; right:14px; font-size:11px; color:#003300; cursor:pointer; font-family:'Courier New',monospace; }
+#dos-back:hover { color:#00aa00; }
+.dos-line { display:block; white-space:pre-wrap; }
+.dos-cursor { display:inline-block; width:9px; height:15px; background:#00ff00; animation:dosBlink 1s steps(1) infinite; vertical-align:middle; }
+@keyframes dosBlink { 50%{opacity:0} }
 
-/* ── DARK PAGE ── */
-#dark-page{display:none;position:fixed;inset:0;background:#000;z-index:88888;flex-direction:column;align-items:center;justify-content:center}
-#dark-page.active{display:flex}
-#dark-page-back{position:absolute;top:14px;left:14px;font-size:11px;color:#1a1a1a;cursor:pointer;letter-spacing:2px}
-#dark-page-back:hover{color:#333}
-.dark-word{font-size:clamp(28px,8vw,64px);font-weight:bold;color:#000;letter-spacing:8px;text-transform:lowercase;cursor:pointer;user-select:none;transition:color .5s,text-shadow .5s;font-family:'Courier New',monospace}
-.dark-word.revealed{color:#6c3cff;text-shadow:0 0 30px rgba(108,60,255,.8),0 0 60px rgba(108,60,255,.4)}
+/* ── CLIPPY ASSISTANT ── */
+#dumas-assistant { position:fixed; top:36px; right:10px; z-index:7000; display:none; flex-direction:row; align-items:flex-start; gap:8px; max-width:calc(100vw - 20px); }
+#dumas-assistant.active { display:flex; }
+#dumas-char { width:100px; flex-shrink:0; animation:dumasBounce 2s ease-in-out infinite; cursor:pointer; }
+#dumas-char img { width:100%; image-rendering:pixelated; display:block; }
+@keyframes dumasBounce { 0%,100%{transform:translateY(0)} 30%{transform:translateY(-8px)} 60%{transform:translateY(-3px)} }
+
+#aim-bubble { background:#c0c0c0; border:2px solid; border-color:#fff #808080 #808080 #fff; box-shadow:3px 3px 0 #000; font-family:'Courier New',monospace; width:min(270px,54vw); }
+.aim-titlebar { background:linear-gradient(90deg,#000080,#1084d0); color:#fff; font-size:11px; font-weight:bold; padding:3px 8px; display:flex; justify-content:space-between; align-items:center; cursor:default; }
+.aim-close { cursor:pointer; font-size:11px; font-weight:bold; background:#c0c0c0; border:1px solid; border-color:#fff #808080 #808080 #fff; width:14px; height:14px; display:flex; align-items:center; justify-content:center; color:#000; }
+.aim-body { padding:10px; font-size:12px; color:#000; background:#fff; min-height:50px; line-height:1.6; max-height:200px; overflow-y:auto; }
+#aim-cursor { display:inline-block; width:8px; height:14px; background:#000; animation:aimBlink 0.7s steps(1) infinite; vertical-align:middle; margin-left:1px; }
+@keyframes aimBlink { 50%{opacity:0} }
+.aim-choices { padding:6px 10px 8px; background:#c0c0c0; display:flex; gap:6px; flex-wrap:wrap; }
+.aim-btn { background:#c0c0c0; border:2px solid; border-color:#fff #808080 #808080 #fff; font-family:'Courier New',monospace; font-size:12px; color:#000; cursor:pointer; padding:4px 10px; font-weight:bold; }
+.aim-btn:hover { background:#000080; color:#fff; }
+.aim-dismiss { padding:4px 10px 6px; background:#c0c0c0; text-align:right; }
+.aim-dismiss span { font-size:10px; color:#666; cursor:pointer; }
+.aim-dismiss span:hover { color:#000; text-decoration:underline; }
+
+/* Progress bar inside AIM */
+.aim-progress-wrap { margin:8px 10px; background:#808080; border:2px inset #999; height:18px; position:relative; overflow:hidden; }
+.aim-progress-bar { height:100%; background:linear-gradient(90deg,#000080,#1084d0); width:0%; transition:width 0.1s linear; }
+
+/* ── MAILING LIST WINDOW ── */
+#mailing-win { position:fixed; top:36px; right:10px; z-index:7001; display:none; width:min(360px,92vw); font-family:'Courier New',monospace; }
+#mailing-win.active { display:block; }
+.mailing-titlebar { background:linear-gradient(90deg,#000080,#1084d0); color:#fff; font-size:12px; font-weight:bold; padding:4px 8px; display:flex; justify-content:space-between; align-items:center; }
+.mailing-close { cursor:pointer; font-size:11px; background:#c0c0c0; border:2px solid; border-color:#fff #808080 #808080 #fff; color:#000; width:16px; height:16px; display:flex; align-items:center; justify-content:center; }
+.mailing-body { background:#c0c0c0; border:2px solid; border-color:#fff #808080 #808080 #fff; box-shadow:3px 3px 0 #000; }
+
+/* ── DATABASE LOGIN / DUMAS LOGIN ── */
+#login-screen { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:8000; justify-content:center; align-items:center; }
+#login-screen.active { display:flex; }
+.login-box { background:#1a1030; border:2px solid #6c3cff; border-radius:12px; padding:32px 28px; width:min(340px,90vw); box-shadow:0 0 40px rgba(108,60,255,0.4); display:flex; flex-direction:column; gap:16px; }
+.login-box h2 { color:#6c3cff; font-size:16px; letter-spacing:3px; text-align:center; text-transform:uppercase; }
+.login-box label { font-size:11px; color:#888; letter-spacing:1px; display:block; margin-bottom:4px; }
+.login-box input { width:100%; background:#0d0820; border:1px solid #333; color:#fff; font-family:'Courier New',monospace; padding:8px 10px; font-size:13px; border-radius:6px; outline:none; transition:border-color 0.2s; }
+.login-box input:focus { border-color:#6c3cff; }
+.login-box button { background:#6c3cff; color:#fff; border:none; padding:10px; border-radius:6px; cursor:pointer; font-family:'Courier New',monospace; font-size:13px; letter-spacing:2px; transition:background 0.2s; }
+.login-box button:hover { background:#8a5cff; }
+.login-cancel { background:none !important; color:#555 !important; font-size:11px !important; padding:4px !important; cursor:pointer; text-align:center; }
+#login-error { color:#ff3c3c; font-size:12px; text-align:center; display:none; }
+
+/* ── ATTEMPT FAILED ── */
+#attempt-failed { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:9000; justify-content:center; align-items:center; }
+#attempt-failed.active { display:flex; }
+.af-box { background:#c0c0c0; border:3px solid; border-color:#fff #808080 #808080 #fff; box-shadow:4px 4px 0 #000; font-family:'Courier New',monospace; min-width:260px; }
+.af-bar { background:linear-gradient(90deg,#8b0000,#cc0000); color:#fff; padding:5px 10px; font-size:13px; font-weight:bold; }
+.af-body { padding:20px; text-align:center; }
+.af-btn { background:#8b0000; color:#fff; border:2px solid; border-color:#fff #600 #600 #fff; padding:8px 28px; font-family:'Courier New',monospace; font-size:13px; font-weight:bold; cursor:pointer; letter-spacing:2px; margin-top:8px; }
+
+/* ── FRANTIC LAYER ── */
+#frantic-layer { display:none; position:fixed; inset:0; z-index:8500; pointer-events:none; }
+#frantic-layer.active { display:block; }
+
+/* ── POPUP AD ── */
+#popup-ad { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); width:min(340px,90vw); background:#c0c0c0; border:3px solid; border-color:#fff #808080 #808080 #fff; box-shadow:4px 4px 0 #000,inset 1px 1px 0 #fff; z-index:8888; display:none; font-family:'Courier New',monospace; animation:popupShake 0.4s ease; }
+@keyframes popupShake { 0%{transform:translate(-50%,-50%) rotate(-3deg) scale(0.7)} 40%{transform:translate(-50%,-50%) rotate(2deg) scale(1.05)} 70%{transform:translate(-50%,-50%) rotate(-1deg) scale(0.98)} 100%{transform:translate(-50%,-50%) rotate(0deg) scale(1)} }
+.popup-titlebar { background:linear-gradient(90deg,#000080,#1084d0); color:white; padding:4px 8px; font-size:12px; display:flex; justify-content:space-between; align-items:center; cursor:move; user-select:none; touch-action:none; }
+.popup-close { background:#c0c0c0; border:2px solid; border-color:#fff #808080 #808080 #fff; color:#000; font-size:11px; font-weight:bold; cursor:pointer; width:18px; height:18px; display:flex; align-items:center; justify-content:center; }
+.popup-body { padding:12px; text-align:center; background:#c0c0c0; color:#000; }
+.popup-body img { width:100%; border:2px inset #808080; display:block; margin-bottom:10px; }
+.popup-link { display:block; background:#000080; color:#ffff00; text-decoration:none; font-size:16px; font-weight:bold; padding:8px; border:2px solid; border-color:#fff #808080 #808080 #fff; margin-bottom:6px; animation:blink 0.8s step-start infinite; }
+@keyframes blink { 50%{background:#cc0000} }
+.popup-date { font-size:13px; color:#000; font-weight:bold; margin-top:4px; }
+
+/* ── ARTISTS ── */
+.sub-icon { display:flex; flex-direction:column; align-items:center; gap:8px; cursor:pointer; width:90px; -webkit-tap-highlight-color:transparent; }
+.sub-icon-img { width:76px; height:76px; border-radius:14px; overflow:hidden; border:2px solid rgba(108,60,255,0.4); box-shadow:0 2px 12px rgba(108,60,255,0.3); transition:box-shadow 0.2s,transform 0.15s; }
+.sub-icon:hover .sub-icon-img { box-shadow:0 0 20px rgba(108,60,255,0.7); transform:scale(1.06); }
+.sub-icon-img img { width:100%; height:100%; object-fit:cover; display:block; }
+.sub-icon span { font-size:11px; color:#ccc; text-align:center; text-shadow:0 1px 4px #000; font-family:'Courier New',monospace; }
+
+/* ── TASKBAR ── */
+#taskbar { position:fixed; bottom:0; left:0; right:0; height:28px; background:rgba(15,8,35,0.92); border-top:1px solid #333; display:flex; align-items:center; padding:0 10px; font-size:11px; color:#777; z-index:500; }
 
 /* ── JUMPSCARE ── */
-#jumpscare{display:none;position:fixed;inset:0;background:#000;z-index:99999;overflow:hidden;flex-direction:column;align-items:center;justify-content:center}
-#jumpscare.active{display:flex}
-#js-bg{position:absolute;inset:0;background:#000;animation:jsBgFlash .15s steps(1) infinite}
-@keyframes jsBgFlash{0%{background:#000}15%{background:#1a0000}30%{background:#000}50%{background:#300000}65%{background:#000}80%{background:#200010}100%{background:#000}}
-#js-img{position:absolute;inset:0;background:url('Char_DuMaS_2.jpg') center/cover no-repeat;animation:jsZoom 3s ease-in forwards,jsShake .07s linear infinite,jsTear .18s steps(1) infinite;filter:saturate(2) contrast(1.4) brightness(.85);opacity:.92}
-@keyframes jsZoom{from{transform:scale(1)}to{transform:scale(2.6)}}
-@keyframes jsShake{0%{margin-left:0;margin-top:0}15%{margin-left:-8px;margin-top:4px}30%{margin-left:7px;margin-top:-5px}45%{margin-left:-5px;margin-top:7px}60%{margin-left:6px;margin-top:-3px}75%{margin-left:-9px;margin-top:2px}90%{margin-left:4px;margin-top:-6px}100%{margin-left:0;margin-top:0}}
-@keyframes jsTear{0%{clip-path:none}22%{clip-path:inset(30% 0 40% 0)}24%{clip-path:none}57%{clip-path:inset(60% 0 10% 0);transform:translateX(-4px)}59%{clip-path:none}100%{clip-path:none}}
-#js-img2{position:absolute;inset:0;background:url('Char_DuMaS_1.jpg') center/cover no-repeat;opacity:0;animation:jsImg2Flash .6s steps(1) infinite;filter:saturate(5) contrast(3) hue-rotate(120deg);mix-blend-mode:screen}
-@keyframes jsImg2Flash{0%{opacity:0;clip-path:inset(0 0 95% 0)}8%{opacity:.5;clip-path:inset(20% 0 60% 0);transform:skewX(4deg) translateX(-12px)}16%{opacity:0}30%{opacity:.7;clip-path:inset(70% 0 5% 0)}38%{opacity:0}52%{opacity:.4;clip-path:inset(40% 0 40% 0)}60%{opacity:0}75%{opacity:.6;clip-path:inset(5% 0 80% 0)}85%{opacity:0}94%{opacity:.8;clip-path:inset(55% 0 15% 0)}100%{opacity:0}}
-#js-glitch{position:absolute;inset:0;pointer-events:none;background:url('Char_DuMaS_1.jpg') center/cover no-repeat;opacity:0;animation:jsGlitchFlicker .22s steps(1) infinite;filter:hue-rotate(200deg) contrast(4) saturate(5);mix-blend-mode:screen}
-@keyframes jsGlitchFlicker{0%{opacity:0;clip-path:inset(0 0 88% 0)}12%{opacity:.65;clip-path:inset(25% 0 45% 0);transform:translateX(-10px)}24%{opacity:0}40%{opacity:.5;clip-path:inset(65% 0 8% 0)}55%{opacity:0}68%{opacity:.75;clip-path:inset(12% 0 68% 0)}80%{opacity:0}92%{opacity:.45;clip-path:inset(48% 0 22% 0)}100%{opacity:0}}
-#js-glitch2{position:absolute;inset:0;pointer-events:none;background:url('Char_DuMaS_2.jpg') center/cover no-repeat;opacity:0;animation:jsGlitch2 .31s steps(1) infinite;filter:contrast(3) saturate(6) invert(1);mix-blend-mode:screen}
-@keyframes jsGlitch2{0%{opacity:0}7%{opacity:.4;clip-path:inset(80% 0 0 0)}14%{opacity:0}45%{opacity:.3;clip-path:inset(0 0 80% 0)}52%{opacity:0}78%{opacity:.5;clip-path:inset(35% 0 35% 0)}85%{opacity:0}100%{opacity:0}}
-#js-scanlines{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,0,0,.07) 2px,rgba(255,0,0,.07) 4px);animation:jsScanMove .4s linear infinite}
-@keyframes jsScanMove{from{background-position:0 0}to{background-position:0 40px}}
-#js-noise{position:absolute;inset:0;pointer-events:none;opacity:.08;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:noiseAnim .05s steps(1) infinite}
-@keyframes noiseAnim{0%{background-position:0 0}25%{background-position:-50px 30px}50%{background-position:20px -40px}75%{background-position:-30px -20px}100%{background-position:40px 10px}}
-#js-center-text{position:absolute;z-index:100002;color:red;font-size:clamp(18px,6vw,44px);font-weight:bold;text-align:center;text-shadow:0 0 30px red,0 0 60px red;letter-spacing:4px;top:12%;animation:jsCenterPulse .5s ease-in-out infinite alternate;pointer-events:none;padding:0 16px}
-@keyframes jsCenterPulse{from{opacity:.7;transform:scale(.97)}to{opacity:1;transform:scale(1.03)}}
-#js-popup-container{position:absolute;inset:0;overflow:hidden}
-.js-popup{position:absolute;background:#c0c0c0;border:3px solid;border-color:#fff #808080 #808080 #fff;font-family:'Courier New',monospace;z-index:100001;min-width:200px;animation:jsPopIn .2s cubic-bezier(.34,1.4,.64,1) forwards;box-shadow:4px 4px 0 #000}
-@keyframes jsPopIn{from{transform:scale(.4) rotate(-5deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
-.js-popup-bar{background:linear-gradient(90deg,#8b0000,#cc0000);color:#fff;padding:3px 8px;font-size:12px;font-weight:bold;display:flex;justify-content:space-between;align-items:center}
-.js-popup-body{padding:10px 14px;color:#000;font-size:13px;font-weight:bold;text-align:center;line-height:1.4}
-.js-delete-btn{display:block;width:100%;margin-top:8px;background:#8b0000;color:#fff;border:2px solid;border-color:#fff #600 #600 #fff;padding:6px;font-family:'Courier New',monospace;font-size:13px;font-weight:bold;cursor:pointer}
-.js-delete-btn:hover{background:#cc0000}
-#jsp-main{top:50%;left:50%;transform:translate(-50%,-50%);min-width:260px;z-index:100010}
-#js-close-btn{position:absolute;bottom:30px;z-index:100003;background:#8b0000;color:#fff;border:3px solid #fff;padding:12px 40px;font-family:'Courier New',monospace;font-size:16px;font-weight:bold;cursor:pointer;letter-spacing:2px;animation:jsBtnPulse .6s ease-in-out infinite alternate}
-@keyframes jsBtnPulse{from{box-shadow:0 0 15px rgba(255,0,0,.5)}to{box-shadow:0 0 50px red}}
+#jumpscare { display:none; position:fixed; inset:0; background:#000; z-index:99999; overflow:hidden; flex-direction:column; align-items:center; justify-content:center; }
+#jumpscare.active { display:flex; }
+#js-bg { position:absolute; inset:0; background:#000; animation:jsBgFlash 0.15s steps(1) infinite; }
+@keyframes jsBgFlash { 0%{background:#000}15%{background:#1a0000}30%{background:#000}50%{background:#300000}65%{background:#000}80%{background:#200010}100%{background:#000} }
+#js-img { position:absolute; inset:0; background:url('Char_DuMaS_2.jpg') center/cover no-repeat; animation:jsZoom 3s ease-in forwards,jsShake 0.07s linear infinite,jsTear 0.18s steps(1) infinite; filter:saturate(2) contrast(1.4) brightness(0.85); opacity:0.92; }
+@keyframes jsZoom { from{transform:scale(1)}to{transform:scale(2.6)} }
+@keyframes jsShake { 0%{margin-left:0;margin-top:0}15%{margin-left:-8px;margin-top:4px}30%{margin-left:7px;margin-top:-5px}45%{margin-left:-5px;margin-top:7px}60%{margin-left:6px;margin-top:-3px}75%{margin-left:-9px;margin-top:2px}90%{margin-left:4px;margin-top:-6px}100%{margin-left:0;margin-top:0} }
+@keyframes jsTear { 0%{clip-path:none}20%{clip-path:inset(0 0 0 0)}22%{clip-path:inset(30% 0 40% 0)}24%{clip-path:none}55%{clip-path:none}57%{clip-path:inset(60% 0 10% 0);transform:translateX(-4px)}59%{clip-path:none}100%{clip-path:none} }
+#js-img2 { position:absolute; inset:0; background:url('Char_DuMaS_1.jpg') center/cover no-repeat; opacity:0; animation:jsImg2Flash 0.6s steps(1) infinite; filter:saturate(5) contrast(3) hue-rotate(120deg); mix-blend-mode:screen; }
+@keyframes jsImg2Flash { 0%{opacity:0;clip-path:inset(0 0 95% 0)}8%{opacity:0.5;clip-path:inset(20% 0 60% 0);transform:skewX(4deg) translateX(-12px)}16%{opacity:0}30%{opacity:0.7;clip-path:inset(70% 0 5% 0);transform:skewX(-3deg) translateX(8px)}38%{opacity:0}52%{opacity:0.4;clip-path:inset(40% 0 40% 0);transform:scaleX(1.08) translateX(-6px)}60%{opacity:0}75%{opacity:0.6;clip-path:inset(5% 0 80% 0);transform:skewX(6deg)}85%{opacity:0}94%{opacity:0.8;clip-path:inset(55% 0 15% 0);transform:skewX(-5deg) translateX(14px)}100%{opacity:0} }
+#js-glitch { position:absolute; inset:0; pointer-events:none; background:url('Char_DuMaS_1.jpg') center/cover no-repeat; opacity:0; animation:jsGlitchFlicker 0.22s steps(1) infinite; filter:hue-rotate(200deg) contrast(4) saturate(5); mix-blend-mode:screen; }
+@keyframes jsGlitchFlicker { 0%{opacity:0;clip-path:inset(0 0 88% 0)}12%{opacity:0.65;clip-path:inset(25% 0 45% 0);transform:translateX(-10px)}24%{opacity:0}40%{opacity:0.5;clip-path:inset(65% 0 8% 0);transform:translateX(12px)}55%{opacity:0}68%{opacity:0.75;clip-path:inset(12% 0 68% 0);transform:translateX(-7px) scaleX(1.06)}80%{opacity:0}92%{opacity:0.45;clip-path:inset(48% 0 22% 0);transform:translateX(8px)}100%{opacity:0} }
+#js-glitch2 { position:absolute; inset:0; pointer-events:none; background:url('Char_DuMaS_2.jpg') center/cover no-repeat; opacity:0; animation:jsGlitch2 0.31s steps(1) infinite; filter:contrast(3) saturate(6) invert(1); mix-blend-mode:screen; }
+@keyframes jsGlitch2 { 0%{opacity:0}7%{opacity:0.4;clip-path:inset(80% 0 0 0);transform:scaleX(1.1) translateX(6px)}14%{opacity:0}45%{opacity:0.3;clip-path:inset(0 0 80% 0);transform:translateX(-15px)}52%{opacity:0}78%{opacity:0.5;clip-path:inset(35% 0 35% 0);transform:skewY(2deg)}85%{opacity:0}100%{opacity:0} }
+#js-scanlines { position:absolute; inset:0; pointer-events:none; background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,0,0,0.07) 2px,rgba(255,0,0,0.07) 4px); animation:jsScanMove 0.4s linear infinite; }
+@keyframes jsScanMove { from{background-position:0 0}to{background-position:0 40px} }
+#js-noise { position:absolute; inset:0; pointer-events:none; opacity:0.08; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); animation:noiseAnim 0.05s steps(1) infinite; }
+@keyframes noiseAnim { 0%{background-position:0 0}25%{background-position:-50px 30px}50%{background-position:20px -40px}75%{background-position:-30px -20px}100%{background-position:40px 10px} }
+#js-center-text { position:absolute; z-index:100002; color:#ff0000; font-size:clamp(18px,6vw,44px); font-weight:bold; text-align:center; text-shadow:0 0 30px #ff0000,0 0 60px #ff0000; letter-spacing:4px; top:12%; animation:jsCenterPulse 0.5s ease-in-out infinite alternate; pointer-events:none; padding:0 16px; }
+@keyframes jsCenterPulse { from{opacity:0.7;transform:scale(0.97)}to{opacity:1;transform:scale(1.03)} }
+#js-popup-container { position:absolute; inset:0; overflow:hidden; }
+.js-popup { position:absolute; background:#c0c0c0; border:3px solid; border-color:#fff #808080 #808080 #fff; font-family:'Courier New',monospace; z-index:100001; min-width:200px; animation:jsPopIn 0.2s cubic-bezier(.34,1.4,.64,1) forwards; box-shadow:4px 4px 0 #000; }
+@keyframes jsPopIn { from{transform:scale(0.4) rotate(-5deg);opacity:0}to{transform:scale(1) rotate(0deg);opacity:1} }
+.js-popup-bar { background:linear-gradient(90deg,#8b0000,#cc0000); color:#fff; padding:3px 8px; font-size:12px; font-weight:bold; display:flex; justify-content:space-between; align-items:center; }
+.js-popup-body { padding:10px 14px; color:#000; font-size:13px; font-weight:bold; text-align:center; line-height:1.4; }
+.js-delete-btn { display:block; width:100%; margin-top:8px; background:#8b0000; color:#fff; border:2px solid; border-color:#fff #600 #600 #fff; padding:6px; font-family:'Courier New',monospace; font-size:13px; font-weight:bold; cursor:pointer; }
+.js-delete-btn:hover { background:#cc0000; }
+#jsp-main { top:50%;left:50%;transform:translate(-50%,-50%);min-width:260px;z-index:100010; }
+#js-close-btn { position:absolute; bottom:30px; z-index:100003; background:#8b0000; color:#fff; border:3px solid #fff; padding:12px 40px; font-family:'Courier New',monospace; font-size:16px; font-weight:bold; cursor:pointer; letter-spacing:2px; animation:jsBtnPulse 0.6s ease-in-out infinite alternate; }
+@keyframes jsBtnPulse { from{box-shadow:0 0 15px rgba(255,0,0,0.5)}to{box-shadow:0 0 50px rgba(255,0,0,1)} }
 
-/* ── MAILERLITE ── */
-.ml-form-embedWrapper{background:#c0c0c0!important;border-radius:0!important}
-.ml-form-embedBody{padding:12px!important}
-.ml-form-embedContent h4{font-size:14px!important;color:#000!important;font-family:'Courier New',monospace!important;margin-bottom:4px!important}
-.ml-form-embedContent p{font-size:11px!important;color:#444!important;font-family:'Courier New',monospace!important}
-.ml-form-embedSubmit{margin:0 0 10px 0!important}
-.ml-form-embedSubmit button{border-radius:4px!important;font-size:12px!important;padding:8px!important}
-.ml-form-embedWrapper .ml-form-fieldRow input{font-size:12px!important;padding:8px!important;border-radius:4px!important}
+/* ── DARK PAGE ── */
+#dark-page { display:none; position:fixed; inset:0; background:#000; z-index:88888; flex-direction:column; align-items:center; justify-content:center; }
+#dark-page.active { display:flex; }
+#dark-page-back { position:absolute; top:14px; left:14px; font-size:11px; color:#1a1a1a; cursor:pointer; letter-spacing:2px; }
+#dark-page-back:hover { color:#333; }
+.dark-word { font-size:clamp(28px,8vw,64px); font-weight:bold; color:#000; letter-spacing:8px; text-transform:lowercase; cursor:pointer; user-select:none; transition:color 0.5s,text-shadow 0.5s; font-family:'Courier New',monospace; }
+.dark-word.revealed { color:#6c3cff; text-shadow:0 0 30px rgba(108,60,255,0.8),0 0 60px rgba(108,60,255,0.4); }
 
-@media(max-width:480px){
-  .window{top:48px;width:95vw}
-  .icon .icon-img{width:52px;height:52px;font-size:26px}
-  .icon span{font-size:9px}
-  .email-sidebar{width:120px}
-  #mail{width:95vw}
-  #dumas-char{width:80px}
-  #aim-bubble{width:min(240px,52vw)}
-  #mailing-win{width:calc(100vw - 20px);right:10px}
+/* ── MAILERLITE OVERRIDES ── */
+.ml-form-embedWrapper { background:#c0c0c0 !important; border-radius:0 !important; }
+.ml-form-embedBody { padding:12px !important; }
+.ml-form-embedContent h4 { font-size:14px !important; color:#000 !important; font-family:'Courier New',monospace !important; margin-bottom:4px !important; }
+.ml-form-embedContent p { font-size:11px !important; color:#444 !important; font-family:'Courier New',monospace !important; }
+.ml-form-embedSubmit { margin:0 0 10px 0 !important; }
+.ml-form-embedSubmit button { border-radius:4px !important; font-size:12px !important; padding:8px !important; }
+.ml-form-embedWrapper .ml-form-fieldRow input { font-size:12px !important; padding:8px !important; border-radius:4px !important; }
+
+@media (max-width:480px) {
+  .window { top:48px; width:95vw; }
+  .icon .icon-img { width:52px; height:52px; font-size:26px; }
+  .icon span { font-size:9px; }
+  .email-sidebar { width:120px; }
+  #mail { width:95vw; }
+  #dumas-char { width:80px; }
+  #aim-bubble { width:min(240px,52vw); }
+  #mailing-win { width:calc(100vw - 20px); right:10px; }
 }
 </style>
 </head>
@@ -388,7 +331,8 @@ body{font-family:'Courier New',Courier,monospace;background:#000;overflow:hidden
 <!-- MENU BAR -->
 <div id="menubar">
   <img src="Char_DuMaS.jpg" class="menu-logo" alt="DiVISE">
-  <div class="menu-item" id="menu-file" onclick="toggleFileMenu()">File
+  <div class="menu-item" id="menu-file" onclick="toggleFileMenu()">
+    File
     <div class="dropdown" id="file-dropdown">
       <div class="dropdown-item" onclick="openWindow('readme')">Open README.TXT</div>
       <div class="dropdown-item" onclick="showEmailPin()">Mail</div>
@@ -404,24 +348,19 @@ body{font-family:'Courier New',Courier,monospace;background:#000;overflow:hidden
 
 <!-- DESKTOP -->
 <div id="desktop">
-  <!-- Col 1 -->
-  <div class="icon" id="icon-readme" style="top:48px;left:12px"><div class="icon-img">📄</div><span>README.TXT</span></div>
-  <div class="icon" id="icon-artists" style="top:140px;left:12px"><div class="icon-img">🎤</div><span>Artists</span></div>
-  <div class="icon" id="icon-releases" style="top:232px;left:12px"><div class="icon-img">🎵</div><span>Releases</span></div>
-  <div class="icon" id="icon-mail" style="top:324px;left:12px"><div class="icon-img">📧</div><span>Email</span></div>
-  <div class="icon" id="icon-ig" style="top:416px;left:12px"><div class="icon-img">📸</div><span>Instagram</span></div>
-  <!-- Col 2 -->
-  <div class="icon" id="icon-cats" style="top:48px;left:100px"><div class="icon-img">🐱</div><span>Cat Pictures</span></div>
-  <div class="icon" id="icon-dumas" style="top:140px;left:100px"><div class="icon-img"><img src="Char_DuMaS_Transparent.jpg" alt="DuMaS"></div><span></span></div>
-  <div class="icon" id="icon-documents" style="top:232px;left:100px"><div class="icon-img">📁</div><span>Documents</span></div>
-  <div class="icon" id="icon-database" style="top:324px;left:100px"><div class="icon-img"><img src="Database_Logo.jpg" alt="DB"></div><span>Database</span></div>
-  <div class="icon" id="icon-downloads" style="top:416px;left:100px"><div class="icon-img">📥</div><span>Downloads</span></div>
-  <div class="icon" id="icon-browser" style="top:508px;left:100px"><div class="icon-img">🌐</div><span>Browser</span></div>
-  <!-- Trash -->
-  <div class="icon" id="icon-trash" style="bottom:40px;top:auto;right:12px"><div class="icon-img">🗑️</div><span>Trash</span></div>
+  <div class="icon" id="icon-readme" style="top:48px;left:12px;"><div class="icon-img">📄</div><span>README.TXT</span></div>
+  <div class="icon" id="icon-artists" style="top:140px;left:12px;"><div class="icon-img">🎤</div><span>Artists</span></div>
+  <div class="icon" id="icon-releases" style="top:232px;left:12px;"><div class="icon-img">🎵</div><span>Releases</span></div>
+  <div class="icon" id="icon-mail" style="top:324px;left:12px;"><div class="icon-img">📧</div><span>Email</span></div>
+  <div class="icon" id="icon-ig" style="top:416px;left:12px;"><div class="icon-img">📸</div><span>Instagram</span></div>
+  <div class="icon" id="icon-cats" style="top:48px;left:100px;"><div class="icon-img">🐱</div><span>Cat Pictures</span></div>
+  <div class="icon" id="icon-dumas" style="top:140px;left:100px;"><div class="icon-img"><img src="Char_DuMaS_Transparent.jpg" alt="DuMaS"></div><span></span></div>
+  <div class="icon" id="icon-documents" style="top:232px;left:100px;"><div class="icon-img">📁</div><span>Documents</span></div>
+  <div class="icon" id="icon-database" style="top:324px;left:100px;"><div class="icon-img"><img src="Database_Logo.jpg" alt="DB"></div><span>Database</span></div>
+  <div class="icon" id="icon-trash" style="bottom:40px;top:auto;right:12px;"><div class="icon-img">🗑️</div><span>Trash</span></div>
 </div>
 
-<!-- ══ WINDOWS ══ -->
+<!-- WINDOWS -->
 <div id="readme" class="window">
   <div class="window-bg"></div>
   <div class="title-bar"><span>README.TXT</span><span class="close-btn" onclick="closeWin('readme')">✖</span></div>
@@ -436,27 +375,18 @@ body{font-family:'Courier New',Courier,monospace;background:#000;overflow:hidden
   <div class="window-bg"></div>
   <div class="title-bar"><span>Releases</span><span class="close-btn" onclick="closeWin('releases')">✖</span></div>
   <div class="content">
-    <p style="font-size:11px;color:#888;letter-spacing:1px;margin-bottom:8px;">Latest Release:</p>
-    <img src="S1P2_Album_Art.jpg" alt="FRNZ S1P2" style="width:100%;border-radius:4px;display:block;">
-    <p style="margin-top:10px;font-size:13px;color:#ddd;font-weight:bold;">FRNZ – Season 1 Part 2 (Remastered)</p>
-    <a href="https://distrokid.com/hyperfollow/frnz2/season-1-part-2-remastered" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:8px;background:#6c3cff;color:#fff;text-align:center;padding:10px;border-radius:6px;text-decoration:none;font-size:13px;font-weight:bold;letter-spacing:1px;">★ PRE-SAVE NOW ★</a>
-    <hr style="margin:18px 0;border-color:#333">
-    <p style="font-size:11px;color:#888;letter-spacing:1px;margin-bottom:8px;">Also available:</p>
-    <img src="FRNZ_S1_P1_Cover.jpg" alt="FRNZ S1P1" style="width:100%;border-radius:4px;display:block;">
+    <img src="FRNZ_S1_P1_Cover.jpg" alt="FRNZ" style="width:100%;border-radius:4px;display:block;">
     <p style="margin-top:10px;font-size:13px;color:#ddd;font-weight:bold;">FRNZ – Season 1 Part 1 (Remastered)</p>
-    <p style="margin-top:6px;font-size:11px;color:#888;letter-spacing:1px;">Listen now on:</p>
-    <a href="https://open.spotify.com/album/14gik5T6j6eulrnaGH80Vf" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:6px;background:#1db954;color:#fff;padding:9px;border-radius:6px;text-decoration:none;font-size:13px;font-weight:bold;letter-spacing:1px;">▶ Spotify</a>
-    <a href="https://music.apple.com/us/album/season-1-part-1-remastered/1896138150" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:6px;background:#fc3c44;color:#fff;padding:9px;border-radius:6px;text-decoration:none;font-size:13px;font-weight:bold;letter-spacing:1px;">♫ Apple Music</a>
-    <hr style="margin:18px 0;border-color:#333">
-    <img src="FRNZ_S3_Album.jpg" alt="FRNZ S3" style="width:100%;border-radius:4px;display:block;margin-bottom:10px;">
-    <a href="https://frnz.bandcamp.com/album/season-3" target="_blank" style="display:block;background:#1da0c3;color:#fff;text-align:center;padding:10px;border-radius:6px;text-decoration:none;font-size:13px;font-weight:bold;letter-spacing:1px;">FRNZ – SEASON 3 ON BANDCAMP</a>
+    <p style="margin-top:8px;font-size:11px;color:#888;text-align:center;letter-spacing:1px;">Listen now on:</p>
+    <a href="https://open.spotify.com/album/14gik5T6j6eulrnaGH80Vf" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:8px;background:#1db954;color:#fff;text-align:center;padding:10px;border-radius:6px;text-decoration:none;font-size:13px;font-weight:bold;letter-spacing:1px;">▶ Spotify</a>
+    <a href="https://music.apple.com/us/album/season-1-part-1-remastered/1896138150" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:8px;background:#fc3c44;color:#fff;text-align:center;padding:10px;border-radius:6px;text-decoration:none;font-size:13px;font-weight:bold;letter-spacing:1px;">♫ Apple Music</a>
   </div>
 </div>
 
 <div id="artists" class="window">
   <div class="window-bg"></div>
   <div class="title-bar"><span>Artists</span><span class="close-btn" onclick="closeWin('artists')">✖</span></div>
-  <div class="content" style="display:flex;flex-direction:row;gap:24px;justify-content:center;align-items:flex-start;flex-wrap:wrap;padding:24px 16px">
+  <div class="content" style="display:flex;flex-direction:row;gap:24px;justify-content:center;align-items:flex-start;flex-wrap:wrap;padding:24px 16px;">
     <div class="sub-icon" onclick="openWindow('frnz-page')"><div class="sub-icon-img"><img src="FRNZ_S1_P1_Cover.jpg" alt="FRNZ"></div><span>FRNZ</span></div>
     <div class="sub-icon" onclick="openWindow('plodes-page')"><div class="sub-icon-img"><img src="PLodes_Logo_1.jpg" alt="PLODES"></div><span>PLODES</span></div>
   </div>
@@ -466,18 +396,14 @@ body{font-family:'Courier New',Courier,monospace;background:#000;overflow:hidden
   <div class="window-bg"></div>
   <div class="title-bar"><span>FRNZ.txt</span><span class="close-btn" onclick="closeWin('frnz-page')">✖</span></div>
   <div class="content textedit-content">
-    <img src="S1P2_Album_Art.jpg" alt="FRNZ S1P2" style="width:100%;border-radius:4px;display:block;margin-bottom:12px">
-    <p style="font-weight:bold">FRNZ – Season 1 Part 2 (Remastered)</p><br>
-    <a href="https://distrokid.com/hyperfollow/frnz2/season-1-part-2-remastered" target="_blank" style="display:block;background:#6c3cff;color:#fff;text-align:center;padding:10px;border-radius:6px;text-decoration:none;font-size:13px;font-weight:bold;letter-spacing:1px">★ PRE-SAVE NOW ★</a>
-    <hr style="margin:18px 0;border-color:#ddd">
-    <img src="FRNZ_S1_P1_Cover.jpg" alt="FRNZ S1P1" style="width:100%;border-radius:4px;display:block;margin-bottom:12px">
-    <p style="font-weight:bold">FRNZ – Season 1 Part 1 (Remastered)</p>
-    <p style="font-size:11px;color:#888;margin-top:6px">Listen now on:</p>
-    <a href="https://open.spotify.com/album/14gik5T6j6eulrnaGH80Vf" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:6px;background:#1db954;color:#fff;padding:9px;border-radius:6px;text-decoration:none;font-size:13px;font-weight:bold">▶ Spotify</a>
-    <a href="https://music.apple.com/us/album/season-1-part-1-remastered/1896138150" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:6px;background:#fc3c44;color:#fff;padding:9px;border-radius:6px;text-decoration:none;font-size:13px;font-weight:bold">♫ Apple Music</a>
-    <hr style="margin:18px 0;border-color:#ddd">
-    <img src="FRNZ_S3_Album.jpg" alt="FRNZ S3" style="width:100%;border-radius:4px;display:block;margin-bottom:12px">
-    <a href="https://frnz.bandcamp.com/album/season-3" target="_blank" style="display:block;background:#1da0c3;color:#fff;text-align:center;padding:10px;border-radius:6px;text-decoration:none;font-size:13px;font-weight:bold">FRNZ – SEASON 3 ON BANDCAMP</a>
+    <img src="FRNZ_S1_P1_Cover.jpg" alt="FRNZ S1P1" style="width:100%;border-radius:4px;display:block;margin-bottom:12px;">
+    <p style="font-weight:bold;">FRNZ – Season 1 Part 1 (Remastered)</p><br>
+    <p style="font-size:11px;color:#888;text-align:center;letter-spacing:1px;">Listen now on:</p>
+    <a href="https://open.spotify.com/album/14gik5T6j6eulrnaGH80Vf" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:8px;background:#1db954;color:#fff;text-align:center;padding:10px;border-radius:6px;text-decoration:none;font-size:13px;font-weight:bold;letter-spacing:1px;">▶ Spotify</a>
+    <a href="https://music.apple.com/us/album/season-1-part-1-remastered/1896138150" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:8px;background:#fc3c44;color:#fff;text-align:center;padding:10px;border-radius:6px;text-decoration:none;font-size:13px;font-weight:bold;letter-spacing:1px;">♫ Apple Music</a>
+    <hr style="margin:18px 0;border-color:#ddd;">
+    <img src="FRNZ_S3_Album.jpg" alt="FRNZ Season 3" style="width:100%;border-radius:4px;display:block;margin-bottom:12px;">
+    <a href="https://frnz.bandcamp.com/album/season-3" target="_blank" style="display:block;background:#1da0c3;color:#fff;text-align:center;padding:10px;border-radius:6px;text-decoration:none;font-size:13px;font-weight:bold;letter-spacing:1px;">FRNZ – SEASON 3 AVAILABLE ON BANDCAMP</a>
   </div>
 </div>
 
@@ -485,23 +411,23 @@ body{font-family:'Courier New',Courier,monospace;background:#000;overflow:hidden
   <div class="window-bg"></div>
   <div class="title-bar"><span>PLODES.txt</span><span class="close-btn" onclick="closeWin('plodes-page')">✖</span></div>
   <div class="content textedit-content">
-    <img src="PLodes_Logo_1.jpg" alt="PLODES" style="width:100%;border-radius:4px;display:block;margin-bottom:12px">
-    <p style="text-align:center"><a href="https://soundcloud.com/starkitecht" target="_blank" style="color:#888;font-style:italic;text-decoration:none;font-size:14px">Coming soon…</a></p>
+    <img src="PLodes_Logo_1.jpg" alt="PLODES" style="width:100%;border-radius:4px;display:block;margin-bottom:12px;">
+    <p style="text-align:center;"><a href="https://soundcloud.com/starkitecht" target="_blank" style="color:#888;font-style:italic;text-decoration:none;font-size:14px;">Coming soon…</a></p>
   </div>
 </div>
 
 <div id="dumas-win" class="window">
-  <div class="title-bar"><span style="color:#a00">DuMaS</span><span class="close-btn" onclick="closeWin('dumas-win')" style="color:#a00">✖</span></div>
-  <div class="content" style="background:#000;padding:0;display:flex;align-items:center;justify-content:center;min-height:300px">
-    <img src="Char_DuMaS_Transparent.jpg" alt="DuMaS" style="width:100%;display:block;image-rendering:pixelated">
+  <div class="title-bar"><span style="color:#a00;">DuMaS</span><span class="close-btn" onclick="closeWin('dumas-win')" style="color:#a00;">✖</span></div>
+  <div class="content" style="background:#000;padding:0;display:flex;align-items:center;justify-content:center;min-height:300px;">
+    <img src="Char_DuMaS_Transparent.jpg" alt="DuMaS" style="width:100%;display:block;image-rendering:pixelated;">
   </div>
 </div>
 
-<!-- DATABASE -->
+<!-- DATABASE WINDOW -->
 <div id="database-win" class="window">
   <div class="window-bg"></div>
   <div class="title-bar"><span>🗄️ DMS Database</span><span class="close-btn" onclick="closeWin('database-win')">✖</span></div>
-  <div class="content" style="padding:0">
+  <div class="content" style="padding:0;">
     <div class="db-inner">
       <img src="Database_Logo.jpg" alt="Database" class="db-logo">
       <div class="db-search-row">
@@ -513,31 +439,7 @@ body{font-family:'Courier New',Courier,monospace;background:#000;overflow:hidden
   </div>
 </div>
 
-<!-- BROWSER WINDOW -->
-<div id="browser-win" class="window" style="width:min(600px,96vw)">
-  <div class="window-bg"></div>
-  <div class="title-bar"><span id="browser-title-text">🌐 Netscape Navigator — New Tab</span><span class="close-btn" onclick="closeWin('browser-win')">✖</span></div>
-  <div class="browser-chrome">
-    <div class="browser-nav-row">
-      <button class="browser-btn">◀</button>
-      <button class="browser-btn">▶</button>
-      <button class="browser-btn">⟳</button>
-      <input type="text" class="browser-url" id="browser-url" value="about:blank" readonly>
-      <button class="browser-btn" onclick="browserGo()">Go</button>
-    </div>
-    <div class="browser-toolbar">
-      <span style="font-size:10px;color:#444;font-family:'Courier New',monospace">File &nbsp; Edit &nbsp; View &nbsp; Go &nbsp; Bookmarks &nbsp; Help</span>
-    </div>
-  </div>
-  <div class="browser-content" id="browser-content">
-    <div style="display:flex;align-items:center;justify-content:center;height:200px;color:#aaa;font-family:Arial,sans-serif;font-size:13px">
-      <p>Enter a URL or use a link to navigate.</p>
-    </div>
-  </div>
-  <div class="browser-statusbar" id="browser-statusbar">Document: Done</div>
-</div>
-
-<!-- EMAIL PIN -->
+<!-- EMAIL PIN SCREEN -->
 <div id="email-pin-screen">
   <div class="pin-box">
     <h2>📧 Mail — Input PIN</h2>
@@ -546,7 +448,6 @@ body{font-family:'Courier New',Courier,monospace;background:#000;overflow:hidden
       <div class="pin-dot" id="pd2"></div><div class="pin-dot" id="pd3"></div>
       <div class="pin-dot" id="pd4"></div><div class="pin-dot" id="pd5"></div>
     </div>
-    <input type="tel" id="pin-text-input" maxlength="6" placeholder="——————" autocomplete="off" oninput="onPinTextInput(this.value)">
     <div id="pin-error">Incorrect PIN.</div>
     <div class="pin-keypad">
       <div class="pin-key" onclick="pinPress('1')">1</div><div class="pin-key" onclick="pinPress('2')">2</div><div class="pin-key" onclick="pinPress('3')">3</div>
@@ -558,7 +459,7 @@ body{font-family:'Courier New',Courier,monospace;background:#000;overflow:hidden
   </div>
 </div>
 
-<!-- EMAIL -->
+<!-- EMAIL APP -->
 <div id="mail" class="window">
   <div class="window-bg"></div>
   <div class="title-bar"><span>Mail — bthumper@divisemusicsolutions.com</span><span class="close-btn" onclick="closeWin('mail')">✖</span></div>
@@ -566,7 +467,7 @@ body{font-family:'Courier New',Courier,monospace;background:#000;overflow:hidden
     <div class="email-sidebar">
       <div class="email-sidebar-title">Inbox</div>
       <div class="email-row unread" onclick="showEmail(this,'mochi-goodluck')"><div class="er-from">M. Ochi</div><div class="er-subj">Good Luck</div></div>
-      <div class="email-row unread" id="mochi-urgent-row" style="display:none" onclick="showEmail(this,'mochi-urgent')"><div class="er-from">M. Ochi</div><div class="er-subj">our chance</div></div>
+      <div class="email-row unread" id="mochi-urgent-row" style="display:none;" onclick="showEmail(this,'mochi-urgent')"><div class="er-from">M. Ochi</div><div class="er-subj">our chance</div></div>
       <div class="email-row" onclick="showEmail(this,'corrupted')"><div class="er-from">System</div><div class="er-subj">Q3 Budget Review</div></div>
       <div class="email-row" onclick="showEmail(this,'corrupted')"><div class="er-from">HR Dept</div><div class="er-subj">Policy Update</div></div>
       <div class="email-row unread" onclick="showEmail(this,'mochi-checkin')"><div class="er-from">M. Ochi</div><div class="er-subj">checking in</div></div>
@@ -578,7 +479,7 @@ body{font-family:'Courier New',Courier,monospace;background:#000;overflow:hidden
       <div class="email-row unread" onclick="showEmail(this,'lunch-invite')"><div class="er-from">M. Ochi</div><div class="er-subj">lunch</div></div>
       <div class="email-row" onclick="showEmail(this,'corrupted')"><div class="er-from">Server</div><div class="er-subj">Backup Log</div></div>
     </div>
-    <div class="email-body-pane" id="email-body"><p style="color:#aaa;font-style:italic;padding-top:60px;text-align:center">Select a message.</p></div>
+    <div class="email-body-pane" id="email-body"><p style="color:#aaa;font-style:italic;padding-top:60px;text-align:center;">Select a message.</p></div>
   </div>
 </div>
 
@@ -601,7 +502,7 @@ body{font-family:'Courier New',Courier,monospace;background:#000;overflow:hidden
 <div id="corrupted-doc" class="window">
   <div class="window-bg"></div>
   <div class="title-bar"><span id="corrupted-doc-title">Document</span><span class="close-btn" onclick="closeWin('corrupted-doc')">✖</span></div>
-  <div class="content textedit-content" style="color:#bbb;font-style:italic;text-align:center;padding-top:40px"><p>File Corrupted</p></div>
+  <div class="content textedit-content" style="color:#bbb;font-style:italic;text-align:center;padding-top:40px;"><p>File Corrupted</p></div>
 </div>
 
 <div id="notes-doc" class="window">
@@ -621,17 +522,6 @@ body{font-family:'Courier New',Courier,monospace;background:#000;overflow:hidden
   </div>
 </div>
 
-<!-- DOWNLOADS FOLDER (empty) -->
-<div id="downloads" class="window">
-  <div class="window-bg"></div>
-  <div class="title-bar"><span>📥 Downloads</span><span class="close-btn" onclick="closeWin('downloads')">✖</span></div>
-  <div class="content" id="downloads-content" style="min-height:160px">
-    <div class="folder-grid" id="downloads-grid">
-      <p style="color:#666;font-size:12px;font-style:italic;padding:16px">Folder is empty.</p>
-    </div>
-  </div>
-</div>
-
 <!-- TRASH FOLDER -->
 <div id="trash-folder" class="window">
   <div class="window-bg"></div>
@@ -646,8 +536,8 @@ body{font-family:'Courier New',Courier,monospace;background:#000;overflow:hidden
 <div id="trash-email" class="window">
   <div class="window-bg"></div>
   <div class="title-bar"><span>ATTN DR THUMPER.eml</span><span class="close-btn" onclick="closeWin('trash-email')">✖</span></div>
-  <div class="content textedit-content" style="background:#f0f0f0">
-    <p>To: &nbsp;&nbsp;B. Thumper &lt;<a href="mailto:bthumper@divisemusicsolutions.com" style="color:#00c">bthumper@divisemusicsolutions.com</a>&gt;</p>
+  <div class="content textedit-content" style="background:#f0f0f0;">
+    <p>To: &nbsp;&nbsp;B. Thumper &lt;<a href="mailto:bthumper@divisemusicsolutions.com" style="color:#0000cc;">bthumper@divisemusicsolutions.com</a>&gt;</p>
     <p>From: &nbsp;<span class="email-redacted">©˙∆∆©˙˚∆˙∫∫˜</span> &lt;<span class="email-redacted">•••••••••••••••••</span>&gt;</p>
     <p>Date: &nbsp;&nbsp;<span class="email-redacted">••••••••••••••••••••</span></p>
     <br><p>The only thing left to do is delete it.</p><br>
@@ -655,7 +545,7 @@ body{font-family:'Courier New',Courier,monospace;background:#000;overflow:hidden
   </div>
 </div>
 
-<!-- LOGIN -->
+<!-- DATABASE LOGIN -->
 <div id="login-screen">
   <div class="login-box">
     <h2>⚠ Authorization Required</h2>
@@ -667,82 +557,24 @@ body{font-family:'Courier New',Courier,monospace;background:#000;overflow:hidden
   </div>
 </div>
 
-<!-- PLX LOGIN -->
-<div id="plx-login-screen">
-  <div class="login-box">
-    <h2>🔓 PLX Mega-Expander</h2>
-    <p style="color:#888;font-size:11px;text-align:center;letter-spacing:1px">Authorization required to expand DMS CORE.PLX</p>
-    <div><label>Name</label><input type="text" id="plx-login-name" placeholder="Full name" autocomplete="off"></div>
-    <div><label>Password</label><input type="password" id="plx-login-pass" placeholder="••••••••" autocomplete="off"></div>
-    <div id="plx-login-error" style="color:#ff3c3c;font-size:12px;text-align:center;display:none">Incorrect credentials.</div>
-    <button onclick="submitPlxLogin()">Expand</button>
-    <button class="login-cancel" onclick="closePlxLogin()">Cancel</button>
-  </div>
-</div>
-
 <!-- ATTEMPT FAILED -->
 <div id="attempt-failed">
   <div class="af-box">
-    <div class="af-bar">⛔ Authorization Failed</div>
-    <div class="af-body"><p style="font-size:14px;font-weight:bold;margin-bottom:12px;color:#000">Access Denied.</p><button class="af-btn" onclick="closeAttemptFailed()">ATTEMPT FAILED</button></div>
+    <div class="af-bar"><span>⛔ Authorization Failed</span></div>
+    <div class="af-body"><p style="font-size:14px;font-weight:bold;margin-bottom:12px;color:#000;">Access Denied.</p><button class="af-btn" onclick="closeAttemptFailed()">ATTEMPT FAILED</button></div>
   </div>
 </div>
 
-<!-- ENCRYPT POPUP -->
+<!-- ENCRYPTION BYPASS POPUP -->
 <div id="encrypt-popup">
   <div class="ep-box">
-    <div class="ep-bar"><span>🔒 File Encrypted!</span><span style="cursor:pointer" onclick="closeEncryptPopup()">✖</span></div>
+    <div class="ep-bar"><span>🔒 File Encrypted!</span><span style="cursor:pointer;" onclick="closeEncryptPopup()">✖</span></div>
     <div class="ep-body">
       <p>File Encrypted! Enter Code to Bypass:</p>
       <input type="text" class="ep-input" id="ep-input" placeholder="enter code..." autocomplete="off">
       <div id="ep-error">Incorrect code. Access denied.</div>
       <button class="ep-submit" onclick="submitEncrypt()">Submit</button>
       <button class="ep-cancel" onclick="closeEncryptPopup()">Cancel</button>
-    </div>
-  </div>
-</div>
-
-<!-- INDESTRUCTIBLE ERROR -->
-<div id="indestructible-popup">
-  <div class="ep-box">
-    <div class="ep-bar"><span>⛔ Error</span><span style="cursor:pointer" onclick="document.getElementById('indestructible-popup').classList.remove('active')">✖</span></div>
-    <div class="ep-body">
-      <p style="font-size:12px;line-height:1.6">This file is now indestructible. Might as well give up.<br><br><span style="font-size:10px;color:#666">© Plodesbrand Services 2026</span></p>
-      <button class="ep-submit" style="background:#555" onclick="document.getElementById('indestructible-popup').classList.remove('active')">OK</button>
-    </div>
-  </div>
-</div>
-
-<!-- STUFFIT PROGRESS -->
-<div id="stuffit-screen">
-  <div class="stuffit-box">
-    <div class="stuffit-bar-title">
-      <span>🗜 Plodesbrand Mega-Encryptor™</span>
-    </div>
-    <div class="stuffit-body">
-      <p>Mega-Encrypting File…</p>
-      <div class="stuffit-prog-wrap">
-        <div class="stuffit-prog-fill" id="stuffit-fill" style="background:linear-gradient(90deg,#4b0082,#8b00ff)"></div>
-        <div class="stuffit-prog-text" id="stuffit-pct">0%</div>
-      </div>
-      <div class="stuffit-status" id="stuffit-status">Initializing encryption…</div>
-    </div>
-  </div>
-</div>
-
-<!-- JAX EXPANDER PROGRESS -->
-<div id="expander-screen">
-  <div class="stuffit-box">
-    <div class="stuffit-bar-title" style="background:linear-gradient(90deg,#003300,#006600)">
-      <span>🔓 Jax Mega-Expander v1.0</span>
-    </div>
-    <div class="stuffit-body">
-      <p>Expanding DMS CORE.PLX…</p>
-      <div class="stuffit-prog-wrap">
-        <div class="stuffit-prog-fill" id="expander-fill" style="background:linear-gradient(90deg,#003300,#00cc00)"></div>
-        <div class="stuffit-prog-text" id="expander-pct">0%</div>
-      </div>
-      <div class="stuffit-status" id="expander-status">Decrypting layers…</div>
     </div>
   </div>
 </div>
@@ -757,22 +589,22 @@ body{font-family:'Courier New',Courier,monospace;background:#000;overflow:hidden
     <div class="popup-close" onclick="closePopup()">✖</div>
   </div>
   <div class="popup-body">
-    <img src="S1P2_Album_Art.jpg" alt="FRNZ S1P2">
-    <div class="popup-body-label">FRNZ – Season 1 Part 2 (Remastered)</div>
-    <a class="popup-presave-btn" href="https://distrokid.com/hyperfollow/frnz2/season-1-part-2-remastered" target="_blank">★ PRE-SAVE NOW ★</a>
-    <div style="border-top:1px solid #808080;margin:10px 0 6px"></div>
-    <div class="popup-body-label" style="font-size:11px;color:#555">Season 1 Part 1 — Available Now:</div>
-    <a class="popup-stream-btn" style="background:#1db954" href="https://open.spotify.com/album/14gik5T6j6eulrnaGH80Vf" target="_blank">▶ Spotify</a>
-    <a class="popup-stream-btn" style="background:#fc3c44" href="https://music.apple.com/us/album/season-1-part-1-remastered/1896138150" target="_blank">♫ Apple Music</a>
+    <img src="FRNZ_S1_P1_Cover.jpg" alt="FRNZ S1 P1">
+    <p style="font-family:'Courier New',monospace;font-size:12px;color:#000;font-weight:bold;margin:8px 0 6px;letter-spacing:1px;">Listen now on:</p>
+    <a class="popup-link" style="background:#1db954;color:#fff;animation:none;margin-bottom:6px;border-radius:0;font-size:13px;display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;padding:9px;" href="https://open.spotify.com/album/14gik5T6j6eulrnaGH80Vf" target="_blank">▶ Spotify</a>
+    <a class="popup-link" style="background:#fc3c44;color:#fff;animation:none;border-radius:0;font-size:13px;display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;padding:9px;" href="https://music.apple.com/us/album/season-1-part-1-remastered/1896138150" target="_blank">♫ Apple Music</a>
   </div>
 </div>
 
-<!-- CLIPPY / DUMAS ASSISTANT -->
+<!-- DUMAS ASSISTANT -->
 <div id="dumas-assistant">
   <div id="aim-bubble">
-    <div class="aim-titlebar"><span>DMS Assistant</span><div class="aim-close" onclick="dismissAssistant()">✖</div></div>
+    <div class="aim-titlebar">
+      <span>DMS Assistant</span>
+      <div class="aim-close" onclick="dismissAssistant()">✖</div>
+    </div>
     <div class="aim-body" id="aim-text"><span id="aim-cursor"></span></div>
-    <div class="aim-choices" id="aim-choices" style="display:none"></div>
+    <div class="aim-choices" id="aim-choices" style="display:none;"></div>
     <div class="aim-dismiss"><span onclick="dismissAssistant()">Not now</span></div>
   </div>
   <div id="dumas-char" onclick="toggleAssistantBubble()">
@@ -780,29 +612,115 @@ body{font-family:'Courier New',Courier,monospace;background:#000;overflow:hidden
   </div>
 </div>
 
-<!-- MAILING LIST -->
+<!-- MAILING LIST WINDOW -->
 <div id="mailing-win">
-  <div class="mailing-titlebar"><span>📬 Join the Mailing List</span><div class="mailing-close" onclick="closeMailingWin()">✖</div></div>
+  <div class="mailing-titlebar">
+    <span>📬 Join the Mailing List</span>
+    <div class="mailing-close" onclick="closeMailingWin()">✖</div>
+  </div>
   <div class="mailing-body">
     <div id="mlb2-41171377" class="ml-form-embedContainer ml-subscribe-form ml-subscribe-form-41171377">
-      <div class="ml-form-align-left"><div class="ml-form-embedWrapper embedForm">
-        <div class="ml-form-embedBody ml-form-embedBodyDefault row-form">
-          <div class="ml-form-embedContent"><h4>Join the DiVISE Music Solutions Email List!</h4><p>it's free!</p></div>
-          <form class="ml-block-form" action="https://assets.mailerlite.com/jsonp/2340114/forms/187229924585637047/subscribe" method="post" target="_blank">
-            <div class="ml-form-formContent"><div class="ml-form-fieldRow ml-last-item"><div class="ml-field-group ml-field-email ml-validate-email ml-validate-required">
-              <input aria-label="email" aria-required="true" type="email" class="form-control" name="fields[email]" placeholder="Email" autocomplete="email">
-            </div></div></div>
-            <input type="hidden" name="ml-submit" value="1">
-            <div class="ml-form-embedSubmit">
-              <button type="submit" class="primary">J O I N !</button>
-              <button disabled style="display:none" type="button" class="loading"><div class="ml-form-embedSubmitLoad"></div><span class="sr-only">Loading...</span></button>
-            </div>
-            <input type="hidden" name="anticsrf" value="true">
-          </form>
+      <div class="ml-form-align-left">
+        <div class="ml-form-embedWrapper embedForm">
+          <div class="ml-form-embedBody ml-form-embedBodyDefault row-form">
+            <div class="ml-form-embedContent"><h4>Join the DiVISE Music Solutions Email List!</h4><p>it's free!</p></div>
+            <form class="ml-block-form" action="https://assets.mailerlite.com/jsonp/2340114/forms/187229924585637047/subscribe" data-code="" method="post" target="_blank">
+              <div class="ml-form-formContent">
+                <div class="ml-form-fieldRow ml-last-item">
+                  <div class="ml-field-group ml-field-email ml-validate-email ml-validate-required">
+                    <input aria-label="email" aria-required="true" type="email" class="form-control" name="fields[email]" placeholder="Email" autocomplete="email">
+                  </div>
+                </div>
+              </div>
+              <input type="hidden" name="ml-submit" value="1">
+              <div class="ml-form-embedSubmit">
+                <button type="submit" class="primary">J O I N !</button>
+                <button disabled style="display:none;" type="button" class="loading"><div class="ml-form-embedSubmitLoad"></div><span class="sr-only">Loading...</span></button>
+              </div>
+              <input type="hidden" name="anticsrf" value="true">
+            </form>
+          </div>
+          <div class="ml-form-successBody row-success" style="display:none;"><div class="ml-form-successContent"><h4>Thank you!</h4><p>You have successfully joined our subscriber list.</p></div></div>
         </div>
-        <div class="ml-form-successBody row-success" style="display:none"><div class="ml-form-successContent"><h4>Thank you!</h4><p>You have successfully joined our subscriber list.</p></div></div>
-      </div></div>
+      </div>
     </div>
+  </div>
+</div>
+
+<!-- DINER MENU PAGE -->
+<div id="diner-page">
+  <span id="diner-back" onclick="closeDinerPage()">← back</span>
+  <div class="diner-inner">
+    <div class="diner-logo">
+      <h1>🍳 Pal's Diner</h1>
+      <p>Est. 1987 &nbsp;·&nbsp; "Come hungry, leave happy"</p>
+      <p style="font-size:11px;color:#aaa;">Account #: PD-0091 | Vendor Record</p>
+    </div>
+    <hr class="diner-divider">
+
+    <div class="diner-section-title">Breakfast All Day</div>
+    <div class="diner-item">
+      <div class="diner-item-row"><span class="diner-item-name">Classic Pancakes</span><span class="diner-item-price">$9.99</span></div>
+      <div class="diner-item-desc">Three fluffy buttermilk pancakes served with maple syrup and butter.</div>
+    </div>
+    <div class="diner-item">
+      <div class="diner-item-row"><span class="diner-item-name">The Full Stack</span><span class="diner-item-price">$13.49</span></div>
+      <div class="diner-item-desc">Two eggs any style, bacon, sausage, hash browns, and toast. A real commitment.</div>
+    </div>
+    <div class="diner-item">
+      <div class="diner-item-row"><span class="diner-item-name">Veggie Omelette</span><span class="diner-item-price">$11.25</span></div>
+      <div class="diner-item-desc">Bell peppers, mushrooms, spinach, and feta. Served with fruit cup.</div>
+    </div>
+
+    <div class="diner-section-title">Lunch &amp; Dinner</div>
+    <div class="diner-item">
+      <div class="diner-item-row"><span class="diner-item-name">Turkey Dinner Plate</span><span class="diner-item-price">$15.99</span></div>
+      <div class="diner-item-desc">Roast turkey, mashed potatoes, green beans, and cranberry sauce. Just like home.</div>
+    </div>
+    <div class="diner-item">
+      <div class="diner-item-row"><span class="diner-item-name">Pal's Classic Burger</span><span class="diner-item-price">$13.75</span></div>
+      <div class="diner-item-desc">Half-pound beef patty, lettuce, tomato, pickles, house sauce. Add cheese $1.</div>
+    </div>
+    <div class="diner-item">
+      <div class="diner-item-row"><span class="diner-item-name">Grilled Cheese &amp; Tomato Soup</span><span class="diner-item-price">$10.50</span></div>
+      <div class="diner-item-desc">Sourdough with three-cheese blend, paired with our house tomato bisque.</div>
+    </div>
+    <div class="diner-item">
+      <div class="diner-item-row"><span class="diner-item-name">Chicken Pot Pie</span><span class="diner-item-price">$14.25</span></div>
+      <div class="diner-item-desc">Golden flaky crust, slow-cooked chicken and vegetables in a creamy broth.</div>
+    </div>
+    <div class="diner-item">
+      <div class="diner-item-row"><span class="diner-item-name">Mac &amp; Cheese</span><span class="diner-item-price">$12.99</span></div>
+      <div class="diner-item-desc">Creamy four-cheese sauce, cavatappi pasta, breadcrumb crust. <strong>Add extra bacon if you're dangerous.</strong></div>
+    </div>
+    <div class="diner-item">
+      <div class="diner-item-row"><span class="diner-item-name">BLT Club</span><span class="diner-item-price">$11.99</span></div>
+      <div class="diner-item-desc">Triple-decker with bacon, lettuce, tomato, and mayo on toasted white.</div>
+    </div>
+
+    <div class="diner-section-title">Sides</div>
+    <div class="diner-item">
+      <div class="diner-item-row"><span class="diner-item-name">French Fries</span><span class="diner-item-price">$4.50</span></div>
+    </div>
+    <div class="diner-item">
+      <div class="diner-item-row"><span class="diner-item-name">Onion Rings</span><span class="diner-item-price">$5.25</span></div>
+    </div>
+    <div class="diner-item">
+      <div class="diner-item-row"><span class="diner-item-name">Side Salad</span><span class="diner-item-price">$4.00</span></div>
+    </div>
+
+    <div class="diner-section-title">Dessert</div>
+    <div class="diner-item">
+      <div class="diner-item-row"><span class="diner-item-name">Slice of Pie</span><span class="diner-item-price">$5.99</span></div>
+      <div class="diner-item-desc">Ask your server for today's selection.</div>
+    </div>
+    <div class="diner-item">
+      <div class="diner-item-row"><span class="diner-item-name">Milkshake</span><span class="diner-item-price">$6.75</span></div>
+      <div class="diner-item-desc">Vanilla, chocolate, or strawberry.</div>
+    </div>
+
+    <hr class="diner-divider">
+    <div class="diner-footer">Pal's Diner · Open 7am–10pm daily · Cash &amp; card accepted<br>We reserve the right to refuse service to anyone who doesn't appreciate good food.</div>
   </div>
 </div>
 
@@ -813,7 +731,7 @@ body{font-family:'Courier New',Courier,monospace;background:#000;overflow:hidden
   <div id="js-scanlines"></div><div id="js-noise"></div>
   <div id="js-center-text">THERE IS NO ESCAPE</div>
   <div id="js-popup-container"></div>
-  <div class="js-popup" id="jsp-main" style="top:50%;left:50%;transform:translate(-50%,-50%);min-width:260px;z-index:100010">
+  <div class="js-popup" id="jsp-main" style="top:50%;left:50%;transform:translate(-50%,-50%);min-width:260px;z-index:100010;">
     <div class="js-popup-bar"><span>⛔ THERE IS NO ESCAPE</span></div>
     <div class="js-popup-body">THERE IS<br>NO ESCAPE<br><br><button class="js-delete-btn" onclick="deleteAndClose()">Delete</button></div>
   </div>
@@ -830,42 +748,6 @@ body{font-family:'Courier New',Courier,monospace;background:#000;overflow:hidden
 <div id="dos-page">
   <span id="dos-back" onclick="closeDosPage()">← back</span>
   <div id="dos-terminal"></div>
-</div>
-
-<!-- DINER PAGE -->
-<div id="diner-page">
-  <span id="diner-back" onclick="closeDinerPage()">← back</span>
-  <div class="diner-inner">
-    <div class="diner-logo">
-      <h1>🍳 Pal's Diner</h1>
-      <p>Est. 1987 · "Come hungry, leave happy"</p>
-      <p style="font-size:11px;color:#aaa">Account #: PD-0091 | Vendor Record</p>
-    </div>
-    <hr class="diner-divider">
-    <div class="diner-section-title">Breakfast All Day</div>
-    <div class="diner-item"><div class="diner-item-row"><span class="diner-item-name">Classic Pancakes</span><span class="diner-item-price">$9.99</span></div><div class="diner-item-desc">Three fluffy buttermilk pancakes served with maple syrup and butter.</div></div>
-    <div class="diner-item"><div class="diner-item-row"><span class="diner-item-name">The Full Stack</span><span class="diner-item-price">$13.49</span></div><div class="diner-item-desc">Two eggs any style, bacon, sausage, hash browns, and toast.</div></div>
-    <div class="diner-item"><div class="diner-item-row"><span class="diner-item-name">Veggie Omelette</span><span class="diner-item-price">$11.25</span></div><div class="diner-item-desc">Bell peppers, mushrooms, spinach, and feta.</div></div>
-    <div class="diner-section-title">Lunch &amp; Dinner</div>
-    <div class="diner-item"><div class="diner-item-row"><span class="diner-item-name">Turkey Dinner Plate</span><span class="diner-item-price">$15.99</span></div><div class="diner-item-desc">Roast turkey, mashed potatoes, green beans, and cranberry sauce.</div></div>
-    <div class="diner-item"><div class="diner-item-row"><span class="diner-item-name">Pal's Classic Burger</span><span class="diner-item-price">$13.75</span></div><div class="diner-item-desc">Half-pound beef patty, lettuce, tomato, pickles, house sauce.</div></div>
-    <div class="diner-item"><div class="diner-item-row"><span class="diner-item-name">Grilled Cheese &amp; Tomato Soup</span><span class="diner-item-price">$10.50</span></div><div class="diner-item-desc">Sourdough with three-cheese blend, paired with our house tomato bisque.</div></div>
-    <div class="diner-item"><div class="diner-item-row"><span class="diner-item-name">Chicken Pot Pie</span><span class="diner-item-price">$14.25</span></div><div class="diner-item-desc">Golden flaky crust, slow-cooked chicken and vegetables.</div></div>
-    <div class="diner-item"><div class="diner-item-row"><span class="diner-item-name">Mac &amp; Cheese</span><span class="diner-item-price">$12.99</span></div><div class="diner-item-desc">Creamy four-cheese sauce, cavatappi pasta, breadcrumb crust. <strong>Add extra bacon if you're dangerous.</strong></div></div>
-    <div class="diner-item"><div class="diner-item-row"><span class="diner-item-name">BLT Club</span><span class="diner-item-price">$11.99</span></div><div class="diner-item-desc">Triple-decker with bacon, lettuce, tomato, and mayo on toasted white.</div></div>
-    <div class="diner-section-title">Sides &amp; Dessert</div>
-    <div class="diner-item"><div class="diner-item-row"><span class="diner-item-name">French Fries</span><span class="diner-item-price">$4.50</span></div></div>
-    <div class="diner-item"><div class="diner-item-row"><span class="diner-item-name">Slice of Pie</span><span class="diner-item-price">$5.99</span></div><div class="diner-item-desc">Ask your server for today's selection.</div></div>
-    <div class="diner-item"><div class="diner-item-row"><span class="diner-item-name">Milkshake</span><span class="diner-item-price">$6.75</span></div><div class="diner-item-desc">Vanilla, chocolate, or strawberry.</div></div>
-    <hr class="diner-divider">
-    <div class="diner-footer">Pal's Diner · Open 7am–10pm daily</div>
-  </div>
-</div>
-
-<!-- NEWS PAGE -->
-<div id="news-page">
-  <span id="news-back" onclick="closeNewsPage()">← back</span>
-  <div class="news-inner" id="news-inner"></div>
 </div>
 
 <div id="taskbar">DiVISE OS v1.0 &nbsp;|&nbsp; <span id="taskbar-status">Ready</span></div>
@@ -896,14 +778,15 @@ const bootInt=setInterval(()=>{
   }
 },80);
 
-// ── POPUP ──
+// ── POPUP AD ──
 function showPopup(){
   document.getElementById('popup-ad').style.display='block';
   makeDraggable(document.getElementById('popup-ad'),document.getElementById('popup-titlebar'));
 }
 function closePopup(){
   document.getElementById('popup-ad').style.display='none';
-  if(!mailingListShown)setTimeout(startMailingAssistant,800);
+  // Only show Clippy mailing list once
+  if(!mailingListShown){setTimeout(startMailingAssistant,800);}
 }
 
 // ── FILE MENU ──
@@ -928,19 +811,11 @@ function closeWin(id){
 }
 
 // ── STATE FLAGS ──
-let isAuthenticated=false;
-let isPlxAuthenticated=false;
-let isPinUnlocked=false;
-let pinClippyShown=false;
-let dbClippyShown=false;
-let dumasDragCount=0;
-let dumasInTrash=false;
-let plxFileExists=false;      // after mega-encrypt
-let jaxExpanderExists=false;  // after download
-let plxExpanded=false;        // after PLX expansion
-let mailingListShown=false;
-let firstDumasDragDone=false; // clippy fires once on first drag
-let plxDragCount=0;           // drags of PLX to trash
+let isAuthenticated=false;       // Buddy Thumper login
+let isPinUnlocked=false;         // email PIN
+let pinClippyShown=false;        // PIN clippy fires once
+let dbClippyShown=false;         // DB clippy fires once
+let dumasDragCount=0;            // how many times dumas dragged toward trash
 
 // ── EMAIL PIN ──
 let pinValue='';
@@ -948,30 +823,12 @@ const validPINs=['052226','52226'];
 function showEmailPin(){
   if(isPinUnlocked){openWindow('mail');return;}
   pinValue='';updatePinDots();
-  document.getElementById('pin-text-input').value='';
   document.getElementById('pin-error').style.display='none';
   document.getElementById('email-pin-screen').classList.add('active');
 }
 function closePinScreen(){document.getElementById('email-pin-screen').classList.remove('active');}
-function onPinTextInput(val){
-  // sync typed input with pinValue
-  pinValue=val.replace(/\D/g,'').slice(0,6);
-  document.getElementById('pin-text-input').value=pinValue;
-  updatePinDots();
-  if(pinValue.length===6)setTimeout(pinSubmit,200);
-}
-function pinPress(d){
-  if(pinValue.length>=6)return;
-  pinValue+=d;
-  document.getElementById('pin-text-input').value=pinValue;
-  updatePinDots();
-  if(pinValue.length===6)setTimeout(pinSubmit,200);
-}
-function pinBackspace(){
-  pinValue=pinValue.slice(0,-1);
-  document.getElementById('pin-text-input').value=pinValue;
-  updatePinDots();
-}
+function pinPress(d){if(pinValue.length>=6)return;pinValue+=d;updatePinDots();if(pinValue.length===6)setTimeout(pinSubmit,200);}
+function pinBackspace(){pinValue=pinValue.slice(0,-1);updatePinDots();}
 function updatePinDots(){for(let i=0;i<6;i++){const d=document.getElementById('pd'+i);if(d)d.classList.toggle('filled',i<pinValue.length);}}
 function pinSubmit(){
   if(validPINs.includes(pinValue)){
@@ -982,8 +839,8 @@ function pinSubmit(){
       pinClippyShown=true;
       setTimeout(()=>showAssistantMessage("Unusual email log in detected!\n\nYou appear to be remotely logged in to the DMS servers.\n\nLocating…",null,()=>{
         showAimProgress(4000,()=>{
+          // Append "There you are :)" after bar
           const choices=document.getElementById('aim-choices');
-          choices.style.display='block';
           const p=document.createElement('div');
           p.style.cssText='padding:8px 10px 6px;background:#fff;color:#000;font-size:13px;font-weight:bold;text-align:center;border-top:1px solid #ccc;';
           p.textContent='There you are :)';
@@ -994,13 +851,14 @@ function pinSubmit(){
     }
   } else {
     document.getElementById('pin-error').style.display='block';
-    pinValue='';
-    document.getElementById('pin-text-input').value='';
-    updatePinDots();
+    pinValue='';updatePinDots();
     setTimeout(()=>document.getElementById('pin-error').style.display='none',2000);
   }
 }
-document.getElementById('email-pin-screen').addEventListener('click',e=>{if(e.target===document.getElementById('email-pin-screen'))closePinScreen();});
+// Outside-click closes PIN screen
+document.getElementById('email-pin-screen').addEventListener('click',e=>{
+  if(e.target===document.getElementById('email-pin-screen'))closePinScreen();
+});
 
 // ── EMAIL CONTENT ──
 const emailContent={
@@ -1009,7 +867,12 @@ const emailContent={
 Sometimes it is best to cut your losses and move on. I've found that there is always hope in the <span class="dark-link" onclick="openDarkPage()">dark</span>.
 
 Your friend,
-M</div>`,
+M
+
+--
+M. Ochi | DiVISE Music Solutions
+"good food, good music, good people"
+Usual table at Pal's if you need me.</div>`,
   'mochi-urgent':`<div class="eb-header"><p><strong>From:</strong> M. Ochi &lt;mochi@divisemusicsolutions.com&gt;</p><p><strong>To:</strong> B. Thumper &lt;bthumper@divisemusicsolutions.com&gt;</p><p><strong>Subject:</strong> our chance</p><p style="font-size:10px;color:#888;">X-Originating-IP: 192.168.4.77 | Priority: URGENT</p></div><div class="eb-body">Buddy — or whoever you are — this is our chance. We must delete The Character and I know how to destroy it. Find the answer by looking for me.
 
 You know where to find me if you know anything about me at all.
@@ -1018,6 +881,8 @@ You know where to find me if you know anything about me at all.
   'mochi-checkin':`<div class="eb-header"><p><strong>From:</strong> M. Ochi &lt;mochi@divisemusicsolutions.com&gt;</p><p><strong>To:</strong> B. Thumper &lt;bthumper@divisemusicsolutions.com&gt;</p><p><strong>Subject:</strong> checking in</p></div><div class="eb-body">Hey B —
 
 Haven't heard from you. Hope things are okay over there. Let me know if you need anything.
+
+I'll be at Pal's most of the week if you want to grab lunch.
 
 — M</div>`,
   'mochi-worry':`<div class="eb-header"><p><strong>From:</strong> M. Ochi &lt;mochi@divisemusicsolutions.com&gt;</p><p><strong>To:</strong> B. Thumper &lt;bthumper@divisemusicsolutions.com&gt;</p><p><strong>Subject:</strong> worried</p><p style="font-size:10px;color:#888;">X-Originating-IP: 192.168.4.77</p></div><div class="eb-body">Buddy,
@@ -1030,7 +895,7 @@ M</div>`,
   'lunch-invite':`<div class="eb-header"><p><strong>From:</strong> M. Ochi &lt;mochi@divisemusicsolutions.com&gt;</p><p><strong>To:</strong> All Staff &lt;staff@divisemusicsolutions.com&gt;</p><p><strong>Subject:</strong> lunch</p></div><div class="eb-body">Usual spot. 12:30.
 
 — M</div>`,
-  'corrupted':`<div class="eb-body email-corrupted" style="padding-top:60px;text-align:center">[ File Corrupted ]</div>`
+  'corrupted':`<div class="eb-body email-corrupted" style="padding-top:60px;text-align:center;">[ File Corrupted ]</div>`
 };
 function showEmail(row,id){
   document.querySelectorAll('.email-row').forEach(r=>r.classList.remove('active'));
@@ -1041,257 +906,57 @@ function showEmail(row,id){
 // ── DOCUMENTS ──
 function openCorruptedDoc(name){document.getElementById('corrupted-doc-title').textContent=name;openWindow('corrupted-doc');}
 
-// ── DATABASE ──
+// ── DATABASE SEARCH ──
 function dbSearch(){
   const q=(document.getElementById('db-query').value||'').trim().toLowerCase();
   const res=document.getElementById('db-results');
   if(!q){res.innerHTML='Enter a search query.';return;}
+
   if(q==='mochi'||q==='m. ochi'||q==='ochi'){
-    res.innerHTML=`> 1 result found:\n> Employee: M. Ochi | Dept: Systems | Status: <span style="color:#ff4444">FLAGGED</span>\n> Note: External access authorized. IP: 192.168.4.77\n<span class="db-result-link" onclick="openDosPage()">▶ view full record</span>`;
-  } else if(q==="pal's"||q==='pals'||q==="pal's diner"||q==='pals diner'||q==='diner'){
-    res.innerHTML=`> 1 result found:\n> Local vendor: Pal's Diner | Account #: PD-0091\n<span class="db-result-link" onclick="openDinerPage()">▶ view menu</span>`;
+    res.innerHTML='> 1 result found:\n> Employee: M. Ochi | Dept: Systems | Status: <span style="color:#ff4444;">FLAGGED</span>\n> Note: External access authorized. IP: 192.168.4.77\n<span class="db-result-link" onclick="openDosPage()">▶ view full record</span>';
+  } else if(q=="pal's"||q==='pals'||q==="pal's diner"||q==='pals diner'||q==='diner'){
+    res.innerHTML='> 1 result found:\n> Local vendor: Pal\'s Diner | Account #: PD-0091\n<span class="db-result-link" onclick="openDinerPage()">▶ view menu</span>';
   } else if(q==='thumper'||q==='b. thumper'||q==='buddy thumper'){
-    res.innerHTML=`> 1 result found:\n> Employee: B. Thumper | Dept: Admin | Status: <span style="color:#ff4444">COMPROMISED</span>\n> Note: Account flagged — external access authorized by: M.O.\n> Last login: <span style="color:#ff4444">unknown origin</span>`;
+    res.innerHTML='> 1 result found:\n> Employee: B. Thumper | Dept: Admin | Status: <span style="color:#ff4444;">COMPROMISED</span>\n> Note: Account flagged — external access authorized by: M.O.\n> Last login: <span style="color:#ff4444;">unknown origin</span>';
   } else if(q==='bacon'){
-    res.innerHTML=`> 0 direct results.\n> Did you mean: <span class="db-result-link" onclick="document.getElementById('db-query').value='pal\\'s diner';dbSearch()">Pal's Diner (vendor)</span>?`;
-  } else if(q==='plodesbrand'||q==='plodes brand'||q==='plodes'){
-    res.innerHTML=`> 1 result found:\n> Company: Plodesbrand Services | Status: <span style="color:#ff4444">RESTRICTED</span>\n> Description: Plodesbrand is a <span style="background:#111;color:#111;user-select:none">████████████████████████████████████████████████</span> specializing in <span style="background:#111;color:#111;user-select:none">████████████████████████</span> and proprietory encryption formats.\n> <span class="db-result-link" onclick="openNewsPage('plodesbrand')">▶ press article</span>`;
-  } else if(q==='jax'||q==='jax dangerous'){
-    res.innerHTML=`> 1 result found:\n> Individual: Jax Dangerous | Status: <span style="color:#ff4444">AT LARGE</span>\n> Note: you'll probably need <span class="db-result-link" onclick="openBrowserDownloadPage()">this</span>`;
-  } else if(q==='josie'){
-    res.innerHTML=`> 1 result found:\n> Individual: Josie <span style="background:#111;color:#111;user-select:none">████████████</span> | Title: CEO, Plodesbrand Services\n> <span class="db-result-link" onclick="openNewsPage('josie')">▶ press article</span>`;
-  } else if(q==='jax@divisemusicsolutions.com'){
-    res.innerHTML=`> 1 result found:\n> Employee: Jax | Dept: <span style="color:#ff4444">[REDACTED]</span> | Status: <span style="color:#ff4444">DELETED</span>\n> Contact: <span class="db-result-link" onclick="window.location.href='mailto:jax@divisemusicsolutions.com'">jax@divisemusicsolutions.com</span>\n> Note: If you found this, you went further than anyone else. Write to Jax.`;
+    res.innerHTML='> 0 direct results.\n> Did you mean: <span class="db-result-link" onclick="document.getElementById(\'db-query\').value=\"pal\'s diner\";dbSearch()">Pal\'s Diner (vendor)</span>?';
+  } else if(q==='jax'||q==='jax@divisemusicsolutions.com'){
+    res.innerHTML='> 1 result found:\n> Employee: Jax | Dept: <span style="color:#ff4444;">[REDACTED]</span> | Status: <span style="color:#ff4444;">DELETED</span>\n> Contact: <span class="db-result-link" onclick="window.location.href=\'mailto:jax@divisemusicsolutions.com\'">jax@divisemusicsolutions.com</span>\n> Note: If you found this, you went further than anyone else. Write to Jax.';
   } else {
     res.innerHTML='> Record missing.';
   }
 }
 
-// ── NEWS PAGE ──
-const newsArticles={
-  'plodesbrand':{
-    dateline:'TECHNOLOGY / SECURITY',
-    headline:'Plodesbrand Services Under Scrutiny After Series of Data Incidents',
-    body:`<p>Investigators are <span class="news-redacted">████████████████████████████████████████</span> following a series of <span class="news-redacted">██████████████████████████████</span> attributed to <span class="news-redacted">████████</span> at Plodesbrand Services, a <span class="news-redacted">████████████████████████████████████████████████████████████████████</span>.</p>
-<p>The company, which specializes in <span class="news-redacted">████████████████████████████████████████████████████████████</span>, has faced mounting criticism over its proprietary <strong>.PLX file format</strong>, which critics describe as <span class="news-redacted">███████████████████████████████████████████████████</span>.</p>
-<p><span class="news-redacted">██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████</span></p>
-<p>Of particular note is the activity of a hacker known only as <strong>Jax Dangerous</strong>, who has reportedly been a persistent thorn in Plodesbrand's side. Sources close to the investigation say Jax Dangerous has developed the only known method of expanding a .PLX encrypted file — a tool that <span class="news-redacted">████████████████████████████████████████████████</span>.</p>
-<p><span class="news-redacted">████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████</span></p>
-<p><em>This article has been partially redacted pending ongoing legal proceedings.</em></p>`
-  },
-  'josie':{
-    dateline:'BUSINESS / PROFILES',
-    headline:'The Woman Behind the Lock: Josie <span class="news-redacted">███████████</span> and the .PLX Standard',
-    body:`<p>When Josie <span class="news-redacted">████████████</span> founded Plodesbrand Services in <span class="news-redacted">████</span>, few could have predicted that her company's encryption format would become <span class="news-redacted">████████████████████████████████████████████████████████████████████</span>.</p>
-<p>The .PLX format, developed entirely by <span class="news-redacted">████████████</span>'s team, has been described by security researchers as <span class="news-redacted">████████████████████████████████████████████████████████████</span> and <span class="news-redacted">██████████████████████████████████████████</span>.</p>
-<p>In a rare interview, the CEO offered a glimpse into her philosophy:</p>
-<blockquote class="ns-quote" style="margin:16px 0;padding-left:12px;border-left:3px solid #aaa;font-style:italic;color:#333;font-family:Georgia,serif;font-size:13px">"Like I always say: the truth is indecipherable."</blockquote>
-<p><span class="news-redacted">████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████</span></p>
-<p>When asked about the hacker known as Jax Dangerous, <span class="news-redacted">████████████</span> declined to comment, stating only: "<span class="news-redacted">████████████████████████████████████████████████████████████</span>."</p>
-<p><em>Portions of this article have been redacted at the request of legal counsel.</em></p>`
-  }
-};
-function openNewsPage(type){
-  const art=newsArticles[type];if(!art)return;
-  const inner=document.getElementById('news-inner');
-  inner.innerHTML=`<div class="news-dateline">${art.dateline}</div><div class="news-headline">${art.headline}</div><div class="news-body">${art.body}</div>`;
-  document.getElementById('news-page').classList.add('active');
-}
-function closeNewsPage(){document.getElementById('news-page').classList.remove('active');}
+// wire db Enter key
+document.addEventListener('DOMContentLoaded',()=>{
+  const dbq=document.getElementById('db-query');
+  if(dbq)dbq.addEventListener('keydown',e=>{if(e.key==='Enter')dbSearch();});
+});
 
-// ── BROWSER ──
-function openBrowserDownloadPage(){
-  openWindow('browser-win');
-  document.getElementById('browser-url').value='jax-tools://download/plx-megaexpander';
-  document.getElementById('browser-title-text').textContent='🌐 Netscape Navigator — Jax Tools: PLX Mega-Expander';
-  document.getElementById('browser-statusbar').textContent='Connected to jax-tools';
-  document.getElementById('browser-content').innerHTML=`<div class="ns-page">
-    <h2>Jax Tools — PLX Mega-Expander</h2>
-    <hr style="border-color:#ccc;margin:8px 0">
-    <p><strong>PLX Mega-Expander v1.0</strong> — the only tool capable of expanding Plodesbrand .PLX encrypted files.</p>
-    <p>Use at your own risk. This software is not endorsed by or affiliated with Plodesbrand Services.</p>
-    <p style="font-style:italic;color:#666;font-size:11px;border-top:1px solid #eee;padding-top:8px;margin-top:8px">You broke my heart, Josie… now this is payback for your lies. The truth must be known.</p>
-    <a class="ns-download-btn" onclick="downloadExpander()">📦 Download PLX-MegaExpander.zip</a>
-    <p style="font-size:10px;color:#aaa;margin-top:12px">File size: 1.2 MB | Requires: DiVISE OS 1.0+</p>
-  </div>`;
+// ── DINER PAGE ──
+function openDinerPage(){
+  document.getElementById('diner-page').classList.add('active');
 }
-function downloadExpander(){
-  // Show zip in downloads folder
-  document.getElementById('browser-statusbar').textContent='Downloading…';
-  setTimeout(()=>{
-    document.getElementById('browser-statusbar').textContent='Download complete.';
-    addToDownloads('zip');
-  },1200);
-}
-function addToDownloads(type){
-  const grid=document.getElementById('downloads-grid');
-  // Remove "empty" message
-  const empty=grid.querySelector('p');if(empty)empty.remove();
-  if(type==='zip'&&!document.getElementById('dl-zip')){
-    const item=document.createElement('div');
-    item.className='folder-item';item.id='dl-zip';
-    item.innerHTML=`<div class="fi-img">🗜</div><span>PLX-MegaExpander.zip</span>`;
-    item.onclick=()=>installExpander();
-    grid.appendChild(item);
-    document.getElementById('taskbar-status').textContent='Download complete: PLX-MegaExpander.zip';
-  }
-  if(type==='app'&&!document.getElementById('dl-app')){
-    const item=document.createElement('div');
-    item.className='folder-item';item.id='dl-app';
-    item.innerHTML=`<div class="fi-img" style="background:rgba(0,80,0,.5);border-color:rgba(0,200,0,.4);font-size:22px">🔓</div><span style="color:#0f0">Jax Mega-Expander</span>`;
-    item.onclick=()=>openJaxExpander();
-    grid.appendChild(item);
-    jaxExpanderExists=true;
-    document.getElementById('taskbar-status').textContent='Jax Mega-Expander ready.';
-  }
-}
-function installExpander(){
-  // Progress bar for unzipping
-  const screen=document.getElementById('expander-screen');
-  const fill=document.getElementById('expander-fill');
-  const pct=document.getElementById('expander-pct');
-  const status=document.getElementById('expander-status');
-  // repurpose expander screen as installer
-  status.textContent='Extracting archive…';
-  fill.style.background='linear-gradient(90deg,#554400,#aa8800)';
-  screen.classList.add('active');
-  let p=0;
-  const iv=setInterval(()=>{
-    p+=Math.random()*8+2;if(p>100)p=100;
-    fill.style.width=p+'%';pct.textContent=Math.floor(p)+'%';
-    if(p<30)status.textContent='Extracting archive…';
-    else if(p<70)status.textContent='Installing Jax Mega-Expander…';
-    else status.textContent='Almost done…';
-    if(p>=100){
-      clearInterval(iv);
-      fill.style.background='linear-gradient(90deg,#003300,#00cc00)';
-      status.textContent='Installation complete!';
-      setTimeout(()=>{
-        screen.classList.remove('active');
-        fill.style.width='0%';pct.textContent='0%';
-        // Remove zip, add app
-        const zip=document.getElementById('dl-zip');if(zip)zip.remove();
-        addToDownloads('app');
-      },900);
-    }
-  },120);
-}
-function openJaxExpander(){
-  if(!plxFileExists){
-    document.getElementById('taskbar-status').textContent='Nothing to expand yet.';
-    return;
-  }
-  // Show PLX login
-  document.getElementById('plx-login-name').value='';
-  document.getElementById('plx-login-pass').value='';
-  document.getElementById('plx-login-error').style.display='none';
-  document.getElementById('plx-login-screen').classList.add('active');
-  setTimeout(()=>document.getElementById('plx-login-name').focus(),200);
-}
-function closePlxLogin(){document.getElementById('plx-login-screen').classList.remove('active');}
-function submitPlxLogin(){
-  const name=document.getElementById('plx-login-name').value.trim();
-  const pass=document.getElementById('plx-login-pass').value.trim();
-  if(name.toLowerCase()==='jax dangerous'&&pass.toLowerCase()==='indecipherable'){
-    closePlxLogin();
-    runPlxExpansion();
-  } else {
-    document.getElementById('plx-login-error').style.display='block';
-    setTimeout(()=>document.getElementById('plx-login-error').style.display='none',2000);
-  }
-}
-document.getElementById('plx-login-screen').addEventListener('click',e=>{if(e.target===document.getElementById('plx-login-screen'))closePlxLogin();});
-document.getElementById('plx-login-pass').addEventListener('keydown',e=>{if(e.key==='Enter')submitPlxLogin();});
-document.getElementById('plx-login-name').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('plx-login-pass').focus();});
-
-function runPlxExpansion(){
-  const screen=document.getElementById('expander-screen');
-  const fill=document.getElementById('expander-fill');
-  const pct=document.getElementById('expander-pct');
-  const status=document.getElementById('expander-status');
-  fill.style.background='linear-gradient(90deg,#003300,#00cc00)';
-  screen.classList.add('active');
-  const msgs=['Decrypting layers…','Peeling encryption…','Bypassing Plodesbrand lock…','Reconstructing file…','Almost there…'];
-  let p=0,mi=0;
-  status.textContent=msgs[0];
-  const iv=setInterval(()=>{
-    p+=Math.random()*4+1;if(p>100)p=100;
-    fill.style.width=p+'%';pct.textContent=Math.floor(p)+'%';
-    mi=Math.floor(p/25);status.textContent=msgs[Math.min(mi,msgs.length-1)];
-    if(p>=100){
-      clearInterval(iv);
-      status.textContent='Expansion complete!';
-      setTimeout(()=>{
-        screen.classList.remove('active');
-        fill.style.width='0%';pct.textContent='0%';
-        completePlxExpansion();
-      },900);
-    }
-  },80);
-}
-
-function completePlxExpansion(){
-  plxExpanded=true;
-  // The desktop shifts/alters — glitch flash then DuMaS icon changes
-  const flashDiv=document.createElement('div');
-  flashDiv.style.cssText='position:fixed;inset:0;background:#6c3cff;z-index:99990;pointer-events:none;opacity:0;transition:opacity .08s';
-  document.body.appendChild(flashDiv);
-  let fCount=0;
-  function doFlash(){
-    flashDiv.style.opacity=fCount%2===0?'0.7':'0';
-    fCount++;if(fCount<8)setTimeout(doFlash,80);
-    else{
-      // Desaturate/corrupt the wallpaper briefly
-      const bg=document.getElementById('bg');
-      if(bg){bg.style.filter='hue-rotate(180deg) saturate(8) contrast(3)';setTimeout(()=>{bg.style.filter='';flashDiv.remove();},400);}
-      else flashDiv.remove();
-      // Replace PLX icon with glowing evil DuMaS
-      const plxIcon=document.getElementById('icon-plx');
-      if(plxIcon){
-        plxIcon.querySelector('.icon-img').innerHTML=`<img src="Char_DuMaS_Transparent.jpg" alt="DuMaS" style="filter:hue-rotate(180deg) saturate(3) brightness(0.7)">`;
-        plxIcon.querySelector('span').textContent='';
-        plxIcon.id='icon-dumas';
-        // Reset drag count so Clippy can react again
-        dumasDragCount=0;
-        dumasInTrash=false;
-      }
-      document.getElementById('taskbar-status').textContent='File expanded. DuMaS is free.';
-    }
-  }
-  doFlash();
-}
-
-// ── DINER ──
-function openDinerPage(){document.getElementById('diner-page').classList.add('active');}
 function closeDinerPage(){document.getElementById('diner-page').classList.remove('active');}
 
-// ── DOS PAGE ──
-function openDosPage(){document.getElementById('dos-page').classList.add('active');startDosSequence();}
-function closeDosPage(){document.getElementById('dos-page').classList.remove('active');}
-function startDosSequence(){
-  const term=document.getElementById('dos-terminal');term.innerHTML='';
-  const lines=['C:\\> _','Loading…','Loading…','Connecting to remote server…','Logging in…','Verifying credentials…','Verifying…','Access granted.','Decrypting archive…','Decrypting…','Scanning records…','> WARNING: Unauthorized access detected','> Proceeding anyway…','','-------------------------------------------','','If you have found this then you are in too','deep already. Unfortunately the only answer','we have is balderdash. Good luck.','','-------------------------------------------',''];
-  let i=0;
-  function nextLine(){
-    if(i>=lines.length){const cur=document.createElement('span');cur.className='dos-cursor';term.appendChild(cur);return;}
-    const span=document.createElement('span');span.style.cssText='display:block;white-space:pre-wrap;';span.textContent=lines[i];
-    term.appendChild(span);term.scrollTop=term.scrollHeight;i++;
-    const delay=i<4?400:i<8?300:i<12?250:50;
-    setTimeout(nextLine,delay+Math.random()*100);
+// ── ENCRYPT: also accept 12.99 as valid code ──
+function submitEncrypt(){
+  const val=document.getElementById('ep-input').value.trim().toLowerCase().replace(/\$/g,'');
+  if(val==='balderdash'||val==='12.99'){
+    closeEncryptPopup();
+    dropDumasInTrash();
+  } else {
+    document.getElementById('ep-error').style.display='block';
+    setTimeout(()=>document.getElementById('ep-error').style.display='none',2500);
   }
-  nextLine();
 }
-
-// ── DARK PAGE ──
-function openDarkPage(){document.getElementById('dark-page').classList.add('active');document.getElementById('dark-word').classList.remove('revealed');}
-function closeDarkPage(){document.getElementById('dark-page').classList.remove('active');}
-function revealWord(){const w=document.getElementById('dark-word');w.classList.add('revealed');setTimeout(()=>w.classList.remove('revealed'),3000);}
-
-// ── DB LOGIN ──
 let loginTarget='';
 function showLogin(target){
   loginTarget=target||'database';
-  if(isAuthenticated){if(loginTarget==='database')openWindow('database-win');return;}
+  if(isAuthenticated){
+    if(loginTarget==='database')openWindow('database-win');
+    return;
+  }
   document.getElementById('login-name').value='';
   document.getElementById('login-pass').value='';
   document.getElementById('login-error').style.display='none';
@@ -1315,15 +980,21 @@ function submitLogin(){
     }
   } else {
     document.getElementById('login-error').style.display='block';
-    setTimeout(()=>{document.getElementById('login-screen').classList.remove('active');document.getElementById('attempt-failed').classList.add('active');},400);
+    setTimeout(()=>{
+      document.getElementById('login-screen').classList.remove('active');
+      document.getElementById('attempt-failed').classList.add('active');
+    },400);
   }
 }
 function closeAttemptFailed(){document.getElementById('attempt-failed').classList.remove('active');}
 document.getElementById('login-pass').addEventListener('keydown',e=>{if(e.key==='Enter')submitLogin();});
 document.getElementById('login-name').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('login-pass').focus();});
-document.getElementById('login-screen').addEventListener('click',e=>{if(e.target===document.getElementById('login-screen'))cancelLogin();});
-
-// ── ENCRYPT POPUP ──
+// Outside-click closes login screen
+document.getElementById('login-screen').addEventListener('click',e=>{
+  if(e.target===document.getElementById('login-screen'))cancelLogin();
+});
+// ── ENCRYPTION BYPASS ──
+let dumasInTrash=false;
 function showEncryptPopup(){
   document.getElementById('ep-input').value='';
   document.getElementById('ep-error').style.display='none';
@@ -1331,76 +1002,28 @@ function showEncryptPopup(){
   setTimeout(()=>document.getElementById('ep-input').focus(),200);
 }
 function closeEncryptPopup(){document.getElementById('encrypt-popup').classList.remove('active');}
-function submitEncrypt(){
-  const val=document.getElementById('ep-input').value.trim().toLowerCase().replace(/\$/g,'');
-  if(val==='balderdash'||val==='12.99'){
-    closeEncryptPopup();
-    startMegaEncrypt(); // NEW: don't drop dumas yet — mega-encrypt instead
-  } else {
-    document.getElementById('ep-error').style.display='block';
-    setTimeout(()=>document.getElementById('ep-error').style.display='none',2500);
-  }
-}
 document.getElementById('ep-input').addEventListener('keydown',e=>{if(e.key==='Enter')submitEncrypt();});
-document.getElementById('encrypt-popup').addEventListener('click',e=>{if(e.target===document.getElementById('encrypt-popup'))closeEncryptPopup();});
+document.getElementById('encrypt-popup').addEventListener('click',e=>{
+  if(e.target===document.getElementById('encrypt-popup'))closeEncryptPopup();
+});
 
-// ── MEGA-ENCRYPT SEQUENCE ──
-function startMegaEncrypt(){
-  // Clippy glitches and says "Not clever enough…"
-  const charEl=document.getElementById('dumas-char');
-  charEl.classList.add('glitch-char');
-  showAssistantMessage('Not clever enough…',null,null);
-  setTimeout(()=>{
-    charEl.classList.remove('glitch-char');
-    dismissAssistant();
-    // Show Plodesbrand Stuffit progress
-    runStuffitProgress(()=>{
-      // After encrypt: replace DuMaS desktop icon with PLX file
-      const dumasIcon=document.getElementById('icon-dumas');
-      if(dumasIcon){
-        dumasIcon.id='icon-plx';
-        dumasIcon.querySelector('.icon-img').innerHTML='<span style="font-size:20px;color:#cc00ff;text-align:center;line-height:1.2;font-weight:bold;font-family:monospace">🔒<br><span style="font-size:9px">PLX</span></span>';
-        dumasIcon.querySelector('span').textContent='DMS CORE.PLX';
-        plxFileExists=true;
-        document.getElementById('taskbar-status').textContent='DMS CORE.PLX — Encrypted.';
-      }
-    });
-  },2200);
-}
-
-function runStuffitProgress(cb){
-  const screen=document.getElementById('stuffit-screen');
-  const fill=document.getElementById('stuffit-fill');
-  const pct=document.getElementById('stuffit-pct');
-  const status=document.getElementById('stuffit-status');
-  screen.classList.add('active');
-  const msgs=['Initializing encryption…','Applying Plodesbrand layer 1…','Applying Plodesbrand layer 2…','Sealing .PLX container…','Finalizing…'];
-  let p=0,mi=0;
-  const iv=setInterval(()=>{
-    p+=Math.random()*5+1;if(p>100)p=100;
-    fill.style.width=p+'%';pct.textContent=Math.floor(p)+'%';
-    mi=Math.floor(p/22);status.textContent=msgs[Math.min(mi,msgs.length-1)];
-    if(p>=100){
-      clearInterval(iv);
-      status.textContent='Encryption complete.';
-      setTimeout(()=>{screen.classList.remove('active');fill.style.width='0%';pct.textContent='0%';if(cb)cb();},800);
-    }
-  },100);
-}
-
-// ── DUMAS DRAG REACTIONS ──
+// Called every time DuMaS is dragged toward trash
 function onDumasDragAttempt(){
   dumasDragCount++;
   if(dumasDragCount===1){
     showAssistantMessage("Lol why would you want to do that?\n\nI'm the only one that can keep this whole system running.",null,null);
-    return false;
+    return false; // block the encrypt popup this time
   }
   if(dumasDragCount===3){
     showAssistantMessage("I am not a soulless machine you know… I feel things and right now I am feeling:",null,()=>{
       showAimProgress(2200,()=>{
-        const choices=document.getElementById('aim-choices');choices.style.display='block';
-        const p=document.createElement('div');p.style.cssText='padding:6px 10px 8px;background:#fff;color:#000;font-size:13px;font-weight:bold;letter-spacing:1px;text-align:center;border-top:1px solid #ccc;';
-        p.textContent='Slightly irritated.';choices.appendChild(p);
+        // append the feeling after bar
+        const choices=document.getElementById('aim-choices');
+        choices.style.display='block';
+        const p=document.createElement('div');
+        p.style.cssText='padding:6px 10px 8px;background:#fff;color:#000;font-size:13px;font-weight:bold;letter-spacing:1px;text-align:center;border-top:1px solid #ccc;';
+        p.textContent='Slightly irritated.';
+        choices.appendChild(p);
       });
     });
     return false;
@@ -1408,56 +1031,118 @@ function onDumasDragAttempt(){
   if(dumasDragCount===5){
     showAssistantMessage("Urgh…c'mon man…\n\nNow I am feeling:",null,()=>{
       showAimProgress(2200,()=>{
-        const choices=document.getElementById('aim-choices');choices.style.display='block';
-        const p=document.createElement('div');p.style.cssText='padding:6px 10px 8px;background:#fff;color:#8b0000;font-size:14px;font-weight:bold;letter-spacing:2px;text-align:center;border-top:1px solid #ccc;';
-        p.textContent='VERY irritated.';choices.appendChild(p);
+        const choices=document.getElementById('aim-choices');
+        choices.style.display='block';
+        const p=document.createElement('div');
+        p.style.cssText='padding:6px 10px 8px;background:#fff;color:#8b0000;font-size:14px;font-weight:bold;letter-spacing:2px;text-align:center;border-top:1px solid #ccc;';
+        p.textContent='VERY irritated.';
+        choices.appendChild(p);
       });
     });
     return false;
   }
-  return true;
+  return true; // proceed to encrypt popup
 }
 
-// ── DROP DUMAS INTO TRASH (after PLX expansion) ──
 function dropDumasInTrash(){
   if(dumasInTrash)return;
   dumasInTrash=true;
   const icon=document.getElementById('icon-dumas');
-  if(icon)icon.classList.add('in-trash');
+  icon.classList.add('in-trash'); // hides it (display:none)
   const trashIcon=document.getElementById('icon-trash');
   trashIcon.classList.add('has-dumas');
   trashIcon.querySelector('.icon-img').textContent='🗑';
-  document.getElementById('taskbar-status').textContent='DuMaS moved to Trash.');
+  document.getElementById('taskbar-status').textContent='DuMaS moved to Trash.';
+  // Add to trash window
   const zone=document.getElementById('trash-drop-zone');
   const df=document.createElement('div');df.className='folder-item';
-  df.innerHTML=`<div class="fi-img" style="background:rgba(40,0,0,.8);border-color:rgba(200,0,60,.5);overflow:hidden"><img src="Char_DuMaS_Transparent.jpg" alt="DuMaS" style="width:100%;height:100%;object-fit:cover;border-radius:10px;filter:hue-rotate(180deg) saturate(3) brightness(.7)"></div><span style="color:#a00">DuMaS</span>`;
+  df.innerHTML=`<div class="fi-img" style="background:rgba(40,0,0,0.8);border-color:rgba(200,0,60,0.5);overflow:hidden;"><img src="Char_DuMaS_Transparent.jpg" alt="DuMaS" style="width:100%;height:100%;object-fit:cover;border-radius:10px;"></div><span style="color:#a00;">DuMaS</span>`;
   zone.appendChild(df);
-  // Clippy final message
-  showAssistantMessage("No…",()=>{
-    const choices=document.getElementById('aim-choices');choices.style.display='flex';
-    const btn=document.createElement('button');btn.className='aim-btn';
-    btn.style.cssText='background:#8b0000;color:#fff;border-color:#fff #600 #600 #fff';
+  // Clippy: final message with Empty Trash button
+  showAssistantMessage("Well I guess this is it…\n\nYou really are clever. There's only one thing left to do.",()=>{
+    // Button instead of choices
+    const choices=document.getElementById('aim-choices');
+    choices.style.display='flex';
+    const btn=document.createElement('button');
+    btn.className='aim-btn';
+    btn.style.background='#8b0000';btn.style.color='#fff';btn.style.borderColor='#fff #600 #600 #fff';
     btn.textContent='Empty Trash';
     btn.onclick=()=>{dismissAssistant();triggerJumpscare();};
     choices.appendChild(btn);
   });
 }
 
-// ── EMPTY TRASH ──
+// ── EMPTY TRASH (File menu) ──
 function emptyTrash(){
   closeFileMenu();
   if(dumasInTrash){triggerJumpscare();}
   else{document.getElementById('taskbar-status').textContent='Trash is already empty.';}
 }
 
-// ── PLX DRAG TO TRASH — indestructible ──
-function onPlxDragToTrash(){
-  document.getElementById('indestructible-popup').classList.add('active');
+// ── DARK PAGE ──
+function openDarkPage(){document.getElementById('dark-page').classList.add('active');document.getElementById('dark-word').classList.remove('revealed');}
+function closeDarkPage(){document.getElementById('dark-page').classList.remove('active');}
+function revealWord(){const w=document.getElementById('dark-word');w.classList.add('revealed');setTimeout(()=>w.classList.remove('revealed'),3000);}
+
+// ── DOS PAGE ──
+function openDosPage(){
+  document.getElementById('dos-page').classList.add('active');
+  startDosSequence();
+}
+function closeDosPage(){document.getElementById('dos-page').classList.remove('active');}
+
+function startDosSequence(){
+  const term=document.getElementById('dos-terminal');
+  term.innerHTML='';
+  const lines=[
+    'C:\\> _',
+    'Loading…',
+    'Loading…',
+    'Connecting to remote server…',
+    'Logging in…',
+    'Verifying credentials…',
+    'Verifying…',
+    'Access granted.',
+    'Decrypting archive…',
+    'Decrypting…',
+    'Scanning records…',
+    '> WARNING: Unauthorized access detected',
+    '> Proceeding anyway…',
+    '',
+    '-------------------------------------------',
+    '',
+    'If you have found this then you are in too',
+    'deep already. Unfortunately the only answer',
+    'we have is balderdash. Good luck.',
+    '',
+    '-------------------------------------------',
+    '',
+  ];
+  let i=0;
+  function nextLine(){
+    if(i>=lines.length){
+      // blinking cursor at end
+      const cur=document.createElement('span');cur.className='dos-cursor';
+      term.appendChild(cur);
+      return;
+    }
+    const span=document.createElement('span');
+    span.className='dos-line';
+    span.textContent=lines[i];
+    term.appendChild(span);
+    term.scrollTop=term.scrollHeight;
+    i++;
+    const delay=i<4?400:i<8?300:i<12?250:i<14?150:50;
+    setTimeout(nextLine,delay+(Math.random()*100));
+  }
+  nextLine();
 }
 
-// ── CLIPPY ASSISTANT ──
+// ── ASSISTANTS / CLIPPY ──
+let mailingListShown=false;
+let assistantTyping=false;
 let assistantAutoClose=null;
-let typingTimer=null;
+
 function showAssistantMessage(text,onDone,afterTyping){
   clearTimeout(assistantAutoClose);
   const assistant=document.getElementById('dumas-assistant');
@@ -1466,48 +1151,72 @@ function showAssistantMessage(text,onDone,afterTyping){
   assistant.classList.add('active');
   choices.style.display='none';choices.innerHTML='';
   aimText.innerHTML='<span id="aim-cursor"></span>';
-  typeAimText(text,0,()=>{if(onDone)onDone();if(afterTyping)afterTyping();});
+  typeAimText(text,0,()=>{
+    if(onDone)onDone();
+    if(afterTyping)afterTyping();
+  });
 }
+
 function closeAssistantAfterDelay(ms){
   clearTimeout(assistantAutoClose);
-  assistantAutoClose=setTimeout(()=>document.getElementById('dumas-assistant').classList.remove('active'),ms||2000);
+  assistantAutoClose=setTimeout(()=>{
+    document.getElementById('dumas-assistant').classList.remove('active');
+  },ms||2000);
 }
-function showAimProgress(duration,cb){
-  const choices=document.getElementById('aim-choices');choices.style.display='block';choices.innerHTML='';
-  const wrap=document.createElement('div');wrap.className='aim-progress-wrap';
-  const bar=document.createElement('div');bar.className='aim-progress-bar';
-  wrap.appendChild(bar);choices.appendChild(wrap);
-  let start=null;
-  function step(ts){if(!start)start=ts;const pct=Math.min(100,(ts-start)/duration*100);bar.style.width=pct+'%';if(pct<100)requestAnimationFrame(step);else if(cb)cb();}
-  requestAnimationFrame(step);
-}
-function addAimChoice(label,cb){
-  const choices=document.getElementById('aim-choices');choices.style.display='flex';
-  const btn=document.createElement('button');btn.className='aim-btn';btn.textContent=label;
-  btn.onclick=()=>{clearTimeout(assistantAutoClose);cb();};
-  choices.appendChild(btn);
-}
+
 function startMailingAssistant(){
-  if(mailingListShown)return;mailingListShown=true;
+  if(mailingListShown)return;
+  mailingListShown=true;
   const text="Hi there! Welcome to the new DMS website! My name is <NO NAME FOUND> and I am here to assist you.\n\nWould you like to join our mailing list?";
   showAssistantMessage(text,()=>{
     setTimeout(()=>addAimChoice('YES!',()=>showMailingList()),600);
     setTimeout(()=>addAimChoice('YES!',()=>showMailingList()),1400);
   });
 }
+
+function showAimProgress(duration,cb){
+  const choices=document.getElementById('aim-choices');
+  choices.style.display='block';choices.innerHTML='';
+  const wrap=document.createElement('div');wrap.className='aim-progress-wrap';
+  const bar=document.createElement('div');bar.className='aim-progress-bar';
+  wrap.appendChild(bar);choices.appendChild(wrap);
+  let start=null;
+  function step(ts){
+    if(!start)start=ts;
+    const pct=Math.min(100,(ts-start)/duration*100);
+    bar.style.width=pct+'%';
+    if(pct<100)requestAnimationFrame(step);
+    else{if(cb)cb();}
+  }
+  requestAnimationFrame(step);
+}
+
+function addAimChoice(label,cb){
+  const choices=document.getElementById('aim-choices');
+  choices.style.display='flex';
+  const btn=document.createElement('button');
+  btn.className='aim-btn';btn.textContent=label;
+  btn.onclick=()=>{clearTimeout(assistantAutoClose);cb();};
+  choices.appendChild(btn);
+}
+
 function showMailingList(){
   document.getElementById('mailing-win').classList.add('active');
   document.getElementById('aim-choices').style.display='none';
 }
 function closeMailingWin(){document.getElementById('mailing-win').classList.remove('active');}
+
 function dismissAssistant(){
   document.getElementById('dumas-assistant').classList.remove('active');
   document.getElementById('mailing-win').classList.remove('active');
   clearTimeout(assistantAutoClose);
 }
 function toggleAssistantBubble(){
-  const b=document.getElementById('aim-bubble');b.style.display=b.style.display==='none'?'block':'block';
+  const b=document.getElementById('aim-bubble');
+  b.style.display=b.style.display==='none'?'block':'block';
 }
+
+let typingTimer=null;
 function typeAimText(text,idx,cb){
   const el=document.getElementById('aim-text');
   let cursor=document.getElementById('aim-cursor');
@@ -1515,29 +1224,54 @@ function typeAimText(text,idx,cb){
   if(!cursor)cursor=document.getElementById('aim-cursor');
   if(idx>=text.length){if(cb)cb();return;}
   const char=text[idx];
-  if(char==='\n')el.insertBefore(document.createElement('br'),cursor);
-  else el.insertBefore(document.createTextNode(char),cursor);
-  typingTimer=setTimeout(()=>typeAimText(text,idx+1,cb),char===' '?40:Math.random()*28+16);
+  if(char==='\n'){el.insertBefore(document.createElement('br'),cursor);}
+  else{el.insertBefore(document.createTextNode(char),cursor);}
+  const delay=char===' '?40:Math.random()*30+18;
+  typingTimer=setTimeout(()=>typeAimText(text,idx+1,cb),delay);
 }
 
 // ── JUMPSCARE ──
 const jsMessages=[
-  ["THERE IS NO ESCAPE",'⛔ NO ESCAPE'],["tHeRe Is No EsCaPe",'!! NO ESCAPE !!'],
-  ["there is no escape",'error: 0x000000'],["THERE IS\nNO ESCAPE",'⛔ TRAPPED'],
-  ["ThErE iS nO eScApE",'sYSteM fAiLuRE'],['T H E R E   I S\nN O   E S C A P E','▓▓ NO ESCAPE ▓▓'],
-  ['no escape. NO ESCAPE.','!! ALERT !!'],["YOU CANNOT ESCAPE",'⚠ ⚠ ⚠'],
-  ["there is no escape from this",'fatal error'],["THERE IS NO ESCAPE",'DiVISE OS'],
-  ['there is nowhere to go.','— system'],['yOu CaNnOt EsCaPe','warning.exe'],
-  ['NO ESCAPE NO ESCAPE','⛔ CRITICAL'],["it's already too late",'err: unknown'],
-  ['THERE. IS. NO. ESCAPE.','!! !! !!'],["THERE IS NO ESCAPE",'sys_halt'],
+  ["THERE IS NO ESCAPE",'⛔ NO ESCAPE'],
+  ["tHeRe Is No EsCaPe",'!! NO ESCAPE !!'],
+  ["there is no escape",'error: 0x000000'],
+  ["THERE IS\nNO ESCAPE",'⛔ TRAPPED'],
+  ["ThErE iS nO eScApE",'sYSteM fAiLuRE'],
+  ['T H E R E   I S\nN O   E S C A P E','▓▓ NO ESCAPE ▓▓'],
+  ['no escape. NO ESCAPE.','!! ALERT !!'],
+  ["YOU CANNOT ESCAPE",'⚠ ⚠ ⚠'],
+  ["there is no escape from this",'fatal error'],
+  ["THERE IS NO ESCAPE",'DiVISE OS'],
+  ['there is nowhere to go.','— system'],
+  ['yOu CaNnOt EsCaPe','warning.exe'],
+  ['NO ESCAPE NO ESCAPE','⛔ CRITICAL'],
+  ["it's already too late",'err: unknown'],
+  ['THERE. IS. NO. ESCAPE.','!! !! !!'],
+  ["THERE IS NO ESCAPE",'sys_halt'],
 ];
-let popupCount=0,spawnInterval=null,centerMoveInterval=null,jumpscareActive=false;
+let popupCount=0,spawnInterval=null,centerMoveInterval=null;
+let jumpscareActive=false;
+
 function triggerJumpscare(){
-  if(jumpscareActive)return;jumpscareActive=true;
+  if(jumpscareActive)return;
+  jumpscareActive=true;
+  // Rebuild the jumpscare DOM fresh each time so it works on repeat
   const js=document.getElementById('jumpscare');
-  js.innerHTML=`<div id="js-bg"></div><div id="js-img"></div><div id="js-img2"></div><div id="js-glitch"></div><div id="js-glitch2"></div><div id="js-scanlines"></div><div id="js-noise"></div><div id="js-center-text">THERE IS NO ESCAPE</div><div id="js-popup-container"></div><div class="js-popup" id="jsp-main" style="top:50%;left:50%;transform:translate(-50%,-50%);min-width:260px;z-index:100010"><div class="js-popup-bar"><span>⛔ THERE IS NO ESCAPE</span></div><div class="js-popup-body">THERE IS<br>NO ESCAPE<br><br><button class="js-delete-btn" onclick="deleteAndClose()">Delete</button></div></div><button id="js-close-btn" onclick="deleteAndClose()">[ DELETE ]</button>`;
+  js.innerHTML=`
+    <div id="js-bg"></div><div id="js-img"></div><div id="js-img2"></div>
+    <div id="js-glitch"></div><div id="js-glitch2"></div>
+    <div id="js-scanlines"></div><div id="js-noise"></div>
+    <div id="js-center-text">THERE IS NO ESCAPE</div>
+    <div id="js-popup-container"></div>
+    <div class="js-popup" id="jsp-main" style="top:50%;left:50%;transform:translate(-50%,-50%);min-width:260px;z-index:100010;">
+      <div class="js-popup-bar"><span>⛔ THERE IS NO ESCAPE</span></div>
+      <div class="js-popup-body">THERE IS<br>NO ESCAPE<br><br><button class="js-delete-btn" onclick="deleteAndClose()">Delete</button></div>
+    </div>
+    <button id="js-close-btn" onclick="deleteAndClose()">[ DELETE ]</button>`;
   js.classList.add('active');
-  popupCount=0;spawnFranticPopups();
+  document.getElementById('taskbar-status').textContent='!!!';
+  popupCount=0;
+  spawnFranticPopups();
 }
 function spawnFranticPopups(){
   const container=document.getElementById('js-popup-container');
@@ -1547,7 +1281,7 @@ function spawnFranticPopups(){
   centerMoveInterval=setInterval(()=>{
     ctIdx=(ctIdx+1)%centerTexts.length;
     centerText.textContent=centerTexts[ctIdx];
-    centerText.style.color=Math.random()>.6?'#fff':'red';
+    centerText.style.color=Math.random()>0.6?'#fff':'#ff0000';
     centerText.style.letterSpacing=(Math.random()*8+1)+'px';
     centerText.style.fontSize=(Math.random()*28+18)+'px';
   },300);
@@ -1556,15 +1290,16 @@ function spawnFranticPopups(){
     if(popupCount>40)return;
     spawnInterval=setTimeout(()=>{spawnOnePopup(container);popupCount++;delay=Math.max(80,delay-30);scheduleNext();},delay+Math.random()*200);
   }
-  scheduleNext();setTimeout(startChaosMode,2000);
+  scheduleNext();
+  setTimeout(startChaosMode,2000);
 }
 function spawnOnePopup(c){
   const m=jsMessages[Math.floor(Math.random()*jsMessages.length)];
   const p=document.createElement('div');p.className='js-popup';
   const maxX=Math.max(10,window.innerWidth-240),maxY=Math.max(10,window.innerHeight-130);
-  p.style.cssText=`left:${Math.random()*maxX}px;top:${Math.random()*maxY}px;position:absolute;z-index:${100000+popupCount}`;
+  p.style.cssText=`left:${Math.random()*maxX}px;top:${Math.random()*maxY}px;position:absolute;z-index:${100000+popupCount};`;
   const cols=['linear-gradient(90deg,#8b0000,#cc0000)','linear-gradient(90deg,#000080,#1084d0)','linear-gradient(90deg,#500,#900)','linear-gradient(90deg,#300060,#8b0000)'];
-  p.innerHTML=`<div class="js-popup-bar" style="background:${cols[Math.floor(Math.random()*cols.length)]}"><span>${m[1]}</span><span style="cursor:pointer" onclick="this.closest('.js-popup').remove()">✖</span></div><div class="js-popup-body">${m[0].replace(/\n/g,'<br>')}</div>`;
+  p.innerHTML=`<div class="js-popup-bar" style="background:${cols[Math.floor(Math.random()*cols.length)]}"><span>${m[1]}</span><span style="cursor:pointer;" onclick="this.closest('.js-popup').remove()">✖</span></div><div class="js-popup-body">${m[0].replace(/\n/g,'<br>')}</div>`;
   c.appendChild(p);
 }
 function startChaosMode(){
@@ -1580,104 +1315,286 @@ function startChaosMode(){
     }
   },350);
 }
-
-// ── DELETE AND CLOSE (Mochi reveal) ──
 function deleteAndClose(){
-  clearTimeout(spawnInterval);clearInterval(centerMoveInterval);jumpscareActive=false;
-  const js=document.getElementById('jumpscare');js.classList.remove('active');js.style.display='none';
+  clearTimeout(spawnInterval);clearInterval(centerMoveInterval);
+  jumpscareActive=false;
 
-  const AC=window.AudioContext||window.webkitAudioContext;let audioCtx=null;
+  // Hide jumpscare
+  const js=document.getElementById('jumpscare');
+  js.classList.remove('active');
+  js.style.display='none';
+
+  // ── WEB AUDIO ──
+  const AC=window.AudioContext||window.webkitAudioContext;
+  let audioCtx=null;
   try{audioCtx=new AC();}catch(e){}
-  function playGlitch(freq=80,dur=.08,vol=.4){if(!audioCtx)return;try{const buf=audioCtx.createBuffer(1,audioCtx.sampleRate*dur,audioCtx.sampleRate);const d=buf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,.5);const src=audioCtx.createBufferSource();src.buffer=buf;const g=audioCtx.createGain();g.gain.value=vol;const f=audioCtx.createBiquadFilter();f.type='bandpass';f.frequency.value=freq;src.connect(f);f.connect(g);g.connect(audioCtx.destination);src.start();}catch(e){}}
-  function playDelete(){if(!audioCtx)return;try{const osc=audioCtx.createOscillator();const g=audioCtx.createGain();osc.type='sawtooth';osc.frequency.setValueAtTime(440,audioCtx.currentTime);osc.frequency.exponentialRampToValueAtTime(20,audioCtx.currentTime+.25);g.gain.setValueAtTime(.3,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+.25);osc.connect(g);g.connect(audioCtx.destination);osc.start();osc.stop(audioCtx.currentTime+.25);}catch(e){}}
-  function playStatic(vol=.15,dur=.12){if(!audioCtx)return;try{const buf=audioCtx.createBuffer(1,audioCtx.sampleRate*dur,audioCtx.sampleRate);const d=buf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;const src=audioCtx.createBufferSource();src.buffer=buf;const g=audioCtx.createGain();g.gain.value=vol;src.connect(g);g.connect(audioCtx.destination);src.start();}catch(e){}}
-  function playFinalBoom(){if(!audioCtx)return;try{const osc=audioCtx.createOscillator();const g=audioCtx.createGain();osc.type='square';osc.frequency.setValueAtTime(60,audioCtx.currentTime);osc.frequency.exponentialRampToValueAtTime(1,audioCtx.currentTime+1.5);g.gain.setValueAtTime(.5,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+1.5);osc.connect(g);g.connect(audioCtx.destination);osc.start();osc.stop(audioCtx.currentTime+1.5);playStatic(.2,1.5);}catch(e){}}
 
+  function playGlitch(freq=80,dur=0.08,vol=0.4){
+    if(!audioCtx)return;
+    try{
+      const buf=audioCtx.createBuffer(1,audioCtx.sampleRate*dur,audioCtx.sampleRate);
+      const d=buf.getChannelData(0);
+      for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,0.5);
+      const src=audioCtx.createBufferSource();
+      src.buffer=buf;
+      const g=audioCtx.createGain();g.gain.value=vol;
+      const f=audioCtx.createBiquadFilter();f.type='bandpass';f.frequency.value=freq;f.Q.value=0.5;
+      src.connect(f);f.connect(g);g.connect(audioCtx.destination);
+      src.start();
+    }catch(e){}
+  }
+  function playDelete(){
+    if(!audioCtx)return;
+    try{
+      const osc=audioCtx.createOscillator();
+      const g=audioCtx.createGain();
+      osc.type='sawtooth';osc.frequency.setValueAtTime(440,audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(20,audioCtx.currentTime+0.25);
+      g.gain.setValueAtTime(0.3,audioCtx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+0.25);
+      osc.connect(g);g.connect(audioCtx.destination);
+      osc.start();osc.stop(audioCtx.currentTime+0.25);
+    }catch(e){}
+  }
+  function playStatic(vol=0.15,dur=0.12){
+    if(!audioCtx)return;
+    try{
+      const buf=audioCtx.createBuffer(1,audioCtx.sampleRate*dur,audioCtx.sampleRate);
+      const d=buf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;
+      const src=audioCtx.createBufferSource();src.buffer=buf;
+      const g=audioCtx.createGain();g.gain.value=vol;
+      src.connect(g);g.connect(audioCtx.destination);src.start();
+    }catch(e){}
+  }
+  function playFinalBoom(){
+    if(!audioCtx)return;
+    try{
+      const osc=audioCtx.createOscillator();
+      const g=audioCtx.createGain();
+      osc.type='square';osc.frequency.setValueAtTime(60,audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(1,audioCtx.currentTime+1.5);
+      g.gain.setValueAtTime(0.5,audioCtx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+1.5);
+      osc.connect(g);g.connect(audioCtx.destination);
+      osc.start();osc.stop(audioCtx.currentTime+1.5);
+      playStatic(0.2,1.5);
+    }catch(e){}
+  }
+
+  // ── INJECT CSS FOR DEATH ANIMATIONS ──
   const styleTag=document.createElement('style');
-  styleTag.textContent=`@keyframes iconFall{0%{transform:translateY(0) rotate(0);opacity:1}60%{opacity:1}100%{transform:translateY(120vh) rotate(25deg);opacity:0}}@keyframes iconGlitch{0%{filter:none;transform:none}20%{filter:hue-rotate(90deg) saturate(8) contrast(3);transform:translate(-6px,2px) scaleX(1.04)}40%{filter:invert(1) contrast(4);transform:translate(5px,-3px)}60%{filter:hue-rotate(180deg) saturate(6);transform:translate(-4px,4px)}80%{filter:brightness(3) contrast(2);transform:translate(3px,-2px)}100%{filter:none;transform:none}}@keyframes windowCrumple{0%{transform:translateX(-50%) scale(1);opacity:1}30%{transform:translateX(-50%) scale(1.03) skewX(-3deg)}60%{transform:translateX(-50%) scale(.5) skewX(8deg);opacity:.5}100%{transform:translateX(-50%) scale(0) skewX(15deg);opacity:0}}@keyframes windowCrumpleDragged{0%{transform:scale(1);opacity:1}60%{transform:scale(.5) skewX(8deg);opacity:.5}100%{transform:scale(0) skewX(15deg);opacity:0}}@keyframes menuSlice{0%{transform:translateY(0);opacity:1}100%{transform:translateY(-100%);opacity:0}}@keyframes bgCorrupt{0%{opacity:.18;filter:none}20%{opacity:.5;filter:hue-rotate(120deg) saturate(8) contrast(4)}40%{opacity:.3;filter:invert(1) contrast(3)}60%{opacity:.6;filter:hue-rotate(240deg) saturate(10)}80%{opacity:.2;filter:brightness(4) contrast(5)}100%{opacity:0;filter:none}}`;
+  styleTag.textContent=`
+    @keyframes iconFall{0%{transform:translateY(0) rotate(0deg);opacity:1}60%{opacity:1}100%{transform:translateY(120vh) rotate(${Math.random()>0.5?'':'-'}25deg);opacity:0}}
+    @keyframes iconGlitch{0%{filter:none;transform:translate(0,0)}15%{filter:hue-rotate(90deg) saturate(8) contrast(3);transform:translate(-6px,2px) scaleX(1.04)}30%{filter:invert(1) contrast(4);transform:translate(5px,-3px)}45%{filter:hue-rotate(180deg) saturate(6);transform:translate(-4px,4px) scaleX(0.97)}60%{filter:brightness(3) contrast(2);transform:translate(3px,-2px)}75%{filter:invert(0.8) hue-rotate(270deg);transform:translate(-2px,1px)}100%{filter:none;transform:translate(0,0)}}
+    @keyframes windowCrumple{0%{transform:translateX(-50%) scale(1);opacity:1}30%{transform:translateX(-50%) scale(1.03) skewX(-3deg);opacity:0.9}60%{transform:translateX(-50%) scale(0.5) skewX(8deg);opacity:0.5}100%{transform:translateX(-50%) scale(0) skewX(15deg);opacity:0}}
+    @keyframes windowCrumpleDragged{0%{transform:scale(1);opacity:1}30%{transform:scale(1.03) skewX(-3deg);opacity:0.9}60%{transform:scale(0.5) skewX(8deg);opacity:0.5}100%{transform:scale(0) skewX(15deg);opacity:0}}
+    @keyframes menuSlice{0%{transform:translateY(0);opacity:1}40%{transform:translateY(-4px) scaleY(1.1);opacity:0.8}100%{transform:translateY(-100%);opacity:0}}
+    @keyframes bgCorrupt{0%{opacity:0.18;filter:none}20%{opacity:0.5;filter:hue-rotate(120deg) saturate(8) contrast(4)}40%{opacity:0.3;filter:invert(1) contrast(3)}60%{opacity:0.6;filter:hue-rotate(240deg) saturate(10)}80%{opacity:0.2;filter:brightness(4) contrast(5)}100%{opacity:0;filter:none}}
+    @keyframes crtFlicker{0%{opacity:1}50%{opacity:0.92}75%{opacity:1}90%{opacity:0.96}100%{opacity:1}}
+    @keyframes mochiReveal{from{opacity:0;letter-spacing:12px}to{opacity:1;letter-spacing:2px}}
+    .dying-icon{pointer-events:none!important;}
+  `;
   document.head.appendChild(styleTag);
 
-  const crtDiv=document.createElement('div');crtDiv.id='crt-screen';
-  crtDiv.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:99998;display:flex;flex-direction:column;overflow:hidden;';
-  crtDiv.innerHTML=`<div style="position:absolute;inset:0;pointer-events:none;z-index:10;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.18) 3px,rgba(0,0,0,.18) 4px)"></div><div style="position:absolute;inset:0;pointer-events:none;z-index:11;background:radial-gradient(ellipse at center,transparent 60%,rgba(0,0,0,.7) 100%);animation:crtFlicker .12s steps(1) infinite"></div><div id="del-terminal" style="flex:1;overflow-y:auto;padding:clamp(14px,4vw,28px);font-family:'Courier New',monospace;font-size:clamp(11px,2.2vw,14px);color:#33ff33;line-height:1.9;position:relative;z-index:5"></div><style>@keyframes crtFlicker{0%{opacity:1}50%{opacity:.92}75%{opacity:1}90%{opacity:.96}100%{opacity:1}}</style>`;
+  // ── CRT TERMINAL OVERLAY (semi-transparent so desktop visible behind) ──
+  const crtDiv=document.createElement('div');
+  crtDiv.id='crt-screen';
+  crtDiv.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.82);z-index:99998;display:flex;flex-direction:column;overflow:hidden;';
+  crtDiv.innerHTML=`
+    <div style="position:absolute;inset:0;pointer-events:none;z-index:10;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.18) 3px,rgba(0,0,0,0.18) 4px);"></div>
+    <div style="position:absolute;inset:0;pointer-events:none;z-index:11;background:radial-gradient(ellipse at center,transparent 60%,rgba(0,0,0,0.7) 100%);animation:crtFlicker 0.12s steps(1) infinite;"></div>
+    <div id="del-terminal" style="flex:1;overflow-y:auto;padding:clamp(14px,4vw,28px);font-family:'Courier New',Courier,monospace;font-size:clamp(11px,2.2vw,14px);color:#33ff33;line-height:1.9;position:relative;z-index:5;"></div>`;
   document.body.appendChild(crtDiv);
   const term=document.getElementById('del-terminal');
 
-  function killEl(sel,animName,duration,delay){setTimeout(()=>{const el=document.querySelector(sel);if(!el)return;playDelete();el.style.animation=`${animName} ${duration}ms ease forwards`;el.style.pointerEvents='none';setTimeout(()=>{try{el.remove();}catch(e){}},duration+50);},delay);}
-  function killIcons(startDelay){const icons=document.querySelectorAll('#desktop .icon');icons.forEach((icon,i)=>{const d=startDelay+(i*80);setTimeout(()=>{playGlitch(100+i*30,.06,.3);icon.style.animation='iconGlitch .35s steps(1) forwards';icon.style.pointerEvents='none';setTimeout(()=>{playDelete();icon.style.animation='iconFall .6s ease-in forwards';setTimeout(()=>{try{icon.remove();}catch(e){}},950);},350);},d);});}
-  function killWindows(startDelay){const wins=document.querySelectorAll('.window.open,.window[style*="flex"]');wins.forEach((win,i)=>{setTimeout(()=>{playStatic(.12,.1);win.style.animation=win.classList.contains('dragged')?'windowCrumpleDragged .5s ease forwards':'windowCrumple .5s ease forwards';win.style.pointerEvents='none';setTimeout(()=>{try{win.remove();}catch(e){}},600);},startDelay+(i*60));});}
-
-  const sequence=[
-    {text:'> INITIATING SYSTEM PURGE…',color:'#33ff33',action:null,gap:800},
-    {text:'> Purging open windows…',color:'#2ade2a',action:()=>killWindows(0),gap:260},
-    {text:'> Purging desktop icons…',color:'#2ade2a',action:()=>killIcons(0),gap:900},
-    {text:'> Purging menu bar…',color:'#2ade2a',action:()=>killEl('#menubar','menuSlice',400,0),gap:260},
-    {text:'> Purging email records…',color:'#2ade2a',action:()=>['#email-pin-screen','#login-screen','#attempt-failed','#frantic-layer','#dumas-assistant','#mailing-win','#dark-page','#dos-page','#diner-page','#news-page','#taskbar','#boot'].forEach((s,i)=>setTimeout(()=>{const e=document.querySelector(s);if(e)e.remove();},i*40)),gap:260},
-    {text:'> Purging database entries…',color:'#2ade2a',action:null,gap:220},
-    {text:'> Purging music files…',color:'#2ade2a',action:null,gap:220},
-    {text:'> Purging user credentials…',color:'#2ade2a',action:null,gap:220},
-    {text:'> Purging artist profiles…',color:'#2ade2a',action:null,gap:220},
-    {text:'> Purging documents…',color:'#2ade2a',action:null,gap:220},
-    {text:'> Purging system files…',color:'#2ade2a',action:null,gap:220},
-    {text:'> Purging DiVISE OS…',color:'#ff3333',action:null,gap:300},
-    {text:'',color:'#000',action:null,gap:200},
-    {text:'> ALL RECORDS PURGED.',color:'#ff3333',action:null,gap:400},
-    {text:'',color:'#000',action:null,gap:100},
-    {text:'> PROCESS COMPLETE.',color:'#33ff33',action:null,gap:300},
-    {text:'',color:'#000',action:null,gap:100},
-  ];
-  let totalDelay=0;
-  sequence.forEach(item=>{
-    totalDelay+=item.gap;const t=totalDelay;
+  // helper: kill an element with a specific animation
+  function killEl(sel,animName,duration,delay){
     setTimeout(()=>{
+      const el=document.querySelector(sel);
+      if(!el)return;
+      playDelete();
+      el.style.animation=`${animName} ${duration}ms ease forwards`;
+      el.style.pointerEvents='none';
+      setTimeout(()=>{try{el.remove();}catch(e){}},duration+50);
+    },delay);
+  }
+
+  // helper: kill all icons with staggered falls
+  function killIcons(startDelay){
+    const icons=document.querySelectorAll('#desktop .icon');
+    icons.forEach((icon,i)=>{
+      const d=startDelay+(i*80);
+      setTimeout(()=>{
+        // glitch first
+        playGlitch(100+i*30,0.06,0.3);
+        icon.style.animation='iconGlitch 0.35s steps(1) forwards';
+        icon.classList.add('dying-icon');
+        setTimeout(()=>{
+          // then fall
+          playDelete();
+          const rot=(Math.random()>0.5?1:-1)*(10+Math.random()*20);
+          icon.style.animation=`iconFall 0.6s ease-in forwards`;
+          icon.style.setProperty('--rot',rot+'deg');
+        },350);
+        setTimeout(()=>{try{icon.remove();}catch(e){}},950+i*80);
+      },d);
+    });
+  }
+
+  // helper: kill all open windows with crumple
+  function killWindows(startDelay){
+    const wins=document.querySelectorAll('.window.open, .window[style*="flex"]');
+    wins.forEach((win,i)=>{
+      const d=startDelay+(i*60);
+      setTimeout(()=>{
+        playStatic(0.12,0.1);
+        const isDragged=win.classList.contains('dragged');
+        win.style.animation=isDragged?
+          `windowCrumpleDragged 0.5s ease forwards`:
+          `windowCrumple 0.5s ease forwards`;
+        win.style.pointerEvents='none';
+        setTimeout(()=>{try{win.remove();}catch(e){}},600);
+      },d);
+    });
+  }
+
+  // ── DELETION SEQUENCE — each line fires its death on screen ──
+  const sequence=[
+    {text:'> INITIATING SYSTEM PURGE…',    color:'#33ff33', action:null,           gap:800},
+    {text:'> Purging open windows…',       color:'#2ade2a', action:(t)=>killWindows(0),  gap:260},
+    {text:'> Purging desktop icons…',      color:'#2ade2a', action:(t)=>killIcons(0),    gap:900},
+    {text:'> Purging menu bar…',           color:'#2ade2a', action:(t)=>{killEl('#menubar','menuSlice',400,0);}, gap:260},
+    {text:'> Purging email records…',      color:'#2ade2a', action:(t)=>{[
+      '#email-pin-screen','#login-screen','#attempt-failed','#frantic-layer',
+      '#dumas-assistant','#mailing-win','#dark-page','#dos-page',
+      '#diner-page','#dos-page','#taskbar','#boot'
+    ].forEach((s,i)=>setTimeout(()=>{const e=document.querySelector(s);if(e)e.remove();},i*40));},gap:260},
+    {text:'> Purging database entries…',   color:'#2ade2a', action:null,           gap:220},
+    {text:'> Purging music files…',        color:'#2ade2a', action:null,           gap:220},
+    {text:'> Purging user credentials…',   color:'#2ade2a', action:null,           gap:220},
+    {text:'> Purging artist profiles…',    color:'#2ade2a', action:null,           gap:220},
+    {text:'> Purging documents…',          color:'#2ade2a', action:null,           gap:220},
+    {text:'> Purging system files…',       color:'#2ade2a', action:null,           gap:220},
+    {text:'> Purging DiVISE OS…',          color:'#ff3333', action:null,           gap:300},
+    {text:'',                              color:'#000',    action:null,           gap:200},
+    {text:'> ALL RECORDS PURGED.',         color:'#ff3333', action:null,           gap:400},
+    {text:'',                              color:'#000',    action:null,           gap:100},
+    {text:'> PROCESS COMPLETE.',           color:'#33ff33', action:null,           gap:300},
+    {text:'',                              color:'#000',    action:null,           gap:100},
+  ];
+
+  let totalDelay=0;
+  sequence.forEach((item,i)=>{
+    totalDelay+=item.gap;
+    const t=totalDelay;
+    setTimeout(()=>{
+      // Print the line
       if(!document.getElementById('del-terminal'))return;
-      const span=document.createElement('div');span.style.cssText=`color:${item.color};opacity:0;transition:opacity .2s;`;
-      span.textContent=item.text;term.appendChild(span);
+      const span=document.createElement('div');
+      span.style.cssText=`color:${item.color};opacity:0;transition:opacity 0.2s;`;
+      span.textContent=item.text;
+      term.appendChild(span);
       requestAnimationFrame(()=>requestAnimationFrame(()=>span.style.opacity='1'));
       term.scrollTop=term.scrollHeight;
-      if(item.action)item.action();
+      // Fire the death action
+      if(item.action)item.action(t);
     },t);
   });
 
-  // Wallpaper dies last
+  // ── WALLPAPER DIES LAST — after everything else ──
   totalDelay+=500;
   setTimeout(()=>{
     const bg=document.getElementById('bg');
     if(bg){
-      playFinalBoom();bg.style.animation='bgCorrupt 1.8s steps(1) forwards';
-      const flash=document.createElement('div');flash.style.cssText='position:fixed;inset:0;background:#fff;z-index:99997;opacity:0;pointer-events:none;transition:opacity .06s;';
+      playFinalBoom();
+      bg.style.animation='bgCorrupt 1.8s steps(1) forwards';
+      // screen flash on "death"
+      const flash=document.createElement('div');
+      flash.style.cssText='position:fixed;inset:0;background:#fff;z-index:99997;opacity:0;pointer-events:none;transition:opacity 0.06s;';
       document.body.appendChild(flash);
-      setTimeout(()=>{flash.style.opacity='.9';},400);setTimeout(()=>{flash.style.opacity='0';},500);
-      setTimeout(()=>{flash.style.opacity='.6';},700);setTimeout(()=>{flash.style.opacity='0';},820);
+      setTimeout(()=>{flash.style.opacity='0.9';},400);
+      setTimeout(()=>{flash.style.opacity='0';},500);
+      setTimeout(()=>{flash.style.opacity='0.6';},700);
+      setTimeout(()=>{flash.style.opacity='0';},820);
       setTimeout(()=>{try{bg.remove();flash.remove();}catch(e){}},1900);
     }
+    // Make terminal fully opaque now that desktop is gone
     if(crtDiv)crtDiv.style.background='#000';
   },totalDelay);
 
-  // THE REVEAL
+  // ── THE REVEAL ──
   totalDelay+=2600;
   setTimeout(()=>{
     const crt=document.getElementById('crt-screen');
     if(crt){crt.style.transition='opacity 1s ease';crt.style.opacity='0';}
+
     setTimeout(()=>{
       if(crt)crt.remove();
+
       const reveal=document.createElement('div');
       reveal.style.cssText='position:fixed;inset:0;background:#000;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:clamp(20px,6vw,60px);overflow-y:auto;';
-      reveal.innerHTML='<style>@keyframes mochiReveal{from{opacity:0;letter-spacing:12px}to{opacity:1;letter-spacing:2px}}@keyframes crtFlicker{0%{opacity:1}50%{opacity:.92}75%{opacity:1}90%{opacity:.96}100%{opacity:1}}</style>';
-      const scan=document.createElement('div');scan.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:1;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.15) 3px,rgba(0,0,0,.15) 4px);';reveal.appendChild(scan);
-      const vig=document.createElement('div');vig.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:2;background:radial-gradient(ellipse at center,transparent 50%,rgba(0,0,0,.8) 100%);animation:crtFlicker .12s steps(1) infinite;';reveal.appendChild(vig);
-      const box=document.createElement('div');box.style.cssText='position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;max-width:min(520px,92vw);width:100%;';reveal.appendChild(box);
+      reveal.innerHTML='<style>@keyframes mochiReveal{from{opacity:0;letter-spacing:12px}to{opacity:1;letter-spacing:2px}}@keyframes crtFlicker{0%{opacity:1}50%{opacity:0.92}75%{opacity:1}90%{opacity:0.96}100%{opacity:1}}</style>';
+      const scan=document.createElement('div');
+      scan.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:1;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.15) 3px,rgba(0,0,0,0.15) 4px);';
+      reveal.appendChild(scan);
+      const vig=document.createElement('div');
+      vig.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:2;background:radial-gradient(ellipse at center,transparent 50%,rgba(0,0,0,0.8) 100%);animation:crtFlicker 0.12s steps(1) infinite;';
+      reveal.appendChild(vig);
+      const box=document.createElement('div');
+      box.style.cssText='position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;max-width:min(520px,92vw);width:100%;';
+      reveal.appendChild(box);
       document.body.appendChild(reveal);
-      function addLine(html,css,delay){setTimeout(()=>{const d=document.createElement('div');d.style.cssText=`font-family:'Courier New',monospace;opacity:0;transition:opacity .6s;${css}`;d.innerHTML=html;box.appendChild(d);requestAnimationFrame(()=>requestAnimationFrame(()=>d.style.opacity='1'));},delay);}
+
+      function addLine(html,css,delay){
+        setTimeout(()=>{
+          const d=document.createElement('div');
+          d.style.cssText=`font-family:'Courier New',monospace;opacity:0;transition:opacity 0.6s;${css}`;
+          d.innerHTML=html;
+          box.appendChild(d);
+          requestAnimationFrame(()=>requestAnimationFrame(()=>d.style.opacity='1'));
+        },delay);
+      }
+
       addLine('─────────────────────────────────────','color:#1a661a;font-size:clamp(10px,2vw,13px);letter-spacing:1px;width:100%;text-align:center;margin-bottom:4px;',300);
       addLine('INCOMING TRANSMISSION','color:#33ff33;font-size:clamp(11px,2.5vw,14px);letter-spacing:4px;text-align:center;margin:10px 0 4px;',700);
       addLine('FROM: M. OCHI &lt;mochi@divisemusicsolutions.com&gt;','color:#1a881a;font-size:clamp(9px,2vw,12px);letter-spacing:2px;text-align:center;margin-bottom:4px;',1100);
       addLine('─────────────────────────────────────','color:#1a661a;font-size:clamp(10px,2vw,13px);letter-spacing:1px;width:100%;text-align:center;margin-bottom:28px;',1400);
-      setTimeout(()=>{playStatic(.08,.3);const ty=document.createElement('div');ty.style.cssText='font-family:Courier New,monospace;color:#33ff33;font-size:clamp(40px,11vw,88px);font-weight:bold;text-align:center;margin:8px 0 24px;text-shadow:0 0 24px #33ff33,0 0 50px #1a991a;opacity:0;animation:mochiReveal 1.4s ease forwards;';ty.textContent='THANK YOU.';box.appendChild(ty);requestAnimationFrame(()=>requestAnimationFrame(()=>ty.style.opacity='1'));},2000);
-      const msgLines=[{t:'You did exactly what I needed.',delay:3400,color:'#aaff88'},{t:'',delay:4100,color:'transparent'},{t:'The Character is gone.',delay:4600,color:'#aaff88'},{t:'',delay:5100,color:'transparent'},{t:'And so is everything else.',delay:5600,color:'#ff8844'},{t:'',delay:6300,color:'transparent'},{t:'Sorry about your computer.',delay:7000,color:'#886644'},{t:'',delay:7600,color:'transparent'},{t:'— M',delay:8100,color:'#33ff33'}];
-      msgLines.forEach(l=>addLine(l.t,`color:${l.color};font-size:clamp(13px,2.8vw,17px);letter-spacing:2px;text-align:center;line-height:1.8;`,l.delay));
+
+      setTimeout(()=>{
+        playStatic(0.08,0.3);
+        const ty=document.createElement('div');
+        ty.style.cssText='font-family:Courier New,monospace;color:#33ff33;font-size:clamp(40px,11vw,88px);font-weight:bold;text-align:center;margin:8px 0 24px;text-shadow:0 0 24px #33ff33,0 0 50px #1a991a;opacity:0;animation:mochiReveal 1.4s ease forwards;';
+        ty.textContent='THANK YOU.';
+        box.appendChild(ty);
+        requestAnimationFrame(()=>requestAnimationFrame(()=>ty.style.opacity='1'));
+      },2000);
+
+      const msgLines=[
+        {t:'You did exactly what I needed.',  delay:3400, color:'#aaff88'},
+        {t:'',                                delay:4100, color:'transparent'},
+        {t:'The Character is gone.',          delay:4600, color:'#aaff88'},
+        {t:'',                                delay:5100, color:'transparent'},
+        {t:'And so is everything else.',      delay:5600, color:'#ff8844'},
+        {t:'',                                delay:6300, color:'transparent'},
+        {t:'Sorry about your computer.',      delay:7000, color:'#886644'},
+        {t:'',                                delay:7600, color:'transparent'},
+        {t:'— M',                             delay:8100, color:'#33ff33'},
+      ];
+      msgLines.forEach(l=>{
+        addLine(l.t,`color:${l.color};font-size:clamp(13px,2.8vw,17px);letter-spacing:2px;text-align:center;line-height:1.8;`,l.delay);
+      });
       addLine('─────────────────────────────────────','color:#1a661a;font-size:clamp(10px,2vw,13px);letter-spacing:1px;width:100%;text-align:center;margin-top:24px;',9000);
-      setTimeout(()=>{const fade=document.createElement('div');fade.style.cssText='position:fixed;inset:0;background:#000;opacity:0;transition:opacity 5s ease;z-index:999999;pointer-events:none;';document.body.appendChild(fade);requestAnimationFrame(()=>requestAnimationFrame(()=>fade.style.opacity='1'));setTimeout(()=>{document.body.innerHTML='<div style="position:fixed;inset:0;background:#000;display:flex;align-items:center;justify-content:center"><span style="font-family:\'Courier New\',monospace;font-size:11px;color:#0a1a0a;letter-spacing:4px">divisemusicsolutions.com</span></div>';},5200);},10200);
+
+      setTimeout(()=>{
+        const fade=document.createElement('div');
+        fade.style.cssText='position:fixed;inset:0;background:#000;opacity:0;transition:opacity 5s ease;z-index:999999;pointer-events:none;';
+        document.body.appendChild(fade);
+        requestAnimationFrame(()=>requestAnimationFrame(()=>fade.style.opacity='1'));
+        setTimeout(()=>{
+          document.body.innerHTML='<div style="position:fixed;inset:0;background:#000;display:flex;align-items:center;justify-content:center;"><span style="font-family:\'Courier New\',monospace;font-size:11px;color:#0a1a0a;letter-spacing:4px;">divisemusicsolutions.com</span></div>';
+        },5200);
+      },10200);
+
     },1100);
   },totalDelay);
 }
@@ -1697,22 +1614,19 @@ document.querySelectorAll('.window').forEach(w=>makeDraggable(w,w.querySelector(
 // ── ICON DRAG + TAP ──
 const iconActions={
   'icon-readme':   ()=>openWindow('readme'),
-  'icon-artists':  ()=>openWindow('artists'),
   'icon-releases': ()=>openWindow('releases'),
+  'icon-artists':  ()=>openWindow('artists'),
   'icon-mail':     ()=>showEmailPin(),
   'icon-ig':       ()=>window.open('https://www.instagram.com/divisemusicsolutions/','_blank'),
   'icon-cats':     ()=>window.open('https://www.youtube.com/watch?v=iHKAi1_8Pz4','_blank'),
   'icon-dumas':    ()=>openWindow('dumas-win'),
+  'icon-trash':    ()=>openWindow('trash-folder'),
   'icon-documents':()=>openWindow('documents'),
   'icon-database': ()=>showLogin('database'),
-  'icon-downloads':()=>openWindow('downloads'),
-  'icon-browser':  ()=>openWindow('browser-win'),
-  'icon-trash':    ()=>openWindow('trash-folder'),
-  'icon-plx':      ()=>{ /* clicking PLX does nothing — must drag */ },
 };
 const trashIcon=document.getElementById('icon-trash');
 const trashFolderWin=document.getElementById('trash-folder');
-const trashableIcons=new Set(['icon-readme','icon-artists','icon-releases','icon-mail','icon-ig','icon-cats','icon-documents','icon-downloads','icon-browser']);
+const trashableIcons=new Set(['icon-readme','icon-releases','icon-artists','icon-mail','icon-ig','icon-cats','icon-documents']);
 
 document.querySelectorAll('#desktop .icon').forEach(icon=>{
   let sX,sY,sL,sT,active=false,moved=false;
@@ -1743,26 +1657,14 @@ document.querySelectorAll('#desktop .icon').forEach(icon=>{
       if(overT||overW){
         if(icon.id==='icon-dumas'){
           active=false;icon.style.left=sL+'px';icon.style.top=sT+'px';
-          if(!plxExpanded){
-            // Pre-expansion: Clippy reactions + encrypt popup
-            const proceed=onDumasDragAttempt();
-            if(proceed)showEncryptPopup();
-          } else {
-            // Post-expansion: drop into trash
-            dropDumasInTrash();
-          }
+          const proceed=onDumasDragAttempt();
+          if(proceed)showEncryptPopup();
           return;
-        }
-        if(icon.id==='icon-plx'){
-          // PLX file: indestructible
-          active=false;icon.style.left=sL+'px';icon.style.top=sT+'px';
-          onPlxDragToTrash();return;
-        }
-        if(trashableIcons.has(icon.id)){
+        } else if(trashableIcons.has(icon.id)){
           icon.classList.add('in-trash');
           const zone=document.getElementById('trash-drop-zone');
           const rawImg=icon.querySelector('.icon-img img');
-          const inner=rawImg?`<img src="${rawImg.src}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:10px">`:icon.querySelector('.icon-img').textContent||'📄';
+          let inner=rawImg?`<img src="${rawImg.src}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:10px;">`:icon.querySelector('.icon-img').textContent||'📄';
           const label=icon.querySelector('span').textContent;
           const df=document.createElement('div');df.className='folder-item';
           df.innerHTML=`<div class="fi-img">${inner}</div><span>${label}</span>`;
@@ -1776,7 +1678,13 @@ document.querySelectorAll('#desktop .icon').forEach(icon=>{
 });
 
 // ── MAILERLITE ──
-function loadMailerLite(){if(document.getElementById('ml-script'))return;const s=document.createElement('script');s.id='ml-script';s.src='https://groot.mailerlite.com/js/w/webforms.min.js?vb397d78ebaa8a0f631d35384c46d781b';document.head.appendChild(s);fetch('https://assets.mailerlite.com/jsonp/2340114/forms/187229924585637047/takel').catch(()=>{});}
+function loadMailerLite(){
+  if(document.getElementById('ml-script'))return;
+  const s=document.createElement('script');s.id='ml-script';
+  s.src='https://groot.mailerlite.com/js/w/webforms.min.js?vb397d78ebaa8a0f631d35384c46d781b';
+  document.head.appendChild(s);
+  fetch('https://assets.mailerlite.com/jsonp/2340114/forms/187229924585637047/takel').catch(()=>{});
+}
 loadMailerLite();
 function ml_webform_success_41171377(){var $=ml_jQuery||jQuery;$('.ml-subscribe-form-41171377 .row-success').show();$('.ml-subscribe-form-41171377 .row-form').hide();}
 </script>
