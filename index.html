@@ -59,6 +59,11 @@ body{font-family:'Courier New',Courier,monospace;background:#000;overflow:hidden
 /* PLX file glitch */
 #icon-plx .icon-img{background:rgba(60,0,80,.7);border-color:rgba(180,0,255,.5);animation:plxGlitch 2.5s steps(1) infinite}
 @keyframes plxGlitch{0%,89%{filter:none;transform:none}90%{filter:hue-rotate(180deg) saturate(8) contrast(3);transform:translateX(-3px)}92%{filter:invert(1);transform:translateX(3px)}94%{filter:none;transform:none}96%{filter:hue-rotate(90deg) contrast(4);transform:translateX(-2px) scaleX(1.04)}98%{filter:none;transform:none}}
+/* Blinking zip lock */
+#icon-zip-dl .icon-img{animation:zipBlink 0.7s steps(1) infinite}
+@keyframes zipBlink{0%,49%{opacity:1}50%,100%{opacity:0.2}}
+/* Key icon on desktop */
+#icon-expander .icon-img{background:rgba(0,60,0,.5);border-color:rgba(0,200,80,.4)}
 
 /* ── WINDOWS ── */
 .window{position:absolute;top:80px;left:50%;transform:translateX(-50%) scale(.85);width:min(420px,92vw);max-height:78vh;background:#111;border:2px solid #444;border-radius:10px;display:none;flex-direction:column;z-index:100;opacity:0;transition:opacity .22s ease,transform .22s cubic-bezier(.34,1.4,.64,1);overflow:hidden}
@@ -410,13 +415,13 @@ body{font-family:'Courier New',Courier,monospace;background:#000;overflow:hidden
   <div class="icon" id="icon-releases" style="top:232px;left:12px"><div class="icon-img">🎵</div><span>Releases</span></div>
   <div class="icon" id="icon-mail" style="top:324px;left:12px"><div class="icon-img">📧</div><span>Email</span></div>
   <div class="icon" id="icon-ig" style="top:416px;left:12px"><div class="icon-img">📸</div><span>Instagram</span></div>
+  <div class="icon" id="icon-browser" style="top:508px;left:12px"><div class="icon-img">🌐</div><span>Browser</span></div>
   <!-- Col 2 -->
   <div class="icon" id="icon-cats" style="top:48px;left:100px"><div class="icon-img">🐱</div><span>Cat Pictures</span></div>
   <div class="icon" id="icon-dumas" style="top:140px;left:100px"><div class="icon-img"><img src="Char_DuMaS_Transparent.jpg" alt="DuMaS"></div><span></span></div>
   <div class="icon" id="icon-documents" style="top:232px;left:100px"><div class="icon-img">📁</div><span>Documents</span></div>
   <div class="icon" id="icon-database" style="top:324px;left:100px"><div class="icon-img"><img src="Database_Logo.jpg" alt="DB"></div><span>Database</span></div>
   <div class="icon" id="icon-downloads" style="top:416px;left:100px"><div class="icon-img">📥</div><span>Downloads</span></div>
-  <div class="icon" id="icon-browser" style="top:508px;left:100px"><div class="icon-img">🌐</div><span>Browser</span></div>
   <!-- Trash -->
   <div class="icon" id="icon-trash" style="bottom:40px;top:auto;right:12px"><div class="icon-img">🗑️</div><span>Trash</span></div>
 </div>
@@ -516,7 +521,7 @@ body{font-family:'Courier New',Courier,monospace;background:#000;overflow:hidden
 <!-- BROWSER WINDOW -->
 <div id="browser-win" class="window" style="width:min(600px,96vw)">
   <div class="window-bg"></div>
-  <div class="title-bar"><span id="browser-title-text">🌐 Netscape Navigator — New Tab</span><span class="close-btn" onclick="closeWin('browser-win')">✖</span></div>
+  <div class="title-bar"><span id="browser-title-text">🌐 Voidspeek Browser — New Tab</span><span class="close-btn" onclick="closeWin('browser-win')">✖</span></div>
   <div class="browser-chrome">
     <div class="browser-nav-row">
       <button class="browser-btn">◀</button>
@@ -526,7 +531,7 @@ body{font-family:'Courier New',Courier,monospace;background:#000;overflow:hidden
       <button class="browser-btn" onclick="browserGo()">Go</button>
     </div>
     <div class="browser-toolbar">
-      <span style="font-size:10px;color:#444;font-family:'Courier New',monospace">File &nbsp; Edit &nbsp; View &nbsp; Go &nbsp; Bookmarks &nbsp; Help</span>
+      <span style="font-size:10px;color:#444;font-family:'Courier New',monospace">File &nbsp; Edit &nbsp; View &nbsp; Go &nbsp; Bookmarks &nbsp; Help &nbsp;|&nbsp; Voidspeek Browser v2.1</span>
     </div>
   </div>
   <div class="browser-content" id="browser-content">
@@ -1103,7 +1108,7 @@ function closeNewsPage(){document.getElementById('news-page').classList.remove('
 function openBrowserDownloadPage(){
   openWindow('browser-win');
   document.getElementById('browser-url').value='jax-tools://download/plx-megaexpander';
-  document.getElementById('browser-title-text').textContent='🌐 Netscape Navigator — Jax Tools: PLX Mega-Expander';
+  document.getElementById('browser-title-text').textContent='🌐 Voidspeek Browser — Jax Tools: PLX Mega-Expander';
   document.getElementById('browser-statusbar').textContent='Connected to jax-tools';
   document.getElementById('browser-content').innerHTML=`<div class="ns-page">
     <h2>Jax Tools — PLX Mega-Expander</h2>
@@ -1130,19 +1135,23 @@ function addToDownloads(type){
   if(type==='zip'&&!document.getElementById('dl-zip')){
     const item=document.createElement('div');
     item.className='folder-item';item.id='dl-zip';
-    item.innerHTML=`<div class="fi-img">🗜</div><span>PLX-MegaExpander.zip</span>`;
+    item.innerHTML=`<div class="fi-img" style="animation:zipBlink 0.7s steps(1) infinite">🔒</div><span>PLX-MegaExpander.zip</span>`;
     item.onclick=()=>installExpander();
     grid.appendChild(item);
     document.getElementById('taskbar-status').textContent='Download complete: PLX-MegaExpander.zip';
   }
-  if(type==='app'&&!document.getElementById('dl-app')){
-    const item=document.createElement('div');
-    item.className='folder-item';item.id='dl-app';
-    item.innerHTML=`<div class="fi-img" style="background:rgba(0,80,0,.5);border-color:rgba(0,200,0,.4);font-size:22px">🔓</div><span style="color:#0f0">Jax Mega-Expander</span>`;
-    item.onclick=()=>openJaxExpander();
-    grid.appendChild(item);
+  if(type==='app'&&!document.getElementById('icon-expander')){
+    // Remove from downloads folder — add as desktop icon instead
+    const desktop=document.getElementById('desktop');
+    const keyIcon=document.createElement('div');
+    keyIcon.className='icon';keyIcon.id='icon-expander';
+    keyIcon.style.cssText='top:508px;left:100px';
+    keyIcon.innerHTML=`<div class="icon-img" style="background:rgba(0,60,0,.5);border-color:rgba(0,200,80,.4);font-size:34px">🗝️</div><span style="color:#0f0">Jax Mega-Expander</span>`;
+    desktop.appendChild(keyIcon);
     jaxExpanderExists=true;
-    document.getElementById('taskbar-status').textContent='Jax Mega-Expander ready.';
+    // wire up tap and drag for the new desktop icon
+    wireIconDrag(keyIcon,()=>openJaxExpander());
+    document.getElementById('taskbar-status').textContent='Jax Mega-Expander installed on desktop.';
   }
 }
 function installExpander(){
@@ -1331,62 +1340,79 @@ function showEncryptPopup(){
   setTimeout(()=>document.getElementById('ep-input').focus(),200);
 }
 function closeEncryptPopup(){document.getElementById('encrypt-popup').classList.remove('active');}
+document.getElementById('ep-input').addEventListener('keydown',e=>{if(e.key==='Enter')submitEncrypt();});
+document.getElementById('encrypt-popup').addEventListener('click',e=>{if(e.target===document.getElementById('encrypt-popup'))closeEncryptPopup();});
 function submitEncrypt(){
   const val=document.getElementById('ep-input').value.trim().toLowerCase().replace(/\$/g,'');
   if(val==='balderdash'||val==='12.99'){
     closeEncryptPopup();
-    startMegaEncrypt(); // NEW: don't drop dumas yet — mega-encrypt instead
+    // Clippy: "Well I guess this is it…"
+    showAssistantMessage("Well I guess this is it…\n\nYou really are clever. There's only one thing left to do.",()=>{
+      const choices=document.getElementById('aim-choices');choices.style.display='flex';
+      const btn=document.createElement('button');btn.className='aim-btn';
+      btn.style.cssText='background:#8b0000;color:#fff;border-color:#fff #600 #600 #fff';
+      btn.textContent='Empty Trash';
+      btn.onclick=()=>{dismissAssistant();emptyTrash();};
+      choices.appendChild(btn);
+    });
+    // Drop DuMaS into trash (visually) right away
+    dropDumasInTrash();
   } else {
     document.getElementById('ep-error').style.display='block';
     setTimeout(()=>document.getElementById('ep-error').style.display='none',2500);
   }
 }
-document.getElementById('ep-input').addEventListener('keydown',e=>{if(e.key==='Enter')submitEncrypt();});
-document.getElementById('encrypt-popup').addEventListener('click',e=>{if(e.target===document.getElementById('encrypt-popup'))closeEncryptPopup();});
 
-// ── MEGA-ENCRYPT SEQUENCE ──
-function startMegaEncrypt(){
-  // Clippy glitches and says "Not clever enough…"
-  const charEl=document.getElementById('dumas-char');
-  charEl.classList.add('glitch-char');
-  showAssistantMessage('Not clever enough…',null,null);
+// ── EMPTY TRASH ──
+function emptyTrash(){
+  closeFileMenu();
+  if(dumasInTrash){
+    // Scary transition: wallpaper fades → DuMaS background → "But not clever enough" → slow encrypt
+    triggerEmptyTrashSequence();
+  } else {
+    document.getElementById('taskbar-status').textContent='Trash is already empty.';
+  }
+}
+
+function triggerEmptyTrashSequence(){
+  // 1. Fade out wallpaper, replace with DuMaS as background
+  const bg=document.getElementById('bg');
+  if(bg){bg.style.transition='opacity 1s';bg.style.opacity='0';setTimeout(()=>{bg.style.backgroundImage="url('Char_DuMaS_2.jpg')";bg.style.backgroundSize='cover';bg.style.opacity='.35';bg.style.filter='saturate(3) contrast(1.5) hue-rotate(220deg)';},1000);}
+
+  // 2. Scary dialog: "But not clever enough"
   setTimeout(()=>{
-    charEl.classList.remove('glitch-char');
-    dismissAssistant();
-    // Show Plodesbrand Stuffit progress
-    runStuffitProgress(()=>{
-      // After encrypt: replace DuMaS desktop icon with PLX file
-      const dumasIcon=document.getElementById('icon-dumas');
-      if(dumasIcon){
-        dumasIcon.id='icon-plx';
-        dumasIcon.querySelector('.icon-img').innerHTML='<span style="font-size:20px;color:#cc00ff;text-align:center;line-height:1.2;font-weight:bold;font-family:monospace">🔒<br><span style="font-size:9px">PLX</span></span>';
-        dumasIcon.querySelector('span').textContent='DMS CORE.PLX';
-        plxFileExists=true;
-        document.getElementById('taskbar-status').textContent='DMS CORE.PLX — Encrypted.';
-      }
-    });
-  },2200);
+    const overlay=document.createElement('div');
+    overlay.id='not-clever-overlay';
+    overlay.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:8900;display:flex;align-items:center;justify-content:center;';
+    const box=document.createElement('div');
+    box.style.cssText='background:#1a0020;border:3px solid #8b00ff;box-shadow:0 0 40px rgba(139,0,255,.6),inset 0 0 20px rgba(0,0,0,.8);padding:30px 28px;width:min(340px,88vw);text-align:center;font-family:"Courier New",monospace;';
+    box.innerHTML=`<p style="color:#cc00ff;font-size:clamp(18px,5vw,26px);font-weight:bold;letter-spacing:3px;text-shadow:0 0 20px #cc00ff;margin-bottom:8px">But not clever enough.</p><p style="color:#888;font-size:11px;letter-spacing:2px">© Plodesbrand Services 2026</p>`;
+    overlay.appendChild(box);
+    document.body.appendChild(overlay);
+    // Glitch flash
+    let gc=0;const giv=setInterval(()=>{box.style.filter=gc%2===0?'hue-rotate(60deg) brightness(2)':'none';gc++;if(gc>6)clearInterval(giv);},80);
+
+    // 3. After a beat, hide dialog and show slow encrypt
+    setTimeout(()=>{
+      overlay.style.transition='opacity .5s';overlay.style.opacity='0';
+      setTimeout(()=>{overlay.remove();runStuffitProgress(()=>{
+        // After encrypt: replace DuMaS desktop icon with PLX
+        const dumasIcon=document.getElementById('icon-dumas');
+        if(dumasIcon){
+          dumasIcon.id='icon-plx';
+          dumasIcon.querySelector('.icon-img').innerHTML='<span style="font-size:20px;color:#cc00ff;text-align:center;line-height:1.2;font-weight:bold;font-family:monospace">🔒<br><span style="font-size:9px">PLX</span></span>';
+          dumasIcon.querySelector('span').textContent='DMS CORE.PLX';
+          plxFileExists=true;
+          document.getElementById('taskbar-status').textContent='DMS CORE.PLX — Encrypted.';
+        }
+        // Restore bg to normal
+        if(bg){bg.style.transition='opacity .8s';bg.style.opacity='0';setTimeout(()=>{bg.style.backgroundImage="url('DMS_Logo_v1.png')";bg.style.backgroundSize='contain';bg.style.backgroundRepeat='no-repeat';bg.style.backgroundPosition='center';bg.style.filter='';bg.style.opacity='.18';},850);}
+      },true);},500); // pass true = slow mode
+    },2200);
+  },1400);
 }
 
-function runStuffitProgress(cb){
-  const screen=document.getElementById('stuffit-screen');
-  const fill=document.getElementById('stuffit-fill');
-  const pct=document.getElementById('stuffit-pct');
-  const status=document.getElementById('stuffit-status');
-  screen.classList.add('active');
-  const msgs=['Initializing encryption…','Applying Plodesbrand layer 1…','Applying Plodesbrand layer 2…','Sealing .PLX container…','Finalizing…'];
-  let p=0,mi=0;
-  const iv=setInterval(()=>{
-    p+=Math.random()*5+1;if(p>100)p=100;
-    fill.style.width=p+'%';pct.textContent=Math.floor(p)+'%';
-    mi=Math.floor(p/22);status.textContent=msgs[Math.min(mi,msgs.length-1)];
-    if(p>=100){
-      clearInterval(iv);
-      status.textContent='Encryption complete.';
-      setTimeout(()=>{screen.classList.remove('active');fill.style.width='0%';pct.textContent='0%';if(cb)cb();},800);
-    }
-  },100);
-}
+// ── STUFFIT PROGRESS ──
 
 // ── DUMAS DRAG REACTIONS ──
 function onDumasDragAttempt(){
@@ -1418,6 +1444,44 @@ function onDumasDragAttempt(){
   return true;
 }
 
+
+// ── STUFFIT PROGRESS ──
+// slowMode=true makes it dramatically slower for the Empty Trash sequence
+function runStuffitProgress(cb,slowMode){
+  const AC=window.AudioContext||window.webkitAudioContext;let audioCtx=null;
+  try{audioCtx=new AC();}catch(e){}
+  function playTick(){if(!audioCtx)return;try{const osc=audioCtx.createOscillator();const g=audioCtx.createGain();osc.type='square';osc.frequency.value=880;g.gain.setValueAtTime(.08,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+.06);osc.connect(g);g.connect(audioCtx.destination);osc.start();osc.stop(audioCtx.currentTime+.06);}catch(e){}}
+  function playGlitchBurst(){if(!audioCtx)return;try{const buf=audioCtx.createBuffer(1,audioCtx.sampleRate*.15,audioCtx.sampleRate);const d=buf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,.3);const src=audioCtx.createBufferSource();src.buffer=buf;const g=audioCtx.createGain();g.gain.value=.25;src.connect(g);g.connect(audioCtx.destination);src.start();}catch(e){}}
+
+  const screen=document.getElementById('stuffit-screen');
+  const fill=document.getElementById('stuffit-fill');
+  const pct=document.getElementById('stuffit-pct');
+  const status=document.getElementById('stuffit-status');
+  screen.classList.add('active');
+  fill.style.width='0%';pct.textContent='0%';
+  const msgs=['Initializing encryption…','Applying Plodesbrand layer 1…','Applying Plodesbrand layer 2…','Sealing .PLX container…','Finalizing…'];
+  let p=0,mi=0,lastTick=0;
+  // slowMode: creep slowly with occasional pauses and glitch sounds
+  const baseSpeed=slowMode?0.4:4;
+  const iv=setInterval(()=>{
+    // In slow mode occasionally stall
+    if(slowMode&&Math.random()<0.12){return;}
+    p+=Math.random()*baseSpeed+(slowMode?0.2:1);if(p>100)p=100;
+    fill.style.width=p+'%';pct.textContent=Math.floor(p)+'%';
+    mi=Math.floor(p/22);status.textContent=msgs[Math.min(mi,msgs.length-1)];
+    // Tick sound every ~10%
+    if(Math.floor(p/10)>lastTick){lastTick=Math.floor(p/10);playTick();}
+    // Glitch burst at certain points in slow mode
+    if(slowMode&&(Math.abs(p-33)<1||Math.abs(p-66)<1)){playGlitchBurst();}
+    if(p>=100){
+      clearInterval(iv);
+      status.textContent='Encryption complete.';
+      playGlitchBurst();
+      setTimeout(()=>{screen.classList.remove('active');fill.style.width='0%';pct.textContent='0%';if(cb)cb();},slowMode?1400:800);
+    }
+  },slowMode?180:100);
+}
+
 // ── DROP DUMAS INTO TRASH (after PLX expansion) ──
 function dropDumasInTrash(){
   if(dumasInTrash)return;
@@ -1432,8 +1496,8 @@ function dropDumasInTrash(){
   const df=document.createElement('div');df.className='folder-item';
   df.innerHTML=`<div class="fi-img" style="background:rgba(40,0,0,.8);border-color:rgba(200,0,60,.5);overflow:hidden"><img src="Char_DuMaS_Transparent.jpg" alt="DuMaS" style="width:100%;height:100%;object-fit:cover;border-radius:10px;filter:hue-rotate(180deg) saturate(3) brightness(.7)"></div><span style="color:#a00">DuMaS</span>`;
   zone.appendChild(df);
-  // Clippy final message
-  showAssistantMessage("No…",()=>{
+  // Clippy: "No…" with Empty Trash button
+  showAssistantMessage('No\u2026',()=>{
     const choices=document.getElementById('aim-choices');choices.style.display='flex';
     const btn=document.createElement('button');btn.className='aim-btn';
     btn.style.cssText='background:#8b0000;color:#fff;border-color:#fff #600 #600 #fff';
@@ -1441,13 +1505,6 @@ function dropDumasInTrash(){
     btn.onclick=()=>{dismissAssistant();triggerJumpscare();};
     choices.appendChild(btn);
   });
-}
-
-// ── EMPTY TRASH ──
-function emptyTrash(){
-  closeFileMenu();
-  if(dumasInTrash){triggerJumpscare();}
-  else{document.getElementById('taskbar-status').textContent='Trash is already empty.';}
 }
 
 // ── PLX DRAG TO TRASH — indestructible ──
@@ -1677,7 +1734,29 @@ function deleteAndClose(){
       const msgLines=[{t:'You did exactly what I needed.',delay:3400,color:'#aaff88'},{t:'',delay:4100,color:'transparent'},{t:'The Character is gone.',delay:4600,color:'#aaff88'},{t:'',delay:5100,color:'transparent'},{t:'And so is everything else.',delay:5600,color:'#ff8844'},{t:'',delay:6300,color:'transparent'},{t:'Sorry about your computer.',delay:7000,color:'#886644'},{t:'',delay:7600,color:'transparent'},{t:'— M',delay:8100,color:'#33ff33'}];
       msgLines.forEach(l=>addLine(l.t,`color:${l.color};font-size:clamp(13px,2.8vw,17px);letter-spacing:2px;text-align:center;line-height:1.8;`,l.delay));
       addLine('─────────────────────────────────────','color:#1a661a;font-size:clamp(10px,2vw,13px);letter-spacing:1px;width:100%;text-align:center;margin-top:24px;',9000);
-      setTimeout(()=>{const fade=document.createElement('div');fade.style.cssText='position:fixed;inset:0;background:#000;opacity:0;transition:opacity 5s ease;z-index:999999;pointer-events:none;';document.body.appendChild(fade);requestAnimationFrame(()=>requestAnimationFrame(()=>fade.style.opacity='1'));setTimeout(()=>{document.body.innerHTML='<div style="position:fixed;inset:0;background:#000;display:flex;align-items:center;justify-content:center"><span style="font-family:\'Courier New\',monospace;font-size:11px;color:#0a1a0a;letter-spacing:4px">divisemusicsolutions.com</span></div>';},5200);},10200);
+      setTimeout(()=>{const fade=document.createElement('div');fade.style.cssText='position:fixed;inset:0;background:#000;opacity:0;transition:opacity 5s ease;z-index:999999;pointer-events:none;';document.body.appendChild(fade);requestAnimationFrame(()=>requestAnimationFrame(()=>fade.style.opacity='1'));setTimeout(()=>{
+        document.body.innerHTML='<div style="position:fixed;inset:0;background:#000;display:flex;align-items:center;justify-content:center"><span style="font-family:\'Courier New\',monospace;font-size:11px;color:#0a1a0a;letter-spacing:4px">divisemusicsolutions.com</span></div>';
+        setTimeout(()=>{
+          const fb=document.createElement('div');
+          fb.style.cssText='position:fixed;bottom:30px;right:20px;z-index:999998;font-family:"Courier New",monospace;max-width:min(300px,88vw);';
+          fb.innerHTML=`<style>@keyframes fbPop{from{transform:scale(.4) rotate(-3deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}</style>
+<div style="animation:fbPop .5s cubic-bezier(.34,1.4,.64,1) forwards;background:#c0c0c0;border:2px solid;border-color:#fff #808080 #808080 #fff;box-shadow:3px 3px 0 #000;">
+  <div style="background:linear-gradient(90deg,#000080,#1084d0);color:#fff;font-size:11px;font-weight:bold;padding:3px 8px;display:flex;justify-content:space-between;align-items:center;">
+    <span>DMS Assistant</span>
+    <span style="cursor:pointer;background:#c0c0c0;border:1px solid;border-color:#fff #808080 #808080 #fff;width:14px;height:14px;display:flex;align-items:center;justify-content:center;color:#000;font-size:11px" onclick="this.closest('div').parentElement.parentElement.remove()">✖</span>
+  </div>
+  <div style="display:flex;gap:8px;align-items:flex-start;padding:10px;background:#c0c0c0;">
+    <div style="width:44px;height:44px;flex-shrink:0;background:#eee;border:2px inset #999;display:flex;align-items:center;justify-content:center;font-size:9px;color:#aaa;text-align:center;line-height:1.3;">🖼️<br><span style="font-size:8px">img</span></div>
+    <div style="background:#fff;padding:10px;font-size:12px;color:#000;line-height:1.7;flex:1;border:1px inset #999;">
+      <p style="margin-bottom:6px">Thanks for playing!</p>
+      <p style="margin-bottom:6px">Please send any feedback to:</p>
+      <p><a href="mailto:info@divisemusicsolutions.com" style="color:#00c;text-decoration:underline;font-size:11px">info@divisemusicsolutions.com</a></p>
+    </div>
+  </div>
+</div>`;
+          document.body.appendChild(fb);
+        },3000);
+      },5200);},10200);
     },1100);
   },totalDelay);
 }
@@ -1774,6 +1853,18 @@ document.querySelectorAll('#desktop .icon').forEach(icon=>{
     active=false;
   }
 });
+
+// ── WIRE ICON DRAG (for dynamically added icons) ──
+function wireIconDrag(icon,tapAction){
+  let sX,sY,sL,sT,active=false,moved=false;
+  const pos=e=>e.touches?{x:e.touches[0].clientX,y:e.touches[0].clientY}:{x:e.clientX,y:e.clientY};
+  icon.addEventListener('mousedown',start);icon.addEventListener('touchstart',start,{passive:true});
+  function start(e){moved=false;active=true;const p=pos(e);sX=p.x;sY=p.y;const r=icon.getBoundingClientRect();sL=r.left;sT=r.top;icon.style.position='absolute';icon.style.bottom='auto';icon.style.right='auto';icon.style.left=sL+'px';icon.style.top=sT+'px';zTop++;icon.style.zIndex=zTop;}
+  document.addEventListener('mousemove',drag);document.addEventListener('touchmove',drag,{passive:false});
+  function drag(e){if(!active)return;const p=pos(e);const dx=p.x-sX,dy=p.y-sY;if(Math.abs(dx)>5||Math.abs(dy)>5)moved=true;if(moved){icon.style.left=(sL+dx)+'px';icon.style.top=(sT+dy)+'px';if(e.cancelable)e.preventDefault();}}
+  document.addEventListener('mouseup',end);document.addEventListener('touchend',end);
+  function end(){if(!moved&&active&&tapAction)tapAction();active=false;}
+}
 
 // ── MAILERLITE ──
 function loadMailerLite(){if(document.getElementById('ml-script'))return;const s=document.createElement('script');s.id='ml-script';s.src='https://groot.mailerlite.com/js/w/webforms.min.js?vb397d78ebaa8a0f631d35384c46d781b';document.head.appendChild(s);fetch('https://assets.mailerlite.com/jsonp/2340114/forms/187229924585637047/takel').catch(()=>{});}
